@@ -1,12 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api.routers import knights, weapons, armors, factions, bosses, items, lores, upload
+from app.api.routers import (
+    knights, weapons, armors, factions, bosses, items, lores, upload,
+    dnd_classes, races, maps, characters, campaigns, spells, abilities, parties
+)
 
 app = FastAPI(
     title=settings.app_name,
     version=settings.version,
-    description="API per il Dark Fantasy Compendium"
+    description="API per il Dark Fantasy Compendium - D&D Manager"
 )
 
 # CORS middleware per permettere chiamate dal frontend Flutter
@@ -27,6 +30,16 @@ app.include_router(bosses.router, prefix=settings.api_prefix)
 app.include_router(items.router, prefix=settings.api_prefix)
 app.include_router(lores.router, prefix=settings.api_prefix)
 app.include_router(upload.router, prefix=settings.api_prefix)
+
+# D&D Routers
+app.include_router(dnd_classes.router, prefix=settings.api_prefix)
+app.include_router(races.router, prefix=settings.api_prefix)
+app.include_router(maps.router, prefix=settings.api_prefix)
+app.include_router(characters.router, prefix=settings.api_prefix)
+app.include_router(campaigns.router, prefix=settings.api_prefix)
+app.include_router(spells.router, prefix=settings.api_prefix)
+app.include_router(abilities.router, prefix=settings.api_prefix)
+app.include_router(parties.router, prefix=settings.api_prefix)
 
 
 @app.get("/")

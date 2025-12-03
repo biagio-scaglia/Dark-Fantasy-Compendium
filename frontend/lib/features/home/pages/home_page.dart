@@ -69,6 +69,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       final items = await apiService.getAll('items');
       final lores = await apiService.getAll('lores');
       final factions = await apiService.getAll('factions');
+      final maps = await apiService.getAll('maps');
+      final dndClasses = await apiService.getAll('dnd-classes');
+      final characters = await apiService.getAll('characters');
+      final campaigns = await apiService.getAll('campaigns');
 
       // Prendi alcuni elementi in evidenza
       _featuredKnights = knights.length > 3 ? knights.sublist(0, 3) : knights;
@@ -83,25 +87,33 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       // Featured Factions
       _featuredFactions = factions.length > 3 ? factions.sublist(0, 3) : factions;
 
-      setState(() {
-        _stats = {
-          'knights': knights.length,
-          'weapons': weapons.length,
-          'armors': armors.length,
-          'bosses': bosses.length,
-          'items': items.length,
-          'lores': lores.length,
-          'factions': factions.length,
-        };
-        _isLoading = false;
-      });
-      
-      // Avvia animazione statistiche
-      _statsAnimationController?.forward();
+      if (mounted) {
+        setState(() {
+          _stats = {
+            'knights': knights.length,
+            'weapons': weapons.length,
+            'armors': armors.length,
+            'bosses': bosses.length,
+            'items': items.length,
+            'lores': lores.length,
+            'factions': factions.length,
+            'maps': maps.length,
+            'dnd_classes': dndClasses.length,
+            'characters': characters.length,
+            'campaigns': campaigns.length,
+          };
+          _isLoading = false;
+        });
+        
+        // Avvia animazione statistiche
+        _statsAnimationController?.forward();
+      }
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -1056,6 +1068,91 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
             onTap: () => context.push('/lores'),
             delay: 600,
+          ),
+          // D&D Cards
+          _AnimatedHomeCard(
+            title: 'Mappe',
+            icon: FontAwesomeIcons.map,
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppTheme.accentGold,
+                AppTheme.accentCrimson,
+              ],
+            ),
+            onTap: () => context.push('/maps'),
+            delay: 700,
+          ),
+          _AnimatedHomeCard(
+            title: 'Classi D&D',
+            icon: FontAwesomeIcons.userShield,
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppTheme.accentDarkGold,
+                AppTheme.accentGold,
+              ],
+            ),
+            onTap: () => context.push('/dnd-classes'),
+            delay: 800,
+          ),
+          _AnimatedHomeCard(
+            title: 'Personaggi',
+            icon: FontAwesomeIcons.user,
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppTheme.accentCrimson,
+                AppTheme.accentGold,
+              ],
+            ),
+            onTap: () => context.push('/characters'),
+            delay: 900,
+          ),
+          _AnimatedHomeCard(
+            title: 'Campagne',
+            icon: FontAwesomeIcons.diceD20,
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppTheme.accentBrown,
+                AppTheme.accentCrimson,
+              ],
+            ),
+            onTap: () => context.push('/campaigns'),
+            delay: 1000,
+          ),
+          _AnimatedHomeCard(
+            title: 'Calendario',
+            icon: FontAwesomeIcons.calendar,
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppTheme.accentGold,
+                AppTheme.accentDarkGold,
+              ],
+            ),
+            onTap: () => context.push('/sessions/calendar'),
+            delay: 1100,
+          ),
+          _AnimatedHomeCard(
+            title: 'Party',
+            icon: FontAwesomeIcons.users,
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppTheme.accentCrimson,
+                AppTheme.accentBrown,
+              ],
+            ),
+            onTap: () => context.push('/parties'),
+            delay: 1200,
           ),
         ]),
       ),

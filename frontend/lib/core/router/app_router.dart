@@ -17,6 +17,20 @@ import '../../features/items/pages/items_list_page.dart';
 import '../../features/items/pages/item_detail_page.dart';
 import '../../features/lores/pages/lores_list_page.dart';
 import '../../features/lores/pages/lore_detail_page.dart';
+import '../../features/maps/pages/maps_list_page.dart';
+import '../../features/maps/pages/map_detail_page.dart';
+import '../../features/maps/pages/map_form_page.dart';
+import '../../features/dnd_classes/pages/dnd_classes_list_page.dart';
+import '../../features/dnd_classes/pages/dnd_class_detail_page.dart';
+import '../../features/dnd_classes/pages/dnd_class_form_page.dart';
+import '../../features/characters/pages/characters_list_page.dart';
+import '../../features/characters/pages/character_detail_page.dart';
+import '../../features/campaigns/pages/campaigns_list_page.dart';
+import '../../features/campaigns/pages/campaign_detail_page.dart';
+import '../../features/parties/pages/parties_list_page.dart';
+import '../../features/parties/pages/party_detail_page.dart';
+import '../../features/parties/pages/party_form_page.dart';
+import '../../features/sessions/pages/sessions_calendar_page.dart';
 import '../../features/home/pages/home_page.dart';
 
 class AppRouter {
@@ -147,6 +161,99 @@ class AppRouter {
           final id = int.parse(state.pathParameters['id']!);
           return LoreDetailPage(loreId: id);
         },
+      ),
+      // D&D Routes
+      GoRoute(
+        path: '/maps',
+        builder: (context, state) => const MapsListPage(),
+      ),
+      GoRoute(
+        path: '/maps/new',
+        builder: (context, state) => const MapFormPage(),
+      ),
+      GoRoute(
+        path: '/maps/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return MapFormPage(map: {'id': id});
+        },
+      ),
+      GoRoute(
+        path: '/maps/:id',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return MapDetailPage(mapId: id);
+        },
+      ),
+      GoRoute(
+        path: '/dnd-classes',
+        builder: (context, state) => const DndClassesListPage(),
+      ),
+      GoRoute(
+        path: '/dnd-classes/new',
+        builder: (context, state) => const DndClassFormPage(),
+      ),
+      GoRoute(
+        path: '/dnd-classes/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return DndClassFormPage(dndClass: {'id': id});
+        },
+      ),
+      GoRoute(
+        path: '/dnd-classes/:id',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return DndClassDetailPage(classId: id);
+        },
+      ),
+      GoRoute(
+        path: '/characters',
+        builder: (context, state) => const CharactersListPage(),
+      ),
+      GoRoute(
+        path: '/characters/:id',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return CharacterDetailPage(characterId: id);
+        },
+      ),
+      GoRoute(
+        path: '/campaigns',
+        builder: (context, state) => const CampaignsListPage(),
+      ),
+      GoRoute(
+        path: '/campaigns/:id',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return CampaignDetailPage(campaignId: id);
+        },
+      ),
+      GoRoute(
+        path: '/parties',
+        builder: (context, state) => const PartiesListPage(),
+      ),
+      GoRoute(
+        path: '/parties/new',
+        builder: (context, state) => const PartyFormPage(),
+      ),
+      GoRoute(
+        path: '/parties/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return PartyFormPage(party: {'id': id});
+        },
+      ),
+      GoRoute(
+        path: '/parties/:id',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return PartyDetailPage(partyId: id);
+        },
+      ),
+      GoRoute(
+        path: '/sessions/calendar',
+        builder: (context, state) => const SessionsCalendarPage(),
       ),
     ],
   );

@@ -31,6 +31,18 @@ class ApiService {
     }
   }
 
+  Future<dynamic> get(String endpoint) async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/$endpoint'));
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      }
+      throw Exception('Failed to load $endpoint');
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
   Future<Map<String, dynamic>> create(String endpoint, Map<String, dynamic> data) async {
     try {
       final response = await http.post(
