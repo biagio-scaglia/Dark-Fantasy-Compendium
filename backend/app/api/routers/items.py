@@ -45,7 +45,10 @@ async def update_item(item_id: int, item: ItemUpdate):
 
 @router.delete("/{item_id}", status_code=204)
 async def delete_item(item_id: int):
-    """Elimina un oggetto"""
-    if not json_service.delete("items", item_id):
-        raise HTTPException(status_code=404, detail="Item not found")
+    """Elimina un oggetto (mantiene almeno un elemento minimo)"""
+    try:
+        if not json_service.delete("items", item_id, min_items=1):
+            raise HTTPException(status_code=404, detail="Item not found")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 

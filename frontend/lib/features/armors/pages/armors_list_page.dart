@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import '../../../services/api_service.dart';
 import '../../../widgets/armor_card.dart';
 
@@ -46,7 +47,16 @@ class _ArmorsListPageState extends State<ArmorsListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/'),
+          tooltip: 'Indietro',
+        ),
         title: const Text('Armature'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.push('/armors/new'),
+        child: const Icon(Icons.add),
       ),
       body: _buildBody(),
     );

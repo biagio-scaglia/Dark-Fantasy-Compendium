@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class ApiService {
@@ -70,6 +71,46 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Error: $e');
+    }
+  }
+
+  Future<String> uploadImage(File imageFile, {bool isIcon = false}) async {
+    try {
+      final endpoint = isIcon ? 'upload/icon' : 'upload/image';
+      final uri = Uri.parse('$baseUrl/$endpoint');
+      
+      final request = http.MultipartRequest('POST', uri);
+      final fileStream = http.ByteStream(imageFile.openRead());
+      final fileLength = await imageFile.length();
+      
+      final multipartFile = http.MultipartFile(
+        'file',
+        fileStream,
+        fileLength,
+        filename: imageFile.path.split('/').last,
+      );
+      
+      request.files.add(multipartFile);
+      
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body) as Map<String, dynamic>;
+        // Restituisce l'URL completo
+        final url = data['url'] as String;
+        // Se l'URL non inizia con http, aggiungi il baseUrl
+        if (url.startsWith('http')) {
+          return url;
+        } else if (url.startsWith('/')) {
+          return '$baseUrl$url';
+        } else {
+          return '$baseUrl/$url';
+        }
+      }
+      throw Exception('Failed to upload image: ${response.body}');
+    } catch (e) {
+      throw Exception('Error uploading image: $e');
     }
   }
 }

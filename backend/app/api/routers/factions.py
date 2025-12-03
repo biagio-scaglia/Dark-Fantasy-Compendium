@@ -45,7 +45,10 @@ async def update_faction(faction_id: int, faction: FactionUpdate):
 
 @router.delete("/{faction_id}", status_code=204)
 async def delete_faction(faction_id: int):
-    """Elimina una fazione"""
-    if not json_service.delete("factions", faction_id):
-        raise HTTPException(status_code=404, detail="Faction not found")
+    """Elimina una fazione (mantiene almeno un elemento minimo)"""
+    try:
+        if not json_service.delete("factions", faction_id, min_items=1):
+            raise HTTPException(status_code=404, detail="Faction not found")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 

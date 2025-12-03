@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import '../../../services/api_service.dart';
 import '../../../widgets/knight_card.dart';
+import 'knight_form_page.dart';
 
 class KnightsListPage extends StatefulWidget {
   const KnightsListPage({super.key});
@@ -46,7 +48,16 @@ class _KnightsListPageState extends State<KnightsListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/'),
+          tooltip: 'Indietro',
+        ),
         title: const Text('Cavalieri'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.push('/knights/new'),
+        child: const Icon(Icons.add),
       ),
       body: _buildBody(),
     );

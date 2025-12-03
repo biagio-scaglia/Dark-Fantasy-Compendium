@@ -50,7 +50,8 @@ class AppTheme {
       // Card Theme
       cardTheme: CardThemeData(
         color: secondaryDark,
-        elevation: 6,
+        elevation: 8,
+        shadowColor: accentGold.withOpacity(0.3),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: const BorderSide(color: accentGold, width: 2),
@@ -121,7 +122,16 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          elevation: 4,
+          elevation: 6,
+          shadowColor: accentGold.withOpacity(0.5),
+        ).copyWith(
+          elevation: MaterialStateProperty.resolveWith<double>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.pressed)) return 2;
+              if (states.contains(MaterialState.hovered)) return 8;
+              return 6;
+            },
+          ),
         ),
       ),
       
@@ -132,6 +142,18 @@ class AppTheme {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
+          ),
+        ).copyWith(
+          side: MaterialStateProperty.resolveWith<BorderSide>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.pressed)) {
+                return const BorderSide(color: accentGold, width: 2.5);
+              }
+              if (states.contains(MaterialState.hovered)) {
+                return const BorderSide(color: accentGold, width: 2.5);
+              }
+              return const BorderSide(color: accentGold, width: 2);
+            },
           ),
         ),
       ),

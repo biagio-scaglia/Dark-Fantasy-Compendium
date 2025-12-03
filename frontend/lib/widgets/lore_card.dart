@@ -1,66 +1,145 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../core/theme/app_theme.dart';
+import '../core/animations/app_animations.dart';
 
 class LoreCard extends StatelessWidget {
   final Map<String, dynamic> lore;
+  final bool animated;
+  final Duration? animationDelay;
 
-  const LoreCard({super.key, required this.lore});
+  const LoreCard({
+    super.key,
+    required this.lore,
+    this.animated = false,
+    this.animationDelay,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    final card = Card(
+      elevation: 8,
+      shadowColor: AppTheme.accentGold.withOpacity(0.3),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: InkWell(
         onTap: () => context.push('/lores/${lore['id']}'),
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppTheme.secondaryDark,
+                AppTheme.primaryDark,
+                AppTheme.accentGold.withOpacity(0.15),
+              ],
+              stops: const [0.0, 0.7, 1.0],
+            ),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: AppTheme.accentGold.withOpacity(0.4),
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppTheme.accentGold.withOpacity(0.2),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.all(14),
           child: Row(
             children: [
               Container(
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: AppTheme.accentGold.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppTheme.accentGold, width: 2),
+                  gradient: AppTheme.goldGradient,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: AppTheme.accentGold.withOpacity(0.8),
+                    width: 2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.accentGold.withOpacity(0.5),
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
-                child: const Icon(Icons.menu_book, size: 24, color: AppTheme.accentGold),
+                child: const Icon(
+                  Icons.menu_book,
+                  size: 24,
+                  color: AppTheme.primaryDark,
+                ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       lore['title'] ?? '',
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        shadows: [
+                          Shadow(
+                            color: AppTheme.primaryDark.withOpacity(0.8),
+                            blurRadius: 3,
+                            offset: const Offset(1, 1),
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: AppTheme.accentGold.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            lore['category'] ?? '',
-                            style: const TextStyle(
-                              color: AppTheme.accentGold,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                    const SizedBox(height: 6),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppTheme.accentGold.withOpacity(0.3),
+                            AppTheme.accentDarkGold.withOpacity(0.2),
+                          ],
                         ),
-                      ],
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: AppTheme.accentGold,
+                          width: 1.5,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.accentGold.withOpacity(0.3),
+                            blurRadius: 3,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        lore['category'] ?? '',
+                        style: const TextStyle(
+                          color: AppTheme.accentGold,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              color: AppTheme.primaryDark,
+                              blurRadius: 2,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       lore['content'] ?? '',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontStyle: FontStyle.italic,
+                      ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -72,6 +151,17 @@ class LoreCard extends StatelessWidget {
         ),
       ),
     );
+
+    if (animated) {
+      return AppAnimations.fadeSlideIn(
+        duration: AppAnimations.mediumDuration,
+        offset: const Offset(0, 20),
+        fromBottom: true,
+        delay: animationDelay ?? Duration.zero,
+        child: card,
+      );
+    }
+    return card;
   }
 }
 

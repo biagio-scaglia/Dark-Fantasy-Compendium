@@ -45,7 +45,10 @@ async def update_boss(boss_id: int, boss: BossUpdate):
 
 @router.delete("/{boss_id}", status_code=204)
 async def delete_boss(boss_id: int):
-    """Elimina un boss"""
-    if not json_service.delete("bosses", boss_id):
-        raise HTTPException(status_code=404, detail="Boss not found")
+    """Elimina un boss (mantiene almeno un elemento minimo)"""
+    try:
+        if not json_service.delete("bosses", boss_id, min_items=1):
+            raise HTTPException(status_code=404, detail="Boss not found")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 

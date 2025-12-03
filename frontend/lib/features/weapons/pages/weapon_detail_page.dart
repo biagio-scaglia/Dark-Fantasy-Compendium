@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import '../../../services/api_service.dart';
 import '../../../core/theme/app_theme.dart';
 
@@ -44,11 +45,70 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
     }
   }
 
+  Future<void> _deleteWeapon() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Conferma eliminazione'),
+        content: const Text('Sei sicuro di voler eliminare questa arma?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annulla'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Elimina'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    try {
+      final apiService = Provider.of<ApiService>(context, listen: false);
+      await apiService.delete('weapons', widget.weaponId);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Arma eliminata con successo')),
+        );
+        context.go('/weapons');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Errore: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+          tooltip: 'Indietro',
+        ),
         title: Text(weapon?['name'] ?? 'Arma'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () => context.push('/weapons/${widget.weaponId}/edit'),
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: _deleteWeapon,
+            color: Colors.red,
+          ),
+        ],
       ),
       body: _buildBody(),
     );
@@ -80,17 +140,17 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(rarity, rarityColor),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
             _buildStats(),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
             _buildDescription(),
             if (weapon!['lore'] != null) ...[
-              const SizedBox(height: 24),
+              const SizedBox(height: 12),
               _buildLore(),
             ],
           ],
@@ -100,128 +160,109 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
   }
 
   Widget _buildHeader(String rarity, Color rarityColor) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    weapon!['name'] ?? '',
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: rarityColor.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: rarityColor),
-                  ),
-                  child: Text(
-                    rarity.toUpperCase(),
-                    style: TextStyle(
-                      color: rarityColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
+            Expanded(
+              child: Text(
+                weapon!['name'] ?? '',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
             ),
-            const SizedBox(height: 8),
-            Text(
-              weapon!['type'] ?? '',
-              style: Theme.of(context).textTheme.titleLarge,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: rarityColor.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: rarityColor),
+              ),
+              child: Text(
+                rarity.toUpperCase(),
+                style: TextStyle(
+                  color: rarityColor,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),
-      ),
+        const SizedBox(height: 4),
+        Text(
+          weapon!['type'] ?? '',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
     );
   }
 
   Widget _buildStats() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Statistiche',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 16),
-            _StatRow(
-              icon: Icons.trending_up,
-              label: 'Bonus Attacco',
-              value: '+${weapon!['attack_bonus'] ?? 0}',
-              color: AppTheme.accentGold,
-            ),
-            const SizedBox(height: 12),
-            _StatRow(
-              icon: Icons.build,
-              label: 'Durabilità',
-              value: '${weapon!['durability'] ?? 0}%',
-              color: AppTheme.textSecondary,
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Statistiche',
+          style: Theme.of(context).textTheme.titleMedium,
         ),
-      ),
+        const SizedBox(height: 8),
+        _StatRow(
+          icon: Icons.trending_up,
+          label: 'Bonus Attacco',
+          value: '+${weapon!['attack_bonus'] ?? 0}',
+          color: AppTheme.accentGold,
+        ),
+        const SizedBox(height: 8),
+        _StatRow(
+          icon: Icons.build,
+          label: 'Durabilità',
+          value: '${weapon!['durability'] ?? 0}%',
+          color: AppTheme.textSecondary,
+        ),
+      ],
     );
   }
 
   Widget _buildDescription() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Descrizione',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              weapon!['description'] ?? '',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Descrizione',
+          style: Theme.of(context).textTheme.titleMedium,
         ),
-      ),
+        const SizedBox(height: 6),
+        Text(
+          weapon!['description'] ?? '',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
     );
   }
 
   Widget _buildLore() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                const Icon(Icons.menu_book, color: AppTheme.accentGold),
-                const SizedBox(width: 8),
-                Text(
-                  'Lore',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppTheme.accentGold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
+            const Icon(Icons.menu_book, size: 18, color: AppTheme.accentGold),
+            const SizedBox(width: 6),
             Text(
-              weapon!['lore'] ?? '',
-              style: Theme.of(context).textTheme.bodyLarge,
+              'Lore',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: AppTheme.accentGold,
+              ),
             ),
           ],
         ),
-      ),
+        const SizedBox(height: 6),
+        Text(
+          weapon!['lore'] ?? '',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
     );
   }
 }
@@ -243,17 +284,17 @@ class _StatRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, color: color, size: 24),
-        const SizedBox(width: 12),
+        Icon(icon, color: color, size: 18),
+        const SizedBox(width: 8),
         Expanded(
           child: Text(
             label,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
         Text(
           value,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: color,
             fontWeight: FontWeight.bold,
           ),

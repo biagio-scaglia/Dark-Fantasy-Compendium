@@ -45,7 +45,10 @@ async def update_lore(lore_id: int, lore: LoreUpdate):
 
 @router.delete("/{lore_id}", status_code=204)
 async def delete_lore(lore_id: int):
-    """Elimina una storia"""
-    if not json_service.delete("lores", lore_id):
-        raise HTTPException(status_code=404, detail="Lore not found")
+    """Elimina una storia (mantiene almeno un elemento minimo)"""
+    try:
+        if not json_service.delete("lores", lore_id, min_items=1):
+            raise HTTPException(status_code=404, detail="Lore not found")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 

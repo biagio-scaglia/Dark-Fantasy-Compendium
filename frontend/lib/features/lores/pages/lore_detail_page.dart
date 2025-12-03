@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import '../../../services/api_service.dart';
 import '../../../core/theme/app_theme.dart';
 
@@ -48,6 +49,11 @@ class _LoreDetailPageState extends State<LoreDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+          tooltip: 'Indietro',
+        ),
         title: Text(lore?['title'] ?? 'Lore'),
       ),
       body: _buildBody(),

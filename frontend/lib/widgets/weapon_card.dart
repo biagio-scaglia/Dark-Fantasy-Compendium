@@ -2,41 +2,97 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../core/theme/app_theme.dart';
+import '../core/animations/app_animations.dart';
 
 class WeaponCard extends StatelessWidget {
   final Map<String, dynamic> weapon;
+  final bool animated;
+  final Duration? animationDelay;
 
-  const WeaponCard({super.key, required this.weapon});
+  const WeaponCard({
+    super.key,
+    required this.weapon,
+    this.animated = false,
+    this.animationDelay,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final em = mediaQuery.size.width / 16;
     final rarity = weapon['rarity'] ?? 'common';
     final rarityColor = AppTheme.getRarityColor(rarity);
 
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: em, vertical: em * 0.5),
+    final card = Card(
+      elevation: 8,
+      shadowColor: rarityColor.withOpacity(0.3),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: InkWell(
         onTap: () => context.push('/weapons/${weapon['id']}'),
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: EdgeInsets.all(em),
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppTheme.secondaryDark,
+                AppTheme.primaryDark,
+                rarityColor.withOpacity(0.15),
+              ],
+              stops: const [0.0, 0.7, 1.0],
+            ),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: rarityColor.withOpacity(0.5),
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: rarityColor.withOpacity(0.25),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.all(14),
           child: Row(
             children: [
               Container(
-                width: em * 3.75,
-                height: em * 3.75,
+                width: 65,
+                height: 65,
                 decoration: BoxDecoration(
-                  color: rarityColor.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: rarityColor, width: 2),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      rarityColor,
+                      rarityColor.withOpacity(0.7),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: rarityColor.withOpacity(0.8),
+                    width: 2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: rarityColor.withOpacity(0.5),
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
                 child: Center(
-                  child: FaIcon(FontAwesomeIcons.gavel, size: em * 1.875, color: AppTheme.textPrimary),
+                  child: FaIcon(
+                    FontAwesomeIcons.gavel,
+                    size: 32,
+                    color: AppTheme.primaryDark,
+                  ),
                 ),
               ),
-              SizedBox(width: em),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,32 +102,64 @@ class WeaponCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             weapon['name'] ?? '',
-                            style: Theme.of(context).textTheme.titleLarge,
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              shadows: [
+                                Shadow(
+                                  color: AppTheme.primaryDark.withOpacity(0.8),
+                                  blurRadius: 3,
+                                  offset: const Offset(1, 1),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: em * 0.5, vertical: em * 0.25),
+                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
                           decoration: BoxDecoration(
-                            color: rarityColor.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(4),
+                            gradient: LinearGradient(
+                              colors: [
+                                rarityColor.withOpacity(0.4),
+                                rarityColor.withOpacity(0.2),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(
+                              color: rarityColor,
+                              width: 1.5,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: rarityColor.withOpacity(0.3),
+                                blurRadius: 3,
+                                offset: const Offset(0, 1),
+                              ),
+                            ],
                           ),
                           child: Text(
                             rarity.toUpperCase(),
                             style: TextStyle(
                               color: rarityColor,
-                              fontSize: 10,
+                              fontSize: 9,
                               fontWeight: FontWeight.bold,
+                              shadows: [
+                                Shadow(
+                                  color: AppTheme.primaryDark,
+                                  blurRadius: 2,
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: em * 0.25),
+                    const SizedBox(height: 5),
                     Text(
                       weapon['type'] ?? '',
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
-                    SizedBox(height: em * 0.5),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         _StatBadge(
@@ -80,7 +168,7 @@ class WeaponCard extends StatelessWidget {
                           label: 'ATK',
                           color: AppTheme.accentGold,
                         ),
-                        SizedBox(width: em * 0.5),
+                        const SizedBox(width: 8),
                         _StatBadge(
                           icon: Icons.build,
                           value: '${weapon['durability'] ?? 0}%',
@@ -97,6 +185,17 @@ class WeaponCard extends StatelessWidget {
         ),
       ),
     );
+
+    if (animated) {
+      return AppAnimations.fadeSlideIn(
+        duration: AppAnimations.mediumDuration,
+        offset: const Offset(30, 0),
+        fromRight: true,
+        delay: animationDelay ?? Duration.zero,
+        child: card,
+      );
+    }
+    return card;
   }
 }
 
@@ -115,20 +214,49 @@ class _StatBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 14, color: color),
-        const SizedBox(width: 4),
-        Text(
-          '$value $label',
-          style: TextStyle(
-            color: color,
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-          ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            color.withOpacity(0.2),
+            color.withOpacity(0.1),
+          ],
         ),
-      ],
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: color.withOpacity(0.4),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.2),
+            blurRadius: 3,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 13, color: color),
+          const SizedBox(width: 5),
+          Text(
+            '$value $label',
+            style: TextStyle(
+              color: color,
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              shadows: [
+                Shadow(
+                  color: AppTheme.primaryDark.withOpacity(0.5),
+                  blurRadius: 1,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

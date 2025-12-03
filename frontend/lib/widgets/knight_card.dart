@@ -2,24 +2,58 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../core/theme/app_theme.dart';
+import '../core/animations/app_animations.dart';
 
 class KnightCard extends StatelessWidget {
   final Map<String, dynamic> knight;
+  final bool animated;
+  final Duration? animationDelay;
 
-  const KnightCard({super.key, required this.knight});
+  const KnightCard({
+    super.key,
+    required this.knight,
+    this.animated = false,
+    this.animationDelay,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final em = mediaQuery.size.width / 16;
-    
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: em, vertical: em * 0.5),
+    final card = Card(
+      elevation: 8,
+      shadowColor: AppTheme.accentGold.withOpacity(0.3),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: InkWell(
         onTap: () => context.push('/knights/${knight['id']}'),
-        borderRadius: BorderRadius.circular(em * 0.75),
-        child: Padding(
-          padding: EdgeInsets.all(em),
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppTheme.secondaryDark,
+                AppTheme.primaryDark,
+                AppTheme.accentGold.withOpacity(0.1),
+              ],
+              stops: const [0.0, 0.7, 1.0],
+            ),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: AppTheme.accentGold.withOpacity(0.4),
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppTheme.accentGold.withOpacity(0.2),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.all(14),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -32,39 +66,65 @@ class KnightCard extends StatelessWidget {
                       children: [
                         Text(
                           knight['name'] ?? '',
-                          style: Theme.of(context).textTheme.titleLarge,
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            shadows: [
+                              Shadow(
+                                color: AppTheme.primaryDark.withOpacity(0.8),
+                                blurRadius: 3,
+                                offset: const Offset(1, 1),
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(height: em * 0.25),
+                        const SizedBox(height: 4),
                         Text(
                           knight['title'] ?? '',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppTheme.accentGold,
+                            fontStyle: FontStyle.italic,
                           ),
                         ),
                       ],
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: em * 0.75, vertical: em * 0.375),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                      color: AppTheme.accentGold.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: AppTheme.accentGold),
+                      gradient: AppTheme.goldGradient,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: AppTheme.accentGold.withOpacity(0.6),
+                        width: 1.5,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.accentGold.withOpacity(0.4),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Text(
                       'Lv. ${knight['level'] ?? 0}',
-                      style: const TextStyle(
-                        color: AppTheme.accentGold,
+                      style: TextStyle(
+                        color: AppTheme.primaryDark,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
+                        shadows: [
+                          Shadow(
+                            color: AppTheme.accentGold.withOpacity(0.5),
+                            blurRadius: 2,
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: em * 0.75),
+              const SizedBox(height: 10),
               Wrap(
-                spacing: em * 0.5,
-                runSpacing: em * 0.5,
+                spacing: 8,
+                runSpacing: 8,
                 children: [
                   _StatChip(
                     icon: FontAwesomeIcons.heart,
@@ -91,6 +151,17 @@ class KnightCard extends StatelessWidget {
         ),
       ),
     );
+
+    if (animated) {
+      return AppAnimations.fadeSlideIn(
+        duration: AppAnimations.mediumDuration,
+        offset: const Offset(0, 20),
+        fromBottom: true,
+        delay: animationDelay ?? Duration.zero,
+        child: card,
+      );
+    }
+    return card;
   }
 }
 
@@ -109,28 +180,46 @@ class _StatChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final em = mediaQuery.size.width / 16;
-    
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: em * 0.5, vertical: em * 0.25),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(em * 0.375),
-        border: Border.all(color: color.withOpacity(0.3)),
+        gradient: LinearGradient(
+          colors: [
+            color.withOpacity(0.2),
+            color.withOpacity(0.1),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: color.withOpacity(0.5),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.3),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FaIcon(icon, size: em * 0.75, color: color),
-          SizedBox(width: em * 0.25),
+          FaIcon(icon, size: 13, color: color),
+          const SizedBox(width: 5),
           Flexible(
             child: Text(
               '$label: $value',
               style: TextStyle(
                 color: color,
                 fontSize: 11,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.bold,
+                shadows: [
+                  Shadow(
+                    color: AppTheme.primaryDark.withOpacity(0.5),
+                    blurRadius: 2,
+                  ),
+                ],
               ),
               overflow: TextOverflow.ellipsis,
             ),

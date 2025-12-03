@@ -68,14 +68,23 @@ class JSONService:
         self.write_all(entity_type, entities)
         return entity
     
-    def delete(self, entity_type: str, entity_id: int) -> bool:
-        """Elimina un record"""
+    def delete(self, entity_type: str, entity_id: int, min_items: int = 1) -> bool:
+        """Elimina un record. Non permette di eliminare se rimarrebbero meno di min_items elementi."""
         entities = self.read_all(entity_type)
         original_count = len(entities)
+        
+        # Controlla se l'eliminazione lascerebbe meno del minimo richiesto
+        if original_count <= min_items:
+            raise ValueError(f"Cannot delete: must maintain at least {min_items} {entity_type}")
+        
         entities = [e for e in entities if e.get('id') != entity_id]
         
         if len(entities) == original_count:
             return False
+        
+        # Doppio controllo dopo la rimozione
+        if len(entities) < min_items:
+            raise ValueError(f"Cannot delete: would leave less than {min_items} {entity_type}")
         
         self.write_all(entity_type, entities)
         return True

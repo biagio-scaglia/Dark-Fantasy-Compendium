@@ -13,25 +13,75 @@ class ItemCard extends StatelessWidget {
     final rarityColor = AppTheme.getRarityColor(rarity);
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      elevation: 8,
+      shadowColor: rarityColor.withOpacity(0.3),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: InkWell(
         onTap: () => context.push('/items/${item['id']}'),
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppTheme.secondaryDark,
+                AppTheme.primaryDark,
+                rarityColor.withOpacity(0.15),
+              ],
+              stops: const [0.0, 0.7, 1.0],
+            ),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: rarityColor.withOpacity(0.5),
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: rarityColor.withOpacity(0.25),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.all(14),
           child: Row(
             children: [
               Container(
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: rarityColor.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: rarityColor, width: 2),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      rarityColor,
+                      rarityColor.withOpacity(0.7),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: rarityColor.withOpacity(0.8),
+                    width: 2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: rarityColor.withOpacity(0.5),
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
-                child: const Icon(Icons.inventory_2, size: 24, color: AppTheme.textPrimary),
+                child: const Icon(
+                  Icons.inventory_2,
+                  size: 26,
+                  color: AppTheme.primaryDark,
+                ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,27 +91,52 @@ class ItemCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             item['name'] ?? '',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              shadows: [
+                                Shadow(
+                                  color: AppTheme.primaryDark.withOpacity(0.8),
+                                  blurRadius: 3,
+                                  offset: const Offset(1, 1),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         if (item['value'] != null && item['value'] > 0)
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: AppTheme.gold.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(4),
+                              gradient: AppTheme.goldGradient,
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: AppTheme.accentGold.withOpacity(0.6),
+                                width: 1.5,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppTheme.accentGold.withOpacity(0.3),
+                                  blurRadius: 3,
+                                  offset: const Offset(0, 1),
+                                ),
+                              ],
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(Icons.monetization_on, size: 12, color: AppTheme.gold),
+                                const Icon(Icons.monetization_on, size: 12, color: AppTheme.primaryDark),
                                 const SizedBox(width: 4),
                                 Text(
                                   '${item['value']}',
-                                  style: const TextStyle(
-                                    color: AppTheme.gold,
+                                  style: TextStyle(
+                                    color: AppTheme.primaryDark,
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
+                                    shadows: [
+                                      Shadow(
+                                        color: AppTheme.accentGold.withOpacity(0.5),
+                                        blurRadius: 2,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
@@ -69,17 +144,31 @@ class ItemCard extends StatelessWidget {
                           ),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 5),
                     Text(
                       item['type'] ?? '',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
                     if (item['effect'] != null) ...[
-                      const SizedBox(height: 4),
-                      Text(
-                        item['effect'] ?? '',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppTheme.accentGold,
+                      const SizedBox(height: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppTheme.accentGold.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: AppTheme.accentGold.withOpacity(0.4),
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          item['effect'] ?? '',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppTheme.accentGold,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ],

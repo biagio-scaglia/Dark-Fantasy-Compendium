@@ -1,12 +1,16 @@
 import 'package:go_router/go_router.dart';
 import '../../features/knights/pages/knights_list_page.dart';
 import '../../features/knights/pages/knight_detail_page.dart';
+import '../../features/knights/pages/knight_form_page.dart';
 import '../../features/weapons/pages/weapons_list_page.dart';
 import '../../features/weapons/pages/weapon_detail_page.dart';
+import '../../features/weapons/pages/weapon_form_page.dart';
 import '../../features/armors/pages/armors_list_page.dart';
 import '../../features/armors/pages/armor_detail_page.dart';
+import '../../features/armors/pages/armor_form_page.dart';
 import '../../features/factions/pages/factions_list_page.dart';
 import '../../features/factions/pages/faction_detail_page.dart';
+import '../../features/factions/pages/faction_form_page.dart';
 import '../../features/bosses/pages/bosses_list_page.dart';
 import '../../features/bosses/pages/boss_detail_page.dart';
 import '../../features/items/pages/items_list_page.dart';
@@ -28,6 +32,17 @@ class AppRouter {
         builder: (context, state) => const KnightsListPage(),
       ),
       GoRoute(
+        path: '/knights/new',
+        builder: (context, state) => const KnightFormPage(),
+      ),
+      GoRoute(
+        path: '/knights/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return KnightFormPage(knight: {'id': id});
+        },
+      ),
+      GoRoute(
         path: '/knights/:id',
         builder: (context, state) {
           final id = int.parse(state.pathParameters['id']!);
@@ -37,6 +52,17 @@ class AppRouter {
       GoRoute(
         path: '/weapons',
         builder: (context, state) => const WeaponsListPage(),
+      ),
+      GoRoute(
+        path: '/weapons/new',
+        builder: (context, state) => const WeaponFormPage(),
+      ),
+      GoRoute(
+        path: '/weapons/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return WeaponFormPage(weapon: {'id': id});
+        },
       ),
       GoRoute(
         path: '/weapons/:id',
@@ -50,6 +76,17 @@ class AppRouter {
         builder: (context, state) => const ArmorsListPage(),
       ),
       GoRoute(
+        path: '/armors/new',
+        builder: (context, state) => const ArmorFormPage(),
+      ),
+      GoRoute(
+        path: '/armors/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return ArmorFormPage(armor: {'id': id});
+        },
+      ),
+      GoRoute(
         path: '/armors/:id',
         builder: (context, state) {
           final id = int.parse(state.pathParameters['id']!);
@@ -59,6 +96,17 @@ class AppRouter {
       GoRoute(
         path: '/factions',
         builder: (context, state) => const FactionsListPage(),
+      ),
+      GoRoute(
+        path: '/factions/new',
+        builder: (context, state) => const FactionFormPage(),
+      ),
+      GoRoute(
+        path: '/factions/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return FactionFormPage(faction: {'id': id});
+        },
       ),
       GoRoute(
         path: '/factions/:id',

@@ -45,7 +45,10 @@ async def update_armor(armor_id: int, armor: ArmorUpdate):
 
 @router.delete("/{armor_id}", status_code=204)
 async def delete_armor(armor_id: int):
-    """Elimina un'armatura"""
-    if not json_service.delete("armors", armor_id):
-        raise HTTPException(status_code=404, detail="Armor not found")
+    """Elimina un'armatura (mantiene almeno un elemento minimo)"""
+    try:
+        if not json_service.delete("armors", armor_id, min_items=1):
+            raise HTTPException(status_code=404, detail="Armor not found")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 

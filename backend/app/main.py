@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api.routers import knights, weapons, armors, factions, bosses, items, lores
+from app.api.routers import knights, weapons, armors, factions, bosses, items, lores, upload
 
 app = FastAPI(
     title=settings.app_name,
@@ -26,6 +26,7 @@ app.include_router(factions.router, prefix=settings.api_prefix)
 app.include_router(bosses.router, prefix=settings.api_prefix)
 app.include_router(items.router, prefix=settings.api_prefix)
 app.include_router(lores.router, prefix=settings.api_prefix)
+app.include_router(upload.router, prefix=settings.api_prefix)
 
 
 @app.get("/")

@@ -45,7 +45,10 @@ async def update_knight(knight_id: int, knight: KnightUpdate):
 
 @router.delete("/{knight_id}", status_code=204)
 async def delete_knight(knight_id: int):
-    """Elimina un cavaliere"""
-    if not json_service.delete("knights", knight_id):
-        raise HTTPException(status_code=404, detail="Knight not found")
+    """Elimina un cavaliere (mantiene almeno un elemento minimo)"""
+    try:
+        if not json_service.delete("knights", knight_id, min_items=1):
+            raise HTTPException(status_code=404, detail="Knight not found")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
