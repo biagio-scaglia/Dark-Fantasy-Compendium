@@ -10,13 +10,16 @@ class KnightCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final em = mediaQuery.size.width / 16;
+    
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(horizontal: em, vertical: em * 0.5),
       child: InkWell(
         onTap: () => context.push('/knights/${knight['id']}'),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(em * 0.75),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(em),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -31,7 +34,7 @@ class KnightCard extends StatelessWidget {
                           knight['name'] ?? '',
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: em * 0.25),
                         Text(
                           knight['title'] ?? '',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -42,7 +45,7 @@ class KnightCard extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: EdgeInsets.symmetric(horizontal: em * 0.75, vertical: em * 0.375),
                     decoration: BoxDecoration(
                       color: AppTheme.accentGold.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
@@ -58,10 +61,10 @@ class KnightCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: em * 0.75),
               Wrap(
-                spacing: 8,
-                runSpacing: 8,
+                spacing: em * 0.5,
+                runSpacing: em * 0.5,
                 children: [
                   _StatChip(
                     icon: FontAwesomeIcons.heart,
@@ -106,18 +109,21 @@ class _StatChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final em = mediaQuery.size.width / 16;
+    
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: em * 0.5, vertical: em * 0.25),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(em * 0.375),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FaIcon(icon, size: 12, color: color),
-          const SizedBox(width: 4),
+          FaIcon(icon, size: em * 0.75, color: color),
+          SizedBox(width: em * 0.25),
           Flexible(
             child: Text(
               '$label: $value',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../core/theme/app_theme.dart';
 
 class WeaponCard extends StatelessWidget {
@@ -9,29 +10,31 @@ class WeaponCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final em = mediaQuery.size.width / 16;
     final rarity = weapon['rarity'] ?? 'common';
     final rarityColor = AppTheme.getRarityColor(rarity);
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(horizontal: em, vertical: em * 0.5),
       child: InkWell(
         onTap: () => context.push('/weapons/${weapon['id']}'),
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(em),
           child: Row(
             children: [
               Container(
-                width: 60,
-                height: 60,
+                width: em * 3.75,
+                height: em * 3.75,
                 decoration: BoxDecoration(
                   color: rarityColor.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: rarityColor, width: 2),
                 ),
-                child: Icon(Icons.dangerous, size: 30, color: AppTheme.textPrimary),
+                child: FaIcon(FontAwesomeIcons.gavel, size: em * 1.875, color: AppTheme.textPrimary),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: em),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +48,7 @@ class WeaponCard extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: EdgeInsets.symmetric(horizontal: em * 0.5, vertical: em * 0.25),
                           decoration: BoxDecoration(
                             color: rarityColor.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(4),
@@ -61,12 +64,12 @@ class WeaponCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: em * 0.25),
                     Text(
                       weapon['type'] ?? '',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: em * 0.5),
                     Row(
                       children: [
                         _StatBadge(
@@ -75,7 +78,7 @@ class WeaponCard extends StatelessWidget {
                           label: 'ATK',
                           color: AppTheme.accentGold,
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: em * 0.5),
                         _StatBadge(
                           icon: Icons.build,
                           value: '${weapon['durability'] ?? 0}%',

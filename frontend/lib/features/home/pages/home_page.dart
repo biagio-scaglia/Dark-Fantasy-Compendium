@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
       route: '/knights',
     ),
     NavigationItem(
-      icon: Icons.dangerous,
+      icon: FontAwesomeIcons.gavel,
       label: 'Armi',
       route: '/weapons',
     ),
@@ -100,20 +100,26 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final screenWidth = mediaQuery.size.width;
+    final screenHeight = mediaQuery.size.height;
+    final em = screenWidth / 16; // Base em unit (1em = 1/16 della larghezza schermo)
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dark Fantasy Compendium'),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: AppTheme.darkGradient,
-        ),
-        child: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : RefreshIndicator(
-                onRefresh: _loadHomeData,
-                child: CustomScrollView(
-                  slivers: [
+      body: SafeArea(
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: AppTheme.darkGradient,
+          ),
+          child: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : RefreshIndicator(
+                  onRefresh: _loadHomeData,
+                  child: CustomScrollView(
+                    slivers: [
                     // Hero Section
                     _buildHeroSection(),
                     
@@ -135,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                     // Armi in Evidenza
                     if (_featuredWeapons.isNotEmpty) _buildFeaturedSection(
                       title: 'Armi Leggendarie',
-                      icon: Icons.dangerous,
+                      icon: FontAwesomeIcons.gavel,
                       route: '/weapons',
                       items: _featuredWeapons,
                       builder: (item) => WeaponCard(weapon: item),
@@ -147,14 +153,17 @@ class _HomePageState extends State<HomePage> {
                     // Sezione Card Principali
                     _buildMainCardsSection(),
                     
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 80),
+                    SliverToBoxAdapter(
+                      child: SizedBox(height: MediaQuery.of(context).size.width / 16 * 5),
                     ),
                   ],
                 ),
               ),
         ),
-      bottomNavigationBar: Container(
+      ),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -186,21 +195,37 @@ class _HomePageState extends State<HomePage> {
             }
           },
           items: _navigationItems.map((item) {
+            Widget iconWidget;
+            if (item.icon is IconData) {
+              final iconData = item.icon as IconData;
+              // Controlla se è un'icona FontAwesome confrontando il package
+              if (iconData.fontPackage == 'font_awesome_flutter') {
+                iconWidget = FaIcon(iconData);
+              } else {
+                iconWidget = Icon(iconData);
+              }
+            } else {
+              iconWidget = Icon(item.icon);
+            }
             return BottomNavigationBarItem(
-              icon: Icon(item.icon),
+              icon: iconWidget,
               label: item.label,
             );
           }).toList(),
+        ),
         ),
       ),
     );
   }
 
   Widget _buildHeroSection() {
+    final mediaQuery = MediaQuery.of(context);
+    final em = mediaQuery.size.width / 16;
+    
     return SliverToBoxAdapter(
       child: Container(
-        margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.all(32),
+        margin: EdgeInsets.all(em),
+        padding: EdgeInsets.all(em * 2),
         decoration: BoxDecoration(
           gradient: AppTheme.medievalGradient,
           borderRadius: BorderRadius.circular(20),
@@ -244,9 +269,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildStatsSection() {
+    final mediaQuery = MediaQuery.of(context);
+    final em = mediaQuery.size.width / 16;
+    
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: em, vertical: em * 0.5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -317,6 +345,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildQuoteSection() {
+    final mediaQuery = MediaQuery.of(context);
+    final em = mediaQuery.size.width / 16;
+    
     final quotes = [
       'Nelle tenebre più profonde, la luce del coraggio brilla più forte.',
       'Un cavaliere non è definito dalla sua armatura, ma dal suo cuore.',
@@ -327,8 +358,8 @@ class _HomePageState extends State<HomePage> {
 
     return SliverToBoxAdapter(
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        padding: const EdgeInsets.all(20),
+        margin: EdgeInsets.symmetric(horizontal: em, vertical: em * 0.5),
+        padding: EdgeInsets.all(em * 1.25),
         decoration: BoxDecoration(
           color: AppTheme.secondaryDark,
           borderRadius: BorderRadius.circular(16),
@@ -367,12 +398,15 @@ class _HomePageState extends State<HomePage> {
     required List<dynamic> items,
     required Widget Function(dynamic) builder,
   }) {
+    final mediaQuery = MediaQuery.of(context);
+    final em = mediaQuery.size.width / 16;
+    
     return SliverToBoxAdapter(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
+            padding: EdgeInsets.fromLTRB(em, em * 1.5, em, em),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -404,16 +438,16 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           SizedBox(
-            height: 200,
+            height: em * 12.5,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: em),
               itemCount: items.length,
               itemBuilder: (context, index) {
                 return SizedBox(
-                  width: 300,
+                  width: em * 18.75,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 12),
+                    padding: EdgeInsets.only(right: em * 0.75),
                     child: builder(items[index]),
                   ),
                 );
@@ -427,12 +461,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildLoreSection() {
+    final mediaQuery = MediaQuery.of(context);
+    final em = mediaQuery.size.width / 16;
+    
     return SliverToBoxAdapter(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
+            padding: EdgeInsets.fromLTRB(em, em * 1.5, em, em),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -463,10 +500,14 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          ..._recentLores.map((lore) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                child: LoreCard(lore: lore),
-              )),
+          ..._recentLores.map((lore) {
+            final mediaQuery = MediaQuery.of(context);
+            final em = mediaQuery.size.width / 16;
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: em, vertical: em * 0.25),
+              child: LoreCard(lore: lore),
+            );
+          }),
           const SizedBox(height: 16),
         ],
       ),
@@ -474,13 +515,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildMainCardsSection() {
+    final mediaQuery = MediaQuery.of(context);
+    final em = mediaQuery.size.width / 16;
+    
     return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: em, vertical: em * 0.5),
       sliver: SliverGrid(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
+          crossAxisSpacing: em,
+          mainAxisSpacing: em,
           childAspectRatio: 0.85,
         ),
         delegate: SliverChildListDelegate([
@@ -582,7 +626,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 class NavigationItem {
-  final IconData icon;
+  final dynamic icon; // Può essere IconData o FontAwesomeIcons
   final String label;
   final String route;
 
