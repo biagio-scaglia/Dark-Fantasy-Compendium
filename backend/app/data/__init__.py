@@ -1,0 +1,2 @@
+# Data directory for JSON files
+

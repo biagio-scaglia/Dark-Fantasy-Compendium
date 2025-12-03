@@ -1,0 +1,57 @@
+name: dark_fantasy_compendium
+description: Dark Fantasy Compendium - Flutter Frontend
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # HTTP client
+  http: ^1.1.0
+  
+  # State management
+  provider: ^6.1.1
+  
+  # Routing
+  go_router: ^13.0.0
+  
+  # UI
+  flutter_svg: ^2.0.9
+  cached_network_image: ^3.3.0
+  
+  # Icons
+  font_awesome_flutter: ^10.6.0
+  
+  # Utils
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/icons/
+  
+  fonts:
+    - family: OldLondon
+      fonts:
+        - asset: assets/font/OldLondon.ttf
+    - family: OldLondonAlternate
+      fonts:
+        - asset: assets/font/OldLondonAlternate.ttf
+    - family: Olondon
+      fonts:
+        - asset: assets/font/Olondon_.otf
+    - family: Olondona
+      fonts:
+        - asset: assets/font/Olondona.otf
+

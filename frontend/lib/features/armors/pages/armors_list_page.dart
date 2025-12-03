@@ -1,0 +1,91 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../services/api_service.dart';
+import '../../../widgets/armor_card.dart';
+
+class ArmorsListPage extends StatefulWidget {
+  const ArmorsListPage({super.key});
+
+  @override
+  State<ArmorsListPage> createState() => _ArmorsListPageState();
+}
+
+class _ArmorsListPageState extends State<ArmorsListPage> {
+  List<dynamic> armors = [];
+  bool isLoading = true;
+  String? error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadArmors();
+  }
+
+  Future<void> _loadArmors() async {
+    setState(() {
+      isLoading = true;
+      error = null;
+    });
+
+    try {
+      final apiService = Provider.of<ApiService>(context, listen: false);
+      final data = await apiService.getAll('armors');
+      setState(() {
+        armors = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        error = e.toString();
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Armature'),
+      ),
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Errore: $error', style: const TextStyle(color: Colors.red)),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _loadArmors,
+              child: const Text('Riprova'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (armors.isEmpty) {
+      return const Center(child: Text('Nessuna armatura trovata'));
+    }
+
+    return RefreshIndicator(
+      onRefresh: _loadArmors,
+      child: ListView.builder(
+        itemCount: armors.length,
+        itemBuilder: (context, index) {
+          return ArmorCard(armor: armors[index]);
+        },
+      ),
+    );
+  }
+}
+
