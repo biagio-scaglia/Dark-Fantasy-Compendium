@@ -200,7 +200,14 @@ class _HomePageState extends State<HomePage> {
               final iconData = item.icon as IconData;
               // Controlla se è un'icona FontAwesome confrontando il package
               if (iconData.fontPackage == 'font_awesome_flutter') {
-                iconWidget = FaIcon(iconData);
+                // Usa la stessa dimensione delle icone Material per allineamento corretto
+                iconWidget = SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: Center(
+                    child: FaIcon(iconData, size: 24),
+                  ),
+                );
               } else {
                 iconWidget = Icon(iconData);
               }

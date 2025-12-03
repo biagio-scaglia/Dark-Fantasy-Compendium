@@ -32,7 +32,9 @@ class WeaponCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: rarityColor, width: 2),
                 ),
-                child: FaIcon(FontAwesomeIcons.gavel, size: em * 1.875, color: AppTheme.textPrimary),
+                child: Center(
+                  child: FaIcon(FontAwesomeIcons.gavel, size: em * 1.875, color: AppTheme.textPrimary),
+                ),
               ),
               SizedBox(width: em),
               Expanded(
