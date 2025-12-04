@@ -63,7 +63,6 @@ pip install -r requirements.txt
 - `dnd-character` - Per generare personaggi automaticamente
 - `dndice` - Per gestire tiri di dadi
 - `dnd5epy` - Per interfacciarsi con contenuti D&D 5e
-- `dnd-engine` - Motore per meccaniche D&D 5e
 - `dungeonsheets` - Per creare schede personaggio (futuro export PDF)
 
 3. I dati di esempio sono già presenti nei file JSON in `app/data/`
@@ -401,7 +400,6 @@ Il progetto include dati di esempio per:
 - **dnd-character** - Generazione automatica personaggi D&D 5e
 - **dndice** - Sistema di tiri dadi D&D
 - **dnd5epy** - Interfaccia con contenuti D&D 5e
-- **dnd-engine** - Motore per meccaniche D&D 5e
 - **dungeonsheets** - Creazione schede personaggio e note (per export PDF futuro)
 
 ### Frontend

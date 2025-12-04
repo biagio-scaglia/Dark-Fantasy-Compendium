@@ -9,7 +9,7 @@ dnd-character>=1.0.0
 dungeonsheets>=0.15.0
 dndice>=2.0.0
 dnd5epy>=0.1.0
-dnd-engine>=0.1.0
+# Nota: dnd-engine non è disponibile su PyPI, rimossa
 
 # Librerie per PDF export
 reportlab>=4.0.0
