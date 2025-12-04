@@ -62,8 +62,9 @@ pip install -r requirements.txt
 **Nota:** Il progetto include librerie Python per D&D:
 - `dnd-character` - Per generare personaggi automaticamente
 - `dndice` - Per gestire tiri di dadi
-- `dnd5epy` - Per interfacciarsi con contenuti D&D 5e
 - `dungeonsheets` - Per creare schede personaggio (futuro export PDF)
+
+**Nota:** `dnd5epy` è stata rimossa per conflitti di dipendenze con pydantic>=2.7.0
 
 3. I dati di esempio sono già presenti nei file JSON in `app/data/`
 
@@ -399,7 +400,6 @@ Il progetto include dati di esempio per:
 - Uvicorn
 - **dnd-character** - Generazione automatica personaggi D&D 5e
 - **dndice** - Sistema di tiri dadi D&D
-- **dnd5epy** - Interfaccia con contenuti D&D 5e
 - **dungeonsheets** - Creazione schede personaggio e note (per export PDF futuro)
 
 ### Frontend

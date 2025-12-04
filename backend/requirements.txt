@@ -8,7 +8,7 @@ python-multipart==0.0.12
 dnd-character>=1.0.0
 dungeonsheets>=0.15.0
 dndice>=2.0.0
-dnd5epy>=0.1.0
+# Nota: dnd5epy rimosso per conflitto con pydantic>=2.7.0 (richiede pydantic<2.0.0)
 # Nota: dnd-engine non è disponibile su PyPI, rimossa
 
 # Librerie per PDF export
