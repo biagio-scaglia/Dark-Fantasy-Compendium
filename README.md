@@ -70,18 +70,30 @@ pip install -r requirements.txt
 
 ### Avvio
 
+**IMPORTANTE:** Prima di avviare il backend, assicurati di aver installato tutte le dipendenze:
+```bash
+pip install -r requirements.txt
+```
+
 **Opzione 1: Usando Python (consigliato)**
 ```bash
+cd backend
 python run.py
 ```
 
 **Opzione 2: Usando uvicorn direttamente**
 ```bash
+cd backend
 uvicorn app.main:app --reload
 ```
 
 L'API sarà disponibile su `http://localhost:8000`
 Documentazione API: `http://localhost:8000/docs`
+
+**Nota:** Se vedi errori 404 nel frontend per gli endpoint `/dice` o `/character-generator`, verifica che:
+1. Il backend sia avviato e in ascolto su `http://localhost:8000`
+2. Le librerie D&D siano installate (vedi `requirements.txt`)
+3. Il frontend sia configurato per connettersi a `http://localhost:8000/api/v1` (vedi `frontend/lib/main.dart`)
 
 ### Endpoints Disponibili
 

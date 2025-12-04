@@ -20,13 +20,20 @@ class CharacterGeneratorService {
     try {
       final response = await apiService.get('character-generator/classes');
       final data = response as Map<String, dynamic>;
-      return (data['classes'] as List).map((e) => e as String).toList();
+      final classes = (data['classes'] as List?)?.map((e) => e as String).toList() ?? [];
+      
+      // Se la lista è vuota e c'è un messaggio, mostra un warning ma non blocca
+      if (classes.isEmpty && data.containsKey('message')) {
+        print('Warning: ${data['message']}');
+      }
+      
+      return classes;
     } catch (e) {
       if (e.toString().contains('Failed host lookup') || e.toString().contains('Connection refused')) {
-        throw Exception('Impossibile connettersi al backend. Assicurati che il server sia avviato.');
+        throw Exception('Impossibile connettersi al backend. Assicurati che il server sia avviato su http://localhost:8000');
       }
       if (e.toString().contains('404') || e.toString().contains('Not Found')) {
-        throw Exception('Endpoint non trovato. Verifica che il backend sia avviato e che le librerie siano installate.');
+        throw Exception('Endpoint non trovato. Verifica che:\n1. Il backend sia avviato (python run.py)\n2. Le librerie siano installate (pip install -r requirements.txt)');
       }
       throw Exception('Errore nel recupero classi: $e');
     }
@@ -36,8 +43,21 @@ class CharacterGeneratorService {
     try {
       final response = await apiService.get('character-generator/races');
       final data = response as Map<String, dynamic>;
-      return (data['races'] as List).map((e) => e as String).toList();
+      final races = (data['races'] as List?)?.map((e) => e as String).toList() ?? [];
+      
+      // Se la lista è vuota e c'è un messaggio, mostra un warning ma non blocca
+      if (races.isEmpty && data.containsKey('message')) {
+        print('Warning: ${data['message']}');
+      }
+      
+      return races;
     } catch (e) {
+      if (e.toString().contains('Failed host lookup') || e.toString().contains('Connection refused')) {
+        throw Exception('Impossibile connettersi al backend. Assicurati che il server sia avviato su http://localhost:8000');
+      }
+      if (e.toString().contains('404') || e.toString().contains('Not Found')) {
+        throw Exception('Endpoint non trovato. Verifica che:\n1. Il backend sia avviato (python run.py)\n2. Le librerie siano installate (pip install -r requirements.txt)');
+      }
       throw Exception('Errore nel recupero razze: $e');
     }
   }

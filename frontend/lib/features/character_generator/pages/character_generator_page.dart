@@ -58,6 +58,13 @@ class _CharacterGeneratorPageState extends State<CharacterGeneratorPage> {
       setState(() {
         _error = e.toString();
         _loadingOptions = false;
+        // Se non ci sono classi/razze disponibili, usa liste vuote
+        if (_availableClasses.isEmpty) {
+          _availableClasses = [];
+        }
+        if (_availableRaces.isEmpty) {
+          _availableRaces = [];
+        }
       });
     }
   }
@@ -167,51 +174,77 @@ class _CharacterGeneratorPageState extends State<CharacterGeneratorPage> {
                           style: textTheme.bodyLarge,
                         ),
                         const SizedBox(height: 16),
-                        DropdownButtonFormField<String>(
-                          value: _selectedClass,
-                          decoration: InputDecoration(
-                            labelText: 'Classe',
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(color: AppTheme.accentGold),
-                            ),
-                            filled: true,
-                            fillColor: AppTheme.secondaryDark,
-                          ),
-                          items: _availableClasses.map((className) {
-                            return DropdownMenuItem(
-                              value: className,
-                              child: Text(className),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedClass = value;
-                            });
-                          },
-                        ),
+                        _availableClasses.isEmpty
+                            ? TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  labelText: 'Classe',
+                                  hintText: 'Installa dnd-character per usare il generatore',
+                                  border: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: AppTheme.accentGold),
+                                  ),
+                                  filled: true,
+                                  fillColor: AppTheme.secondaryDark,
+                                ),
+                              )
+                            : DropdownButtonFormField<String>(
+                                value: _selectedClass,
+                                decoration: InputDecoration(
+                                  labelText: 'Classe',
+                                  border: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: AppTheme.accentGold),
+                                  ),
+                                  filled: true,
+                                  fillColor: AppTheme.secondaryDark,
+                                ),
+                                items: _availableClasses.map((className) {
+                                  return DropdownMenuItem(
+                                    value: className,
+                                    child: Text(className),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedClass = value;
+                                  });
+                                },
+                              ),
                         const SizedBox(height: 16),
-                        DropdownButtonFormField<String>(
-                          value: _selectedRace,
-                          decoration: InputDecoration(
-                            labelText: 'Razza',
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(color: AppTheme.accentGold),
-                            ),
-                            filled: true,
-                            fillColor: AppTheme.secondaryDark,
-                          ),
-                          items: _availableRaces.map((raceName) {
-                            return DropdownMenuItem(
-                              value: raceName,
-                              child: Text(raceName),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedRace = value;
-                            });
-                          },
-                        ),
+                        _availableRaces.isEmpty
+                            ? TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  labelText: 'Razza',
+                                  hintText: 'Installa dnd-character per usare il generatore',
+                                  border: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: AppTheme.accentGold),
+                                  ),
+                                  filled: true,
+                                  fillColor: AppTheme.secondaryDark,
+                                ),
+                              )
+                            : DropdownButtonFormField<String>(
+                                value: _selectedRace,
+                                decoration: InputDecoration(
+                                  labelText: 'Razza',
+                                  border: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: AppTheme.accentGold),
+                                  ),
+                                  filled: true,
+                                  fillColor: AppTheme.secondaryDark,
+                                ),
+                                items: _availableRaces.map((raceName) {
+                                  return DropdownMenuItem(
+                                    value: raceName,
+                                    child: Text(raceName),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedRace = value;
+                                  });
+                                },
+                              ),
                         const SizedBox(height: 16),
                         Row(
                           children: [
@@ -264,15 +297,40 @@ class _CharacterGeneratorPageState extends State<CharacterGeneratorPage> {
                 
                 const SizedBox(height: 16),
                 
-                // Errore
+                // Errore o Warning
                 if (_error != null)
                   Card(
-                    color: Colors.red.shade900,
+                    color: _error!.contains('Impossibile connettersi') || _error!.contains('404') || _error!.contains('Not Found')
+                        ? Colors.red.shade900
+                        : Colors.orange.shade900,
                     child: Padding(
                       padding: const EdgeInsets.all(16),
-                      child: Text(
-                        _error!,
-                        style: const TextStyle(color: Colors.white),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _error!.contains('Impossibile connettersi') || _error!.contains('404') || _error!.contains('Not Found')
+                                ? 'Errore di Connessione'
+                                : 'Avviso',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            _error!,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          if (_error!.contains('Impossibile connettersi') || _error!.contains('404')) ...[
+                            const SizedBox(height: 16),
+                            const Text(
+                              'Per risolvere:\n1. Avvia il backend: cd backend && python run.py\n2. Installa le librerie: pip install -r requirements.txt',
+                              style: TextStyle(color: Colors.white70, fontSize: 12),
+                            ),
+                          ],
+                        ],
                       ),
                     ),
                   ),

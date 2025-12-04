@@ -154,10 +154,11 @@ async def generate_character(request: GenerateCharacterRequest):
 async def get_available_classes():
     """Ottiene la lista delle classi disponibili per la generazione"""
     if not DnDCharacterService.is_available():
-        raise HTTPException(
-            status_code=503,
-            detail="Generatore di personaggi non disponibile"
-        )
+        # Restituisci lista vuota invece di errore, così il frontend può funzionare
+        return {
+            "classes": [],
+            "message": "Libreria dnd-character non installata. Installa con: pip install dnd-character"
+        }
     
     return {
         "classes": DnDCharacterService.get_available_classes()
@@ -168,10 +169,11 @@ async def get_available_classes():
 async def get_available_races():
     """Ottiene la lista delle razze disponibili per la generazione"""
     if not DnDCharacterService.is_available():
-        raise HTTPException(
-            status_code=503,
-            detail="Generatore di personaggi non disponibile"
-        )
+        # Restituisci lista vuota invece di errore, così il frontend può funzionare
+        return {
+            "races": [],
+            "message": "Libreria dnd-character non installata. Installa con: pip install dnd-character"
+        }
     
     return {
         "races": DnDCharacterService.get_available_races()

@@ -29,10 +29,14 @@ class DiceService {
         final data = json.decode(response.body) as Map<String, dynamic>;
         return DiceRollResult.fromJson(data);
       } else if (response.statusCode == 404) {
-        throw Exception('Endpoint non trovato. Verifica che il backend sia avviato e che le librerie siano installate.');
+        throw Exception('Endpoint non trovato. Verifica che:\n1. Il backend sia avviato (python run.py)\n2. Le librerie siano installate (pip install -r requirements.txt)\n3. Il server sia in ascolto su http://localhost:8000');
       } else if (response.statusCode == 503) {
-        final errorData = json.decode(response.body);
-        throw Exception('Servizio non disponibile: ${errorData['detail'] ?? 'Installa dndice: pip install dndice'}');
+        try {
+          final errorData = json.decode(response.body);
+          throw Exception('Servizio non disponibile: ${errorData['detail'] ?? 'Installa dndice: pip install dndice'}');
+        } catch (_) {
+          throw Exception('Servizio non disponibile. Installa dndice: pip install dndice');
+        }
       }
       final errorBody = response.body;
       throw Exception('Errore nel tiro dei dadi (${response.statusCode}): $errorBody');

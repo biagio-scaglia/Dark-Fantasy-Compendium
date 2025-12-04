@@ -232,9 +232,30 @@ class _DiceRollerPageState extends State<DiceRollerPage> {
                   color: Colors.red.shade900,
                   child: Padding(
                     padding: const EdgeInsets.all(16),
-                    child: Text(
-                      _error!,
-                      style: const TextStyle(color: Colors.white),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Errore',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          _error!,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        if (_error!.contains('Impossibile connettersi') || _error!.contains('404')) ...[
+                          const SizedBox(height: 16),
+                          const Text(
+                            'Per risolvere:\n1. Avvia il backend: cd backend && python run.py\n2. Installa le librerie: pip install -r requirements.txt',
+                            style: TextStyle(color: Colors.white70, fontSize: 12),
+                          ),
+                        ],
+                      ],
                     ),
                   ),
                 ),
