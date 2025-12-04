@@ -246,8 +246,8 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
               ),
               child: _isLoading
                   ? const CircularProgressIndicator()
-                 : Text(
-                      widget.weapon != null ? 'Update' : 'Create'),
+                  : Text(
+                      widget.weapon != null ? 'Update' : 'Create',
                       style: const TextStyle(fontSize: 16),
                     ),
             ),

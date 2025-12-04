@@ -49,7 +49,7 @@ class _DndClassesListPageState extends State<DndClassesListPage> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/'),
+          onPressed: () => context.go('/home'),
         ),
         title: const Text('D&D Classes'),
       ),

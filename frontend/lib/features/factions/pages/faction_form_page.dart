@@ -203,7 +203,7 @@ class _FactionFormPageState extends State<FactionFormPage> {
               child: _isLoading
                   ? const CircularProgressIndicator()
                   : Text(
-                      widget.faction != null ? 'Update' : 'Create'),
+                      widget.faction != null ? 'Update' : 'Create',
                       style: const TextStyle(fontSize: 16),
                     ),
             ),

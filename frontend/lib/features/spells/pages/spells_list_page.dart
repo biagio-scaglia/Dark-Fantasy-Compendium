@@ -2,28 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../../services/api_service.dart';
-import '../../../widgets/map_card.dart';
-import 'map_form_page.dart';
 
-class MapsListPage extends StatefulWidget {
-  const MapsListPage({super.key});
+class SpellsListPage extends StatefulWidget {
+  const SpellsListPage({super.key});
 
   @override
-  State<MapsListPage> createState() => _MapsListPageState();
+  State<SpellsListPage> createState() => _SpellsListPageState();
 }
 
-class _MapsListPageState extends State<MapsListPage> {
-  List<dynamic> maps = [];
+class _SpellsListPageState extends State<SpellsListPage> {
+  List<dynamic> spells = [];
   bool isLoading = true;
   String? error;
 
   @override
   void initState() {
     super.initState();
-    _loadMaps();
+    _loadSpells();
   }
 
-  Future<void> _loadMaps() async {
+  Future<void> _loadSpells() async {
     setState(() {
       isLoading = true;
       error = null;
@@ -31,9 +29,9 @@ class _MapsListPageState extends State<MapsListPage> {
 
     try {
       final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('maps');
+      final data = await apiService.getAll('spells');
       setState(() {
-        maps = data;
+        spells = data;
         isLoading = false;
       });
     } catch (e) {
@@ -53,11 +51,7 @@ class _MapsListPageState extends State<MapsListPage> {
           onPressed: () => context.go('/home'),
           tooltip: 'Back',
         ),
-        title: const Text('Maps'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push('/maps/new'),
-        child: const Icon(Icons.add),
+        title: const Text('Spells'),
       ),
       body: _buildBody(),
     );
@@ -76,7 +70,7 @@ class _MapsListPageState extends State<MapsListPage> {
             Text('Error: $error', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _loadMaps,
+              onPressed: _loadSpells,
               child: const Text('Retry'),
             ),
           ],
@@ -84,18 +78,28 @@ class _MapsListPageState extends State<MapsListPage> {
       );
     }
 
-    if (maps.isEmpty) {
-      return const Center(child: Text('No maps found'));
+    if (spells.isEmpty) {
+      return const Center(
+        child: Text('No spells found'),
+      );
     }
 
-    return RefreshIndicator(
-      onRefresh: _loadMaps,
-      child: ListView.builder(
-        itemCount: maps.length,
-        itemBuilder: (context, index) {
-          return MapCard(map: maps[index]);
-        },
-      ),
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: spells.length,
+      itemBuilder: (context, index) {
+        final spell = spells[index];
+        return Card(
+          margin: const EdgeInsets.only(bottom: 12),
+          child: ListTile(
+            title: Text(spell['name'] ?? 'Unknown'),
+            subtitle: Text('Level ${spell['level'] ?? 0} - ${spell['school'] ?? ''}'),
+            trailing: Text('${spell['level'] ?? 0}'),
+            onTap: () {
+            },
+          ),
+        );
+      },
     );
   }
 }

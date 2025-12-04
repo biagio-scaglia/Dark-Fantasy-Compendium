@@ -56,17 +56,17 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Conferma eliminazione'),
-        content: const Text('Sei sicuro di voler eliminare questa classe?'),
+        title: const Text('Confirm deletion'),
+        content: const Text('Are you sure you want to delete this class?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Annulla'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Elimina'),
+            child: const Text('Delete'),
           ),
         ],
       ),

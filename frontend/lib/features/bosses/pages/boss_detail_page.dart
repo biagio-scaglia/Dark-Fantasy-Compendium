@@ -70,11 +70,11 @@ class _BossDetailPageState extends State<BossDetailPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: ${error ?? "Boss non trovato"}', style: const TextStyle(color: Colors.red)),
+            Text('Error: ${error ?? "Boss not found"}', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadBoss,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),

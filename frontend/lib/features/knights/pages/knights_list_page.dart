@@ -50,7 +50,7 @@ class _KnightsListPageState extends State<KnightsListPage> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/'),
+          onPressed: () => context.go('/home'),
           tooltip: 'Back',
         ),
         title: const Text('Knights'),

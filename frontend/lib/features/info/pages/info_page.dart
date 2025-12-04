@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/theme_provider.dart';
 
 class InfoPage extends StatelessWidget {
   const InfoPage({super.key});
@@ -197,19 +199,47 @@ class InfoPage extends StatelessWidget {
   }
 
   Widget _buildThemeSection(BuildContext context) {
-    return _InfoCard(
-      title: 'Theme',
-      icon: FontAwesomeIcons.palette,
-      children: [
-        SwitchListTile(
-          title: const Text('Dark Mode'),
-          value: true,
-          onChanged: (value) {
-            // Placeholder for theme switching
-          },
-          activeColor: AppTheme.accentGold,
-        ),
-      ],
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, _) {
+        return _InfoCard(
+          title: 'Theme',
+          icon: FontAwesomeIcons.palette,
+          children: [
+            SwitchListTile(
+              title: const Text('Dark Mode'),
+              value: themeProvider.isDarkMode,
+              onChanged: (value) {
+                themeProvider.toggleTheme();
+              },
+              activeColor: AppTheme.accentGold,
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _ThemeOption(
+                  label: 'Light',
+                  icon: FontAwesomeIcons.sun,
+                  isSelected: themeProvider.themeMode == ThemeMode.light,
+                  onTap: () => themeProvider.setThemeMode(ThemeMode.light),
+                ),
+                _ThemeOption(
+                  label: 'Dark',
+                  icon: FontAwesomeIcons.moon,
+                  isSelected: themeProvider.themeMode == ThemeMode.dark,
+                  onTap: () => themeProvider.setThemeMode(ThemeMode.dark),
+                ),
+                _ThemeOption(
+                  label: 'System',
+                  icon: FontAwesomeIcons.circleHalfStroke,
+                  isSelected: themeProvider.themeMode == ThemeMode.system,
+                  onTap: () => themeProvider.setThemeMode(ThemeMode.system),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -347,6 +377,62 @@ class _InfoButton extends StatelessWidget {
               Icons.arrow_forward_ios,
               size: 16,
               color: AppTheme.textSecondary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ThemeOption extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _ThemeOption({
+    required this.label,
+    required this.icon,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppTheme.accentGold.withOpacity(0.2)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: isSelected
+                ? AppTheme.accentGold
+                : AppTheme.textSecondary.withOpacity(0.3),
+            width: isSelected ? 2 : 1,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FaIcon(
+              icon,
+              color: isSelected ? AppTheme.accentGold : AppTheme.textSecondary,
+              size: 24,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? AppTheme.accentGold : AppTheme.textSecondary,
+                fontSize: 12,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
             ),
           ],
         ),

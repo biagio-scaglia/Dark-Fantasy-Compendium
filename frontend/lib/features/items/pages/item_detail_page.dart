@@ -70,11 +70,11 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: ${error ?? "Oggetto non trovato"}', style: const TextStyle(color: Colors.red)),
+            Text('Error: ${error ?? "Item not found"}', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadItem,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),

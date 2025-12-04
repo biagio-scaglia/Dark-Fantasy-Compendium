@@ -49,17 +49,17 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Conferma eliminazione'),
+        title: const Text('Confirm deletion'),
         content: const Text('Are you sure you want to delete this weapon?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Annulla'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Elimina'),
+            child: const Text('Delete'),
           ),
         ],
       ),

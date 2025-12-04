@@ -185,19 +185,24 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    const FaIcon(
-                      FontAwesomeIcons.calendar,
-                      color: AppTheme.accentGold,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Upcoming Sessions',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                  ],
+                Expanded(
+                  child: Row(
+                    children: [
+                      const FaIcon(
+                        FontAwesomeIcons.calendar,
+                        color: AppTheme.accentGold,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          'Upcoming Sessions',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 TextButton(
                   onPressed: () => context.push('/sessions/calendar'),
@@ -348,19 +353,24 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    const FaIcon(
-                      FontAwesomeIcons.flag,
-                      color: AppTheme.accentGold,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Recent Campaigns',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                  ],
+                Expanded(
+                  child: Row(
+                    children: [
+                      const FaIcon(
+                        FontAwesomeIcons.flag,
+                        color: AppTheme.accentGold,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          'Recent Campaigns',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 TextButton(
                   onPressed: () => context.push('/campaigns'),
@@ -411,9 +421,12 @@ class _HomePageState extends State<HomePage> {
                   size: 20,
                 ),
                 const SizedBox(width: 8),
-                Text(
-                  'Quick Actions',
-                  style: Theme.of(context).textTheme.headlineSmall,
+                Flexible(
+                  child: Text(
+                    'Quick Actions',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
@@ -467,19 +480,24 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    const FaIcon(
-                      FontAwesomeIcons.book,
-                      color: AppTheme.accentGold,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Quick Reference',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                  ],
+                Expanded(
+                  child: Row(
+                    children: [
+                      const FaIcon(
+                        FontAwesomeIcons.book,
+                        color: AppTheme.accentGold,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          'Quick Reference',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 TextButton(
                   onPressed: () => context.push('/encyclopedia'),
@@ -544,9 +562,12 @@ class _HomePageState extends State<HomePage> {
                   size: 20,
                 ),
                 const SizedBox(width: 8),
-                Text(
-                  'Notifications',
-                  style: Theme.of(context).textTheme.headlineSmall,
+                Flexible(
+                  child: Text(
+                    'Notifications',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
@@ -646,9 +667,12 @@ class _EncyclopediaQuickLink extends StatelessWidget {
                 size: 20,
               ),
               const SizedBox(width: 8),
-              Text(
-                label,
-                style: Theme.of(context).textTheme.bodyMedium,
+              Flexible(
+                child: Text(
+                  label,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),

@@ -90,7 +90,7 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore nel caricamento opzioni: $e'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error loading options: $e'), backgroundColor: Colors.red),
         );
       }
     }
@@ -109,7 +109,7 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
       setState(() => _isLoadingData = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore nel caricamento: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error loading: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     }

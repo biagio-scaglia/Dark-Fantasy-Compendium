@@ -49,7 +49,7 @@ class _CampaignsListPageState extends State<CampaignsListPage> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/'),
+          onPressed: () => context.go('/home'),
         ),
         title: const Text('Campaigns'),
         actions: [

@@ -371,7 +371,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
               child: _isLoading
                   ? const CircularProgressIndicator()
                   : Text(
-                      widget.knight != null ? 'Update' : 'Create'),
+                      widget.knight != null ? 'Update' : 'Create',
                       style: const TextStyle(fontSize: 16),
                     ),
             ),

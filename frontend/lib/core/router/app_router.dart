@@ -43,11 +43,20 @@ import '../../features/sessions/pages/session_form_page.dart';
 import '../../features/encyclopedia/pages/encyclopedia_page.dart';
 import '../../features/party_characters/pages/party_characters_page.dart';
 import '../../features/info/pages/info_page.dart';
+import '../../features/races/pages/races_list_page.dart';
+import '../../features/spells/pages/spells_list_page.dart';
+import '../../features/abilities/pages/abilities_list_page.dart';
 import '../theme/app_theme.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: '/home',
+    redirect: (context, state) {
+      if (state.uri.path == '/') {
+        return '/home';
+      }
+      return null;
+    },
     routes: [
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
@@ -374,6 +383,18 @@ class AppRouter {
           }
           return SessionFormPage(campaignId: campaignId, session: session);
         },
+      ),
+      GoRoute(
+        path: '/races',
+        builder: (context, state) => const RacesListPage(),
+      ),
+      GoRoute(
+        path: '/spells',
+        builder: (context, state) => const SpellsListPage(),
+      ),
+      GoRoute(
+        path: '/abilities',
+        builder: (context, state) => const AbilitiesListPage(),
       ),
     ],
   );

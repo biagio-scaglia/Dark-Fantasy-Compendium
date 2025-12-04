@@ -15,7 +15,7 @@ class PdfExportService {
       final response = await apiService.get('pdf-export/status');
       return response as Map<String, dynamic>;
     } catch (e) {
-      throw Exception('Errore nel controllo stato PDF export: $e');
+      throw Exception('Error checking PDF export status: $e');
     }
   }
 
@@ -37,10 +37,10 @@ class PdfExportService {
         final bytes = response.bodyBytes;
         await _saveAndOpenPdf(bytes, 'character_$characterId.pdf');
       } else {
-        throw Exception('Errore nell\'export PDF: ${response.body}');
+        throw Exception('Error exporting PDF: ${response.body}');
       }
     } catch (e) {
-      throw Exception('Errore nell\'export PDF: $e');
+      throw Exception('Error exporting PDF: $e');
     }
   }
 
@@ -56,7 +56,7 @@ class PdfExportService {
       // Apri il file
       await OpenFile.open(file.path);
     } catch (e) {
-      throw Exception('Errore nel salvataggio/apertura PDF: $e');
+      throw Exception('Error saving/opening PDF: $e');
     }
   }
 }

@@ -50,17 +50,17 @@ class _KnightDetailPageState extends State<KnightDetailPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Conferma eliminazione'),
-        content: const Text('Sei sicuro di voler eliminare questo cavaliere?'),
+        title: const Text('Confirm deletion'),
+        content: const Text('Are you sure you want to delete this knight?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Annulla'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Elimina'),
+            child: const Text('Delete'),
           ),
         ],
       ),
@@ -81,7 +81,7 @@ class _KnightDetailPageState extends State<KnightDetailPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Errore: ${e.toString()}'),
+            content: Text('Error: ${e.toString()}'),
             backgroundColor: Colors.red,
           ),
         );
@@ -96,9 +96,9 @@ class _KnightDetailPageState extends State<KnightDetailPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
-        title: Text(knight?['name'] ?? 'Cavaliere'),
+        title: Text(knight?['name'] ?? 'Knight'),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
@@ -125,11 +125,11 @@ class _KnightDetailPageState extends State<KnightDetailPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: $error', style: const TextStyle(color: Colors.red)),
+            Text('Error: $error', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadKnight,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),

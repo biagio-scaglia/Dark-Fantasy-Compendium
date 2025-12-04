@@ -70,11 +70,11 @@ class _LoreDetailPageState extends State<LoreDetailPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: ${error ?? "Storia non trovata"}', style: const TextStyle(color: Colors.red)),
+            Text('Error: ${error ?? "Lore not found"}', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadLore,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),

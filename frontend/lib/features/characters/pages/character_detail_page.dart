@@ -80,7 +80,7 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Errore nell\'export PDF: $e'),
+            content: Text('Error exporting PDF: $e'),
             backgroundColor: Colors.red,
           ),
         );

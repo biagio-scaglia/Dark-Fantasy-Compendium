@@ -247,7 +247,7 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
               child: _isLoading
                   ? const CircularProgressIndicator()
                   : Text(
-                      widget.armor != null ? 'Update' : 'Create'),
+                      widget.armor != null ? 'Update' : 'Create',
                       style: const TextStyle(fontSize: 16),
                     ),
             ),
