@@ -55,8 +55,11 @@ dark-fantasy-compendium/
     │   │   ├── knights.json
     │   │   ├── lores.json
     │   │   └── abilities.json
-    │   ├── icons/
     │   └── images/
+    ├── icons/                       # SVG icons library
+    │   ├── lorc/                    # Icons from lorc collection
+    │   ├── delapouite/              # Icons from delapouite collection
+    │   └── ...                      # Other icon collections
     └── pubspec.yaml
 ```
 
@@ -319,6 +322,48 @@ The `ImagePickerHelper` widget provides:
 - `deleteImageForEntity(imagePath)` - Delete entity image
 - `buildImageWidget(imagePath, ...)` - Display image widget
 
+## SVG Icon Widget
+
+The `SvgIconWidget` provides a reusable way to display SVG icons with:
+
+- **Theme-aware colors** - Automatically adapts to Light/Dark mode
+- **Error handling** - Shows placeholder icon if asset fails to load
+- **Scalable sizes** - Supports different icon sizes
+- **Path resolution** - Uses `icons/` as root folder (configured in `pubspec.yaml`)
+- **Backward compatibility** - Supports both `iconPath` and `assetPath` parameters
+
+### Usage
+
+```dart
+// Basic usage with relative path
+SvgIconWidget(
+  iconPath: 'lorc/broadsword.svg',
+  size: 48,
+)
+
+// With custom color (overrides theme)
+SvgIconWidget(
+  iconPath: 'delapouite/shield.svg',
+  size: 64,
+  color: Colors.red,
+)
+
+// Without theme color (uses original SVG colors)
+SvgIconWidget(
+  iconPath: 'lorc/bowman.svg',
+  size: 32,
+  useThemeColor: false,
+)
+```
+
+### Example Page
+
+Access the SVG icons example page from the home screen via the "SVG Icons" button. It showcases:
+- Grid layout of available icons
+- Size examples (Small, Medium, Large, X-Large)
+- Theme adaptation demonstration
+- Error handling with placeholder icons
+
 ## Technologies
 
 - **Flutter** - UI framework
@@ -330,6 +375,7 @@ The `ImagePickerHelper` widget provides:
 - **image_picker** - Image selection
 - **file_picker** - File selection
 - **intl** - Internationalization
+- **flutter_svg** - SVG icon rendering
 
 ## Features Implemented
 
@@ -345,6 +391,8 @@ The `ImagePickerHelper` widget provides:
 - ✅ Modular service architecture
 - ✅ English naming throughout
 - ✅ Clean, scalable codebase
+- ✅ **SVG Icon Widget** - Reusable widget with theme-aware colors (Light/Dark mode)
+- ✅ **SVG Icons Example Page** - Grid layout showcasing available icons
 
 ## Future Enhancements
 

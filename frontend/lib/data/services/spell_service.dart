@@ -9,13 +9,73 @@ class SpellService {
 
   Future<List<Spell>> getAll() async {
     final data = await _jsonService.loadJson('spells.json');
-    return data.map((json) => Spell.fromJson(JsonConverter.convertToNewFormat(json))).toList();
+    final spells = <Spell>[];
+    
+    // Load classes once for conversion
+    final classService = ClassService();
+    final allClasses = await classService.getAll();
+    final classMap = {for (var c in allClasses) c.name.toLowerCase(): c.id};
+    
+    for (var json in data) {
+      final converted = JsonConverter.convertToNewFormat(json);
+      
+      // If classes are still strings, convert them to IDs
+      if (converted.containsKey('classes') && converted['classes'] is List) {
+        final classes = converted['classes'] as List;
+        final classIds = <int>[];
+        for (var className in classes) {
+          if (className is String) {
+            final classId = classMap[className.toLowerCase()];
+            if (classId != null) {
+              classIds.add(classId);
+            }
+          } else if (className is int) {
+            classIds.add(className);
+          }
+        }
+        if (classIds.isNotEmpty) {
+          converted['allowed_class_ids'] = classIds;
+        }
+        converted.remove('classes');
+      }
+      
+      spells.add(Spell.fromJson(converted));
+    }
+    
+    return spells;
   }
 
   Future<Spell?> getById(int id) async {
     final entity = await _jsonService.getEntity('spells.json', id);
     if (entity == null) return null;
-    return Spell.fromJson(JsonConverter.convertToNewFormat(entity));
+    
+    final converted = JsonConverter.convertToNewFormat(entity);
+    
+    // If classes are still strings, convert them to IDs
+    if (converted.containsKey('classes') && converted['classes'] is List) {
+      final classService = ClassService();
+      final allClasses = await classService.getAll();
+      final classMap = {for (var c in allClasses) c.name.toLowerCase(): c.id};
+      
+      final classes = converted['classes'] as List;
+      final classIds = <int>[];
+      for (var className in classes) {
+        if (className is String) {
+          final classId = classMap[className.toLowerCase()];
+          if (classId != null) {
+            classIds.add(classId);
+          }
+        } else if (className is int) {
+          classIds.add(className);
+        }
+      }
+      if (classIds.isNotEmpty) {
+        converted['allowed_class_ids'] = classIds;
+      }
+      converted.remove('classes');
+    }
+    
+    return Spell.fromJson(converted);
   }
 
   Future<Spell> create(Spell spell) async {

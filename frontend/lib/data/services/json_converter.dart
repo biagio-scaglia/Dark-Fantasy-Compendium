@@ -66,15 +66,24 @@ class JsonConverter {
     if (converted.containsKey('allowed_class_ids') == false && converted.containsKey('classes')) {
       final classes = converted['classes'];
       if (classes is List) {
-        converted['allowed_class_ids'] = classes.map((e) {
-          if (e is String) {
-            return e;
-          } else if (e is Map) {
-            return e['id'];
+        // Filter out strings and keep only integers or maps with id
+        final classIds = <int>[];
+        for (var e in classes) {
+          if (e is int) {
+            classIds.add(e);
+          } else if (e is Map && e.containsKey('id') && e['id'] is int) {
+            classIds.add(e['id'] as int);
           }
-          return e;
-        }).toList();
-        converted.remove('classes');
+          // Skip strings - they will be handled in Spell.fromJson if needed
+        }
+        // Only set allowed_class_ids if we have valid IDs, otherwise leave classes for Spell to handle
+        if (classIds.isNotEmpty) {
+          converted['allowed_class_ids'] = classIds;
+          converted.remove('classes');
+        } else {
+          // If all are strings, leave classes as is and let Spell.fromJson handle it
+          // Don't remove 'classes' so Spell can see it
+        }
       }
     }
     

@@ -3,7 +3,7 @@ class IconMapper {
   IconMapper._();
 
   // Base path per le icone
-  static const String _basePath = 'assets/icons/icons';
+  static const String _basePath = 'icons';
 
   // Mappatura per tipi di armatura
   static String? getArmorIconPath(String? type) {

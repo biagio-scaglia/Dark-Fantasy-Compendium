@@ -33,6 +33,8 @@ flutter run
 - ✅ Boss (list, detail)
 - ✅ Oggetti (list, detail)
 - ✅ Lore (list, detail)
+- ✅ **Widget Icone SVG** - Widget riutilizzabile con colori adattivi al tema (Light/Dark mode)
+- ✅ **Pagina Esempio Icone SVG** - Layout a griglia che mostra le icone disponibili
 
 ### D&D Manager
 - ✅ Classi D&D (list, detail, form)
@@ -99,6 +101,7 @@ L'app utilizza un sistema di storage locale basato su JSON. I dati vengono caric
 - `intl` - Internazionalizzazione e formattazione date
 - `font_awesome_flutter` - Icone
 - `image_picker` - Selezione immagini
+- `flutter_svg` - Rendering icone SVG
 
 ## Note
 

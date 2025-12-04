@@ -48,6 +48,7 @@ import '../../features/races/pages/race_form_page.dart';
 import '../../features/races/pages/race_detail_page.dart';
 import '../../features/spells/pages/spells_list_page.dart';
 import '../../features/abilities/pages/abilities_list_page.dart';
+import '../../features/examples/pages/svg_icons_example_page.dart';
 import '../theme/app_theme.dart';
 
 class AppRouter {
@@ -415,6 +416,10 @@ class AppRouter {
       GoRoute(
         path: '/abilities',
         builder: (context, state) => const AbilitiesListPage(),
+      ),
+      GoRoute(
+        path: '/examples/svg-icons',
+        builder: (context, state) => const SvgIconsExamplePage(),
       ),
     ],
   );

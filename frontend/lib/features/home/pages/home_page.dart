@@ -515,6 +515,11 @@ class _HomePageState extends State<HomePage> {
                   label: 'New\nLore',
                   onTap: () => context.push('/lores/new'),
                 ),
+                _QuickActionButton(
+                  icon: FontAwesomeIcons.images,
+                  label: 'SVG\nIcons',
+                  onTap: () => context.push('/examples/svg-icons'),
+                ),
               ],
             ),
           ),
