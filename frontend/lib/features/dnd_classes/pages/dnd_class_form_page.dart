@@ -45,7 +45,7 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     }
@@ -83,7 +83,7 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
         await apiService.update('dnd-classes', widget.dndClass!['id'], classData);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Classe aggiornata con successo')),
+            const SnackBar(content: Text('Class updated successfully')),
           );
           context.pop();
         }
@@ -91,7 +91,7 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
         await apiService.create('dnd-classes', classData);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Classe creata con successo')),
+            const SnackBar(content: Text('Class created successfully')),
           );
           context.pop();
         }
@@ -99,7 +99,7 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     } finally {

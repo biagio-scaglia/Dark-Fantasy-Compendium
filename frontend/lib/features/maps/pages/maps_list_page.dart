@@ -51,9 +51,9 @@ class _MapsListPageState extends State<MapsListPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
-        title: const Text('Mappe'),
+        title: const Text('Maps'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push('/maps/new'),
@@ -73,11 +73,11 @@ class _MapsListPageState extends State<MapsListPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: $error', style: const TextStyle(color: Colors.red)),
+            Text('Error: $error', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadMaps,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),
@@ -85,7 +85,7 @@ class _MapsListPageState extends State<MapsListPage> {
     }
 
     if (maps.isEmpty) {
-      return const Center(child: Text('Nessuna mappa trovata'));
+      return const Center(child: Text('No maps found'));
     }
 
     return RefreshIndicator(

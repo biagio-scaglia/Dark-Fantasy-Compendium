@@ -62,7 +62,7 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
       setState(() => _isLoadingData = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore nel caricamento: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Loading error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     }
@@ -118,7 +118,7 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
         await apiService.update('armors', armorId, data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Armatura aggiornata con successo')),
+            const SnackBar(content: Text('Armor updated successfully')),
           );
           context.go('/armors/$armorId');
         }
@@ -126,7 +126,7 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
         final created = await apiService.create('armors', data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Armatura creata con successo')),
+            const SnackBar(content: Text('Armor created successfully')),
           );
           context.go('/armors/${created['id']}');
         }
@@ -134,7 +134,7 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     } finally {
@@ -152,9 +152,9 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => context.pop(),
-            tooltip: 'Indietro',
+            tooltip: 'Back',
           ),
-          title: const Text('Caricamento...'),
+          title: const Text('Loading...'),
         ),
         body: const Center(child: CircularProgressIndicator()),
       );
@@ -167,7 +167,7 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
           onPressed: () => context.pop(),
           tooltip: 'Indietro',
         ),
-        title: Text(widget.armor != null ? 'Modifica Armatura' : 'Nuova Armatura'),
+        title: Text(widget.armor != null ? 'Edit Armor' : 'New Armor'),
       ),
       body: Form(
         key: _formKey,
@@ -176,14 +176,14 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Nome *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              decoration: const InputDecoration(labelText: 'Name *'),
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _typeController,
-              decoration: const InputDecoration(labelText: 'Tipo *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              decoration: const InputDecoration(labelText: 'Type *'),
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             Row(
@@ -191,7 +191,7 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _defenseBonusController,
-                    decoration: const InputDecoration(labelText: 'Bonus Difesa'),
+                    decoration: const InputDecoration(labelText: 'Defense Bonus'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -199,7 +199,7 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _durabilityController,
-                    decoration: const InputDecoration(labelText: 'Durabilità'),
+                    decoration: const InputDecoration(labelText: 'Durability'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -208,7 +208,7 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               value: _rarityController.text.isEmpty ? 'common' : _rarityController.text,
-              decoration: const InputDecoration(labelText: 'Rarità'),
+              decoration: const InputDecoration(labelText: 'Rarity'),
               items: ['common', 'rare', 'epic', 'legendary']
                   .map((r) => DropdownMenuItem(value: r, child: Text(r.toUpperCase())))
                   .toList(),
@@ -217,9 +217,9 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Descrizione *'),
+              decoration: const InputDecoration(labelText: 'Description *'),
               maxLines: 3,
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -230,12 +230,12 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _imageUrlController,
-              decoration: const InputDecoration(labelText: 'URL Immagine'),
+              decoration: const InputDecoration(labelText: 'Image URL'),
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _iconUrlController,
-              decoration: const InputDecoration(labelText: 'URL Icona'),
+              decoration: const InputDecoration(labelText: 'Icon URL'),
             ),
             const SizedBox(height: 24),
             ElevatedButton(
@@ -247,7 +247,7 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
               child: _isLoading
                   ? const CircularProgressIndicator()
                   : Text(
-                      widget.armor != null ? 'Aggiorna' : 'Crea',
+                      widget.armor != null ? 'Update' : 'Create'),
                       style: const TextStyle(fontSize: 16),
                     ),
             ),

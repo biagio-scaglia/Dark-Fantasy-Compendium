@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../features/knights/pages/knights_list_page.dart';
 import '../../features/knights/pages/knight_detail_page.dart';
 import '../../features/knights/pages/knight_form_page.dart';
@@ -32,22 +34,69 @@ import '../../features/parties/pages/party_detail_page.dart';
 import '../../features/parties/pages/party_form_page.dart';
 import '../../features/sessions/pages/sessions_calendar_page.dart';
 import '../../features/home/pages/home_page.dart';
-import '../../features/dice/pages/dice_roller_page.dart';
-import '../../features/character_generator/pages/character_generator_page.dart';
 import '../../features/characters/pages/character_form_page.dart';
 import '../../features/campaigns/pages/campaign_form_page.dart';
 import '../../features/items/pages/item_form_page.dart';
 import '../../features/bosses/pages/boss_form_page.dart';
 import '../../features/lores/pages/lore_form_page.dart';
 import '../../features/sessions/pages/session_form_page.dart';
+import '../../features/encyclopedia/pages/encyclopedia_page.dart';
+import '../../features/party_characters/pages/party_characters_page.dart';
+import '../../features/info/pages/info_page.dart';
+import '../theme/app_theme.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: '/',
+    initialLocation: '/home',
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => const HomePage(),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return _MainScaffoldWithNavBar(
+            navigationShell: navigationShell,
+          );
+        },
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/home',
+                builder: (context, state) => const HomePage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/campaigns',
+                builder: (context, state) => const CampaignsListPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/encyclopedia',
+                builder: (context, state) => const EncyclopediaPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/party-characters',
+                builder: (context, state) => const PartyCharactersPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/info',
+                builder: (context, state) => const InfoPage(),
+              ),
+            ],
+          ),
+        ],
       ),
       GoRoute(
         path: '/knights',
@@ -203,7 +252,6 @@ class AppRouter {
           return LoreDetailPage(loreId: id);
         },
       ),
-      // D&D Routes
       GoRoute(
         path: '/maps',
         builder: (context, state) => const MapsListPage(),
@@ -271,10 +319,6 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: '/campaigns',
-        builder: (context, state) => const CampaignsListPage(),
-      ),
-      GoRoute(
         path: '/campaigns/new',
         builder: (context, state) => const CampaignFormPage(),
       ),
@@ -331,16 +375,81 @@ class AppRouter {
           return SessionFormPage(campaignId: campaignId, session: session);
         },
       ),
-      // D&D Tools Routes
-      GoRoute(
-        path: '/dice',
-        builder: (context, state) => const DiceRollerPage(),
-      ),
-      GoRoute(
-        path: '/character-generator',
-        builder: (context, state) => const CharacterGeneratorPage(),
-      ),
     ],
   );
 }
 
+class _MainScaffoldWithNavBar extends StatelessWidget {
+  final StatefulNavigationShell navigationShell;
+
+  const _MainScaffoldWithNavBar({
+    required this.navigationShell,
+  });
+
+  void _onTap(int index) {
+    navigationShell.goBranch(
+      index,
+      initialLocation: index == navigationShell.currentIndex,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: navigationShell,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppTheme.secondaryDark,
+              AppTheme.primaryDark,
+            ],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.accentGold.withOpacity(0.3),
+              blurRadius: 10,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: SafeArea(
+          top: false,
+          child: BottomNavigationBar(
+            currentIndex: navigationShell.currentIndex,
+            onTap: _onTap,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.transparent,
+            selectedItemColor: AppTheme.accentGold,
+            unselectedItemColor: AppTheme.textSecondary,
+            elevation: 0,
+            items: const [
+              BottomNavigationBarItem(
+                icon: FaIcon(FontAwesomeIcons.house),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: FaIcon(FontAwesomeIcons.flag),
+                label: 'Campaigns',
+              ),
+              BottomNavigationBarItem(
+                icon: FaIcon(FontAwesomeIcons.book),
+                label: 'Encyclopedia',
+              ),
+              BottomNavigationBarItem(
+                icon: FaIcon(FontAwesomeIcons.users),
+                label: 'Party',
+              ),
+              BottomNavigationBarItem(
+                icon: FaIcon(FontAwesomeIcons.circleInfo),
+                label: 'Info',
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

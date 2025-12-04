@@ -56,7 +56,7 @@ class _FactionFormPageState extends State<FactionFormPage> {
       setState(() => _isLoadingData = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore nel caricamento: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Loading error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     }
@@ -103,7 +103,7 @@ class _FactionFormPageState extends State<FactionFormPage> {
         await apiService.update('factions', factionId, data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Fazione aggiornata con successo')),
+            const SnackBar(content: Text('Faction updated successfully')),
           );
           context.go('/factions/$factionId');
         }
@@ -111,7 +111,7 @@ class _FactionFormPageState extends State<FactionFormPage> {
         final created = await apiService.create('factions', data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Fazione creata con successo')),
+            const SnackBar(content: Text('Faction created successfully')),
           );
           context.go('/factions/${created['id']}');
         }
@@ -119,7 +119,7 @@ class _FactionFormPageState extends State<FactionFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     } finally {
@@ -137,9 +137,9 @@ class _FactionFormPageState extends State<FactionFormPage> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => context.pop(),
-            tooltip: 'Indietro',
+            tooltip: 'Back',
           ),
-          title: const Text('Caricamento...'),
+          title: const Text('Loading...'),
         ),
         body: const Center(child: CircularProgressIndicator()),
       );
@@ -152,7 +152,7 @@ class _FactionFormPageState extends State<FactionFormPage> {
           onPressed: () => context.pop(),
           tooltip: 'Indietro',
         ),
-        title: Text(widget.faction != null ? 'Modifica Fazione' : 'Nuova Fazione'),
+        title: Text(widget.faction != null ? 'Edit Faction' : 'New Faction'),
       ),
       body: Form(
         key: _formKey,
@@ -161,15 +161,15 @@ class _FactionFormPageState extends State<FactionFormPage> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Nome *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              decoration: const InputDecoration(labelText: 'Name *'),
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Descrizione *'),
+              decoration: const InputDecoration(labelText: 'Description *'),
               maxLines: 3,
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -180,18 +180,18 @@ class _FactionFormPageState extends State<FactionFormPage> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _colorController,
-              decoration: const InputDecoration(labelText: 'Colore (es: #8B0000) *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              decoration: const InputDecoration(labelText: 'Color (e.g: #8B0000) *'),
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _imageUrlController,
-              decoration: const InputDecoration(labelText: 'URL Immagine'),
+              decoration: const InputDecoration(labelText: 'Image URL'),
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _iconUrlController,
-              decoration: const InputDecoration(labelText: 'URL Icona'),
+              decoration: const InputDecoration(labelText: 'Icon URL'),
             ),
             const SizedBox(height: 24),
             ElevatedButton(
@@ -203,7 +203,7 @@ class _FactionFormPageState extends State<FactionFormPage> {
               child: _isLoading
                   ? const CircularProgressIndicator()
                   : Text(
-                      widget.faction != null ? 'Aggiorna' : 'Crea',
+                      widget.faction != null ? 'Update' : 'Create'),
                       style: const TextStyle(fontSize: 16),
                     ),
             ),

@@ -50,15 +50,15 @@ class _MapDetailPageState extends State<MapDetailPage> {
   Widget build(BuildContext context) {
     if (isLoading) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Mappa')),
+        appBar: AppBar(title: const Text('Map')),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
 
     if (error != null || map == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Mappa')),
-        body: Center(child: Text('Errore: ${error ?? "Mappa non trovata"}')),
+        appBar: AppBar(title: const Text('Map')),
+        body: Center(child: Text('Error: ${error ?? "Map not found"}')),
       );
     }
 

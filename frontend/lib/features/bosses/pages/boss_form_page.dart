@@ -60,7 +60,7 @@ class _BossFormPageState extends State<BossFormPage> {
       setState(() => _isLoadingData = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     }
@@ -102,7 +102,7 @@ class _BossFormPageState extends State<BossFormPage> {
         await apiService.update('bosses', widget.boss!['id'], data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Boss aggiornato!'), backgroundColor: Colors.green),
+            const SnackBar(content: Text('Boss updated!'), backgroundColor: Colors.green),
           );
           context.pop();
         }
@@ -110,7 +110,7 @@ class _BossFormPageState extends State<BossFormPage> {
         await apiService.create('bosses', data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Boss creato!'), backgroundColor: Colors.green),
+            const SnackBar(content: Text('Boss created!'), backgroundColor: Colors.green),
           );
           context.pop();
         }
@@ -118,7 +118,7 @@ class _BossFormPageState extends State<BossFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     } finally {
@@ -158,8 +158,8 @@ class _BossFormPageState extends State<BossFormPage> {
           onPressed: () => context.pop(),
         ),
         title: Text(widget.boss != null && widget.boss!['id'] != null 
-            ? 'Modifica Boss' 
-            : 'Nuovo Boss'),
+            ? 'Edit Boss' 
+            : 'New Boss'),
       ),
       body: Form(
         key: _formKey,
@@ -168,24 +168,24 @@ class _BossFormPageState extends State<BossFormPage> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Nome *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              decoration: const InputDecoration(labelText: 'Name *'),
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Titolo *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              decoration: const InputDecoration(labelText: 'Title *'),
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _levelController,
-              decoration: const InputDecoration(labelText: 'Livello *'),
+              decoration: const InputDecoration(labelText: 'Level *'),
               keyboardType: TextInputType.number,
               validator: (v) {
                 final level = int.tryParse(v ?? '');
                 if (level == null || level < 1 || level > 100) {
-                  return 'Livello tra 1 e 100';
+                  return 'Level between 1 and 100';
                 }
                 return null;
               },
@@ -196,7 +196,7 @@ class _BossFormPageState extends State<BossFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _healthController,
-                    decoration: const InputDecoration(labelText: 'Salute'),
+                    decoration: const InputDecoration(labelText: 'Health'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -204,7 +204,7 @@ class _BossFormPageState extends State<BossFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _maxHealthController,
-                    decoration: const InputDecoration(labelText: 'Salute Massima'),
+                    decoration: const InputDecoration(labelText: 'Max Health'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -216,7 +216,7 @@ class _BossFormPageState extends State<BossFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _attackController,
-                    decoration: const InputDecoration(labelText: 'Attacco'),
+                    decoration: const InputDecoration(labelText: 'Attack'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -224,7 +224,7 @@ class _BossFormPageState extends State<BossFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _defenseController,
-                    decoration: const InputDecoration(labelText: 'Difesa'),
+                    decoration: const InputDecoration(labelText: 'Defense'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -233,9 +233,9 @@ class _BossFormPageState extends State<BossFormPage> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Descrizione *'),
+              decoration: const InputDecoration(labelText: 'Description *'),
               maxLines: 3,
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -253,8 +253,8 @@ class _BossFormPageState extends State<BossFormPage> {
               child: _isLoading
                   ? const CircularProgressIndicator()
                   : Text(widget.boss != null && widget.boss!['id'] != null
-                      ? 'Salva Modifiche'
-                      : 'Crea Boss'),
+                      ? 'Save Changes'
+                      : 'Create Boss'),
             ),
           ],
         ),

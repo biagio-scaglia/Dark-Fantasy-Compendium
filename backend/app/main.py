@@ -4,7 +4,7 @@ from app.core.config import settings
 from app.api.routers import (
     knights, weapons, armors, factions, bosses, items, lores, upload,
     dnd_classes, races, maps, characters, campaigns, spells, abilities, parties,
-    dice, character_generator, pdf_export
+    pdf_export
 )
 
 app = FastAPI(
@@ -43,8 +43,6 @@ app.include_router(abilities.router, prefix=settings.api_prefix)
 app.include_router(parties.router, prefix=settings.api_prefix)
 
 # D&D Tools Routers
-app.include_router(dice.router, prefix=settings.api_prefix)
-app.include_router(character_generator.router, prefix=settings.api_prefix)
 app.include_router(pdf_export.router, prefix=settings.api_prefix)
 
 

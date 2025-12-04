@@ -72,8 +72,8 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
 
     if (error != null || campaign == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Campagna')),
-        body: Center(child: Text('Errore: ${error ?? "Campagna non trovata"}')),
+        appBar: AppBar(title: const Text('Campaign')),
+        body: Center(child: Text('Error: ${error ?? "Campaign not found"}')),
       );
     }
 
@@ -83,17 +83,17 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: Text(campaign!['name'] ?? 'Campagna'),
+        title: Text(campaign!['name'] ?? 'Campaign'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => context.push('/sessions/new?campaignId=${widget.campaignId}'),
-            tooltip: 'Nuova Sessione',
+            tooltip: 'New Session',
           ),
           IconButton(
             icon: const FaIcon(FontAwesomeIcons.calendar),
             onPressed: () => context.push('/sessions/calendar'),
-            tooltip: 'Calendario Sessioni',
+            tooltip: 'Session Calendar',
           ),
         ],
       ),
@@ -137,7 +137,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
             if (campaign!['current_level'] != null)
               _buildInfoRow(
                 icon: FontAwesomeIcons.chartLine,
-                label: 'Livello Attuale',
+                label: 'Current Level',
                 value: '${campaign!['current_level']}',
               ),
             if (campaign!['setting'] != null)
@@ -195,13 +195,13 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Sessioni (${sessions.length})',
+              'Sessions (${sessions.length})',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             TextButton.icon(
               onPressed: () => context.push('/sessions/calendar'),
               icon: const FaIcon(FontAwesomeIcons.calendar, size: 16),
-              label: const Text('Calendario'),
+              label: const Text('Calendar'),
             ),
           ],
         ),
@@ -210,7 +210,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
           const Card(
             child: Padding(
               padding: EdgeInsets.all(16),
-              child: Center(child: Text('Nessuna sessione registrata')),
+              child: Center(child: Text('No sessions recorded')),
             ),
           )
         else
@@ -248,7 +248,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
             ),
           ),
         ),
-        title: Text(session['title'] ?? 'Sessione senza titolo'),
+        title: Text(session['title'] ?? 'Untitled Session'),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -278,7 +278,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(session['title'] ?? 'Sessione'),
+        title: Text(session['title'] ?? 'Session'),
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

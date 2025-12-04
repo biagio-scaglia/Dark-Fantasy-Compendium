@@ -50,14 +50,14 @@ class _LoresListPageState extends State<LoresListPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
         title: const Text('Lore'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => context.push('/lores/new'),
-            tooltip: 'Nuova Lore',
+            tooltip: 'New Lore',
           ),
         ],
       ),
@@ -75,11 +75,11 @@ class _LoresListPageState extends State<LoresListPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: $error', style: const TextStyle(color: Colors.red)),
+            Text('Error: $error', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadLores,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),
@@ -87,7 +87,7 @@ class _LoresListPageState extends State<LoresListPage> {
     }
 
     if (lores.isEmpty) {
-      return const Center(child: Text('Nessuna storia trovata'));
+      return const Center(child: Text('No lore entries found'));
     }
 
     return RefreshIndicator(

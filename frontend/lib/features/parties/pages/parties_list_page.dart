@@ -54,6 +54,10 @@ class _PartiesListPageState extends State<PartiesListPage> {
         title: const Text('Party'),
       ),
       body: _buildBody(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.push('/parties/new'),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
@@ -67,11 +71,11 @@ class _PartiesListPageState extends State<PartiesListPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: $error', style: const TextStyle(color: Colors.red)),
+            Text('Error: $error', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadParties,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),
@@ -79,7 +83,7 @@ class _PartiesListPageState extends State<PartiesListPage> {
     }
 
     if (parties.isEmpty) {
-      return const Center(child: Text('Nessun party trovato'));
+      return const Center(child: Text('No parties found'));
     }
 
     return RefreshIndicator(

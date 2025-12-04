@@ -50,14 +50,14 @@ class _ItemsListPageState extends State<ItemsListPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
-        title: const Text('Oggetti'),
+        title: const Text('Items'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => context.push('/items/new'),
-            tooltip: 'Nuovo Oggetto',
+            tooltip: 'New Item',
           ),
         ],
       ),
@@ -75,11 +75,11 @@ class _ItemsListPageState extends State<ItemsListPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: $error', style: const TextStyle(color: Colors.red)),
+            Text('Error: $error', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadItems,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),
@@ -87,7 +87,7 @@ class _ItemsListPageState extends State<ItemsListPage> {
     }
 
     if (items.isEmpty) {
-      return const Center(child: Text('Nessun oggetto trovato'));
+      return const Center(child: Text('No items found'));
     }
 
     return RefreshIndicator(

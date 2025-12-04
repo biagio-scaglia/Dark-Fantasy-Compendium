@@ -79,7 +79,7 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
       await apiService.delete('dnd-classes', widget.classId);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Classe eliminata con successo')),
+          const SnackBar(content: Text('Class deleted successfully')),
         );
         context.go('/dnd-classes');
       }
@@ -87,7 +87,7 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Errore: ${e.toString()}'),
+            content: Text('Error: ${e.toString()}'),
             backgroundColor: Colors.red,
           ),
         );
@@ -99,15 +99,15 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
   Widget build(BuildContext context) {
     if (isLoading) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Classe D&D')),
+        appBar: AppBar(title: const Text('D&D Class')),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
 
     if (error != null || dndClass == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Classe D&D')),
-        body: Center(child: Text('Errore: ${error ?? "Classe non trovata"}')),
+        appBar: AppBar(title: const Text('D&D Class')),
+        body: Center(child: Text('Error: ${error ?? "Class not found"}')),
       );
     }
 

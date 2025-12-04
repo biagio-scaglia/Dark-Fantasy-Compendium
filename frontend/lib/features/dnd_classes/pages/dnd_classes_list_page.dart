@@ -51,7 +51,7 @@ class _DndClassesListPageState extends State<DndClassesListPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
         ),
-        title: const Text('Classi D&D'),
+        title: const Text('D&D Classes'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push('/dnd-classes/new'),
@@ -71,11 +71,11 @@ class _DndClassesListPageState extends State<DndClassesListPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: $error', style: const TextStyle(color: Colors.red)),
+            Text('Error: $error', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadClasses,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),
@@ -83,7 +83,7 @@ class _DndClassesListPageState extends State<DndClassesListPage> {
     }
 
     if (classes.isEmpty) {
-      return const Center(child: Text('Nessuna classe trovata'));
+      return const Center(child: Text('No classes found'));
     }
 
     return RefreshIndicator(

@@ -18,8 +18,11 @@ class _PartyFormPageState extends State<PartyFormPage> {
   late TextEditingController _descriptionController;
   late TextEditingController _levelController;
   late TextEditingController _experienceController;
+  late TextEditingController _campaignIdController;
+  late TextEditingController _charactersController;
   late TextEditingController _notesController;
   bool _isLoading = false;
+  bool _isLoadingData = false;
 
   @override
   void initState() {
@@ -28,6 +31,8 @@ class _PartyFormPageState extends State<PartyFormPage> {
     _descriptionController = TextEditingController();
     _levelController = TextEditingController(text: '1');
     _experienceController = TextEditingController(text: '0');
+    _campaignIdController = TextEditingController();
+    _charactersController = TextEditingController();
     _notesController = TextEditingController();
     
     if (widget.party != null && widget.party!['id'] != null) {
@@ -38,14 +43,19 @@ class _PartyFormPageState extends State<PartyFormPage> {
   }
 
   Future<void> _loadParty() async {
+    setState(() => _isLoadingData = true);
     try {
       final apiService = Provider.of<ApiService>(context, listen: false);
       final data = await apiService.getOne('parties', widget.party!['id']);
-      _populateFields(data);
+      setState(() {
+        _populateFields(data);
+        _isLoadingData = false;
+      });
     } catch (e) {
+      setState(() => _isLoadingData = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     }
@@ -56,6 +66,10 @@ class _PartyFormPageState extends State<PartyFormPage> {
     _descriptionController.text = partyData['description'] ?? '';
     _levelController.text = partyData['level']?.toString() ?? '1';
     _experienceController.text = partyData['experience_points']?.toString() ?? '0';
+    _campaignIdController.text = partyData['campaign_id']?.toString() ?? '';
+    _charactersController.text = (partyData['characters'] as List?)
+        ?.map((e) => e.toString())
+        .join(', ') ?? '';
     _notesController.text = partyData['notes'] ?? '';
   }
 
@@ -66,21 +80,44 @@ class _PartyFormPageState extends State<PartyFormPage> {
 
     try {
       final apiService = Provider.of<ApiService>(context, listen: false);
+      
+      // Parse characters IDs
+      List<int> characters = [];
+      if (_charactersController.text.isNotEmpty) {
+        characters = _charactersController.text
+            .split(',')
+            .map((e) => e.trim())
+            .where((e) => e.isNotEmpty)
+            .map((e) => int.tryParse(e))
+            .where((e) => e != null)
+            .cast<int>()
+            .toList();
+      }
+      
+      // Parse campaign_id
+      int? campaignId;
+      if (_campaignIdController.text.isNotEmpty) {
+        campaignId = int.tryParse(_campaignIdController.text.trim());
+      }
+      
       final partyData = {
         'name': _nameController.text,
         'description': _descriptionController.text.isEmpty ? null : _descriptionController.text,
         'level': int.parse(_levelController.text),
         'experience_points': int.parse(_experienceController.text),
+        'campaign_id': campaignId,
+        'characters': characters,
         'notes': _notesController.text.isEmpty ? null : _notesController.text,
-        'characters': [],
-        'campaign_id': null,
       };
 
       if (widget.party != null && widget.party!['id'] != null) {
         await apiService.update('parties', widget.party!['id'], partyData);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Party aggiornato con successo')),
+            const SnackBar(
+              content: Text('Party updated successfully'),
+              backgroundColor: Colors.green,
+            ),
           );
           context.pop();
         }
@@ -88,7 +125,10 @@ class _PartyFormPageState extends State<PartyFormPage> {
         await apiService.create('parties', partyData);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Party creato con successo')),
+            const SnackBar(
+              content: Text('Party created successfully'),
+              backgroundColor: Colors.green,
+            ),
           );
           context.pop();
         }
@@ -96,7 +136,7 @@ class _PartyFormPageState extends State<PartyFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     } finally {
@@ -112,12 +152,27 @@ class _PartyFormPageState extends State<PartyFormPage> {
     _descriptionController.dispose();
     _levelController.dispose();
     _experienceController.dispose();
+    _campaignIdController.dispose();
+    _charactersController.dispose();
     _notesController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoadingData) {
+      return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => context.pop(),
+          ),
+          title: Text(widget.party != null && widget.party!['id'] != null ? 'Edit Party' : 'New Party'),
+        ),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -133,13 +188,13 @@ class _PartyFormPageState extends State<PartyFormPage> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Nome *'),
-              validator: (value) => value?.isEmpty ?? true ? 'Inserisci un nome' : null,
+              decoration: const InputDecoration(labelText: 'Name *'),
+              validator: (value) => value?.isEmpty ?? true ? 'Enter a name' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Descrizione'),
+              decoration: const InputDecoration(labelText: 'Description'),
               maxLines: 3,
             ),
             const SizedBox(height: 16),
@@ -148,13 +203,13 @@ class _PartyFormPageState extends State<PartyFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _levelController,
-                    decoration: const InputDecoration(labelText: 'Livello *'),
+                    decoration: const InputDecoration(labelText: 'Level *'),
                     keyboardType: TextInputType.number,
                     validator: (value) {
-                      if (value?.isEmpty ?? true) return 'Inserisci il livello';
+                      if (value?.isEmpty ?? true) return 'Enter the level';
                       final level = int.tryParse(value!);
                       if (level == null || level < 1 || level > 20) {
-                        return 'Livello deve essere tra 1 e 20';
+                        return 'Level must be between 1 and 20';
                       }
                       return null;
                     },
@@ -164,13 +219,13 @@ class _PartyFormPageState extends State<PartyFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _experienceController,
-                    decoration: const InputDecoration(labelText: 'Punti Esperienza'),
+                    decoration: const InputDecoration(labelText: 'Experience Points'),
                     keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value != null && value.isNotEmpty) {
                         final exp = int.tryParse(value);
                         if (exp == null || exp < 0) {
-                          return 'XP deve essere >= 0';
+                          return 'XP must be >= 0';
                         }
                       }
                       return null;
@@ -181,8 +236,35 @@ class _PartyFormPageState extends State<PartyFormPage> {
             ),
             const SizedBox(height: 16),
             TextFormField(
+              controller: _campaignIdController,
+              decoration: const InputDecoration(
+                labelText: 'Campaign ID',
+                hintText: 'Enter the campaign ID (optional)',
+              ),
+              keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value != null && value.isNotEmpty) {
+                  final id = int.tryParse(value);
+                  if (id == null || id < 1) {
+                    return 'ID must be a positive number';
+                  }
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _charactersController,
+              decoration: const InputDecoration(
+                labelText: 'Character IDs',
+                hintText: 'Enter IDs separated by comma (e.g: 1, 2, 3)',
+              ),
+              maxLines: 2,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
               controller: _notesController,
-              decoration: const InputDecoration(labelText: 'Note'),
+              decoration: const InputDecoration(labelText: 'Notes'),
               maxLines: 5,
             ),
             const SizedBox(height: 24),
@@ -194,7 +276,7 @@ class _PartyFormPageState extends State<PartyFormPage> {
                       width: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Salva'),
+                  : const Text('Save'),
             ),
           ],
         ),

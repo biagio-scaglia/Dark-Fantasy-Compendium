@@ -56,7 +56,7 @@ class _CampaignFormPageState extends State<CampaignFormPage> {
       setState(() => _isLoadingData = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     }
@@ -101,7 +101,7 @@ class _CampaignFormPageState extends State<CampaignFormPage> {
         await apiService.update('campaigns', widget.campaign!['id'], data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Campagna aggiornata!'), backgroundColor: Colors.green),
+            const SnackBar(content: Text('Campaign updated!'), backgroundColor: Colors.green),
           );
           context.pop();
         }
@@ -109,7 +109,7 @@ class _CampaignFormPageState extends State<CampaignFormPage> {
         await apiService.create('campaigns', data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Campagna creata!'), backgroundColor: Colors.green),
+            const SnackBar(content: Text('Campaign created!'), backgroundColor: Colors.green),
           );
           context.pop();
         }
@@ -117,7 +117,7 @@ class _CampaignFormPageState extends State<CampaignFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     } finally {
@@ -165,45 +165,45 @@ class _CampaignFormPageState extends State<CampaignFormPage> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Nome *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              decoration: const InputDecoration(labelText: 'Name *'),
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Descrizione *'),
+              decoration: const InputDecoration(labelText: 'Description *'),
               maxLines: 3,
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _dmController,
               decoration: const InputDecoration(labelText: 'Dungeon Master *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _playersController,
               decoration: const InputDecoration(
-                labelText: 'Giocatori',
-                hintText: 'Separati da virgola (es: Mario, Luigi, Peppe)',
+                labelText: 'Players',
+                hintText: 'Separated by comma (e.g: Mario, Luigi, Peppe)',
               ),
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _levelController,
-              decoration: const InputDecoration(labelText: 'Livello Attuale'),
+              decoration: const InputDecoration(labelText: 'Current Level'),
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _settingController,
-              decoration: const InputDecoration(labelText: 'Ambientazione'),
+              decoration: const InputDecoration(labelText: 'Setting'),
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _notesController,
-              decoration: const InputDecoration(labelText: 'Note'),
+              decoration: const InputDecoration(labelText: 'Notes'),
               maxLines: 4,
             ),
             const SizedBox(height: 24),
@@ -216,8 +216,8 @@ class _CampaignFormPageState extends State<CampaignFormPage> {
               child: _isLoading
                   ? const CircularProgressIndicator()
                   : Text(widget.campaign != null && widget.campaign!['id'] != null
-                      ? 'Salva Modifiche'
-                      : 'Crea Campagna'),
+                      ? 'Save Changes'
+                      : 'Create Campaign'),
             ),
           ],
         ),

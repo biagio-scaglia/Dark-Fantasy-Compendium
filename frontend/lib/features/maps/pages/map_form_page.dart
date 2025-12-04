@@ -47,7 +47,7 @@ class _MapFormPageState extends State<MapFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     }
@@ -84,7 +84,7 @@ class _MapFormPageState extends State<MapFormPage> {
         await apiService.update('maps', widget.map!['id'], mapData);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Mappa aggiornata con successo')),
+            const SnackBar(content: Text('Map updated successfully')),
           );
           context.pop();
         }
@@ -92,7 +92,7 @@ class _MapFormPageState extends State<MapFormPage> {
         await apiService.create('maps', mapData);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Mappa creata con successo')),
+            const SnackBar(content: Text('Map created successfully')),
           );
           context.pop();
         }
@@ -100,7 +100,7 @@ class _MapFormPageState extends State<MapFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     } finally {

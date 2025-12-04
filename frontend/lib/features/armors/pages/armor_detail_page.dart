@@ -50,7 +50,7 @@ class _ArmorDetailPageState extends State<ArmorDetailPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Conferma eliminazione'),
-        content: const Text('Sei sicuro di voler eliminare questa armatura?'),
+        content: const Text('Are you sure you want to delete this armor?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -72,7 +72,7 @@ class _ArmorDetailPageState extends State<ArmorDetailPage> {
       await apiService.delete('armors', widget.armorId);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Armatura eliminata con successo')),
+          const SnackBar(content: Text('Armor deleted successfully')),
         );
         context.go('/armors');
       }
@@ -80,7 +80,7 @@ class _ArmorDetailPageState extends State<ArmorDetailPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Errore: ${e.toString()}'),
+            content: Text('Error: ${e.toString()}'),
             backgroundColor: Colors.red,
           ),
         );
@@ -97,7 +97,7 @@ class _ArmorDetailPageState extends State<ArmorDetailPage> {
           onPressed: () => context.pop(),
           tooltip: 'Indietro',
         ),
-        title: Text(armor?['name'] ?? 'Armatura'),
+        title: Text(armor?['name'] ?? 'Armor'),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
@@ -124,11 +124,11 @@ class _ArmorDetailPageState extends State<ArmorDetailPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: ${error ?? "Armatura non trovata"}', style: const TextStyle(color: Colors.red)),
+            Text('Error: ${error ?? "Armor not found"}', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadArmor,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),

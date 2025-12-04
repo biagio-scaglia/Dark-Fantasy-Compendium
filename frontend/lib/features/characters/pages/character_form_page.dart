@@ -182,7 +182,7 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
         await apiService.update('characters', widget.character!['id'], data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Personaggio aggiornato!'), backgroundColor: Colors.green),
+            const SnackBar(content: Text('Character updated!'), backgroundColor: Colors.green),
           );
           context.pop();
         }
@@ -190,7 +190,7 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
         await apiService.create('characters', data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Personaggio creato!'), backgroundColor: Colors.green),
+            const SnackBar(content: Text('Character created!'), backgroundColor: Colors.green),
           );
           context.pop();
         }
@@ -198,7 +198,7 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     } finally {
@@ -236,7 +236,7 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
   Widget build(BuildContext context) {
     if (_isLoadingData) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Personaggio')),
+        appBar: AppBar(title: const Text('Character')),
         body: const Center(child: CircularProgressIndicator()),
       );
     }

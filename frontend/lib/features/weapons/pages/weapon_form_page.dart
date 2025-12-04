@@ -62,7 +62,7 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
       setState(() => _isLoadingData = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore nel caricamento: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Loading error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     }
@@ -118,7 +118,7 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
         await apiService.update('weapons', weaponId, data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Arma aggiornata con successo')),
+            const SnackBar(content: Text('Weapon updated successfully')),
           );
           context.go('/weapons/$weaponId');
         }
@@ -126,7 +126,7 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
         final created = await apiService.create('weapons', data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Arma creata con successo')),
+            const SnackBar(content: Text('Weapon created successfully')),
           );
           context.go('/weapons/${created['id']}');
         }
@@ -134,7 +134,7 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     } finally {
@@ -152,9 +152,9 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => context.pop(),
-            tooltip: 'Indietro',
+            tooltip: 'Back',
           ),
-          title: const Text('Caricamento...'),
+          title: const Text('Loading...'),
         ),
         body: const Center(child: CircularProgressIndicator()),
       );
@@ -167,7 +167,7 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
           onPressed: () => context.pop(),
           tooltip: 'Indietro',
         ),
-        title: Text(widget.weapon != null ? 'Modifica Arma' : 'Nuova Arma'),
+        title: Text(widget.weapon != null ? 'Edit Weapon' : 'New Weapon'),
       ),
       body: Form(
         key: _formKey,
@@ -176,14 +176,14 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Nome *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              decoration: const InputDecoration(labelText: 'Name *'),
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _typeController,
-              decoration: const InputDecoration(labelText: 'Tipo *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              decoration: const InputDecoration(labelText: 'Type *'),
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             Row(
@@ -191,7 +191,7 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _attackBonusController,
-                    decoration: const InputDecoration(labelText: 'Bonus Attacco'),
+                    decoration: const InputDecoration(labelText: 'Attack Bonus'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -199,7 +199,7 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _durabilityController,
-                    decoration: const InputDecoration(labelText: 'Durabilità'),
+                    decoration: const InputDecoration(labelText: 'Durability'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -208,7 +208,7 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               value: _rarityController.text.isEmpty ? 'common' : _rarityController.text,
-              decoration: const InputDecoration(labelText: 'Rarità'),
+              decoration: const InputDecoration(labelText: 'Rarity'),
               items: ['common', 'rare', 'epic', 'legendary']
                   .map((r) => DropdownMenuItem(value: r, child: Text(r.toUpperCase())))
                   .toList(),
@@ -217,9 +217,9 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Descrizione *'),
+              decoration: const InputDecoration(labelText: 'Description *'),
               maxLines: 3,
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -230,12 +230,12 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _imageUrlController,
-              decoration: const InputDecoration(labelText: 'URL Immagine'),
+              decoration: const InputDecoration(labelText: 'Image URL'),
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _iconUrlController,
-              decoration: const InputDecoration(labelText: 'URL Icona'),
+              decoration: const InputDecoration(labelText: 'Icon URL'),
             ),
             const SizedBox(height: 24),
             ElevatedButton(
@@ -247,7 +247,7 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
               child: _isLoading
                   ? const CircularProgressIndicator()
                  : Text(
-                      widget.weapon != null ? 'Aggiorna' : 'Crea',
+                      widget.weapon != null ? 'Update' : 'Create'),
                       style: const TextStyle(fontSize: 16),
                     ),
             ),

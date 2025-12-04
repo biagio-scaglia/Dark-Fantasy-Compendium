@@ -73,7 +73,7 @@ class _KnightDetailPageState extends State<KnightDetailPage> {
       await apiService.delete('knights', widget.knightId);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Cavaliere eliminato con successo')),
+          const SnackBar(content: Text('Knight deleted successfully')),
         );
         context.go('/knights');
       }
@@ -137,7 +137,7 @@ class _KnightDetailPageState extends State<KnightDetailPage> {
     }
 
     if (knight == null) {
-      return const Center(child: Text('Cavaliere non trovato'));
+      return const Center(child: Text('Knight not found'));
     }
 
     return SingleChildScrollView(

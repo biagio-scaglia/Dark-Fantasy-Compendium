@@ -54,7 +54,7 @@ class _LoreFormPageState extends State<LoreFormPage> {
       setState(() => _isLoadingData = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     }
@@ -91,7 +91,7 @@ class _LoreFormPageState extends State<LoreFormPage> {
         await apiService.update('lores', widget.lore!['id'], data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Lore aggiornata!'), backgroundColor: Colors.green),
+            const SnackBar(content: Text('Lore updated!'), backgroundColor: Colors.green),
           );
           context.pop();
         }
@@ -99,7 +99,7 @@ class _LoreFormPageState extends State<LoreFormPage> {
         await apiService.create('lores', data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Lore creata!'), backgroundColor: Colors.green),
+            const SnackBar(content: Text('Lore created!'), backgroundColor: Colors.green),
           );
           context.pop();
         }
@@ -107,7 +107,7 @@ class _LoreFormPageState extends State<LoreFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     } finally {
@@ -143,8 +143,8 @@ class _LoreFormPageState extends State<LoreFormPage> {
           onPressed: () => context.pop(),
         ),
         title: Text(widget.lore != null && widget.lore!['id'] != null 
-            ? 'Modifica Lore' 
-            : 'Nuova Lore'),
+            ? 'Edit Lore' 
+            : 'New Lore'),
       ),
       body: Form(
         key: _formKey,
@@ -153,13 +153,13 @@ class _LoreFormPageState extends State<LoreFormPage> {
           children: [
             TextFormField(
               controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Titolo *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              decoration: const InputDecoration(labelText: 'Title *'),
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               value: _categories.contains(_categoryController.text) ? _categoryController.text : null,
-              decoration: const InputDecoration(labelText: 'Categoria *'),
+              decoration: const InputDecoration(labelText: 'Category *'),
               items: _categories.map((category) {
                 return DropdownMenuItem(
                   value: category,
@@ -171,29 +171,29 @@ class _LoreFormPageState extends State<LoreFormPage> {
                   _categoryController.text = value ?? '';
                 });
               },
-              validator: (v) => v == null ? 'Seleziona una categoria' : null,
+              validator: (v) => v == null ? 'Select a category' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _contentController,
-              decoration: const InputDecoration(labelText: 'Contenuto *'),
+              decoration: const InputDecoration(labelText: 'Content *'),
               maxLines: 8,
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _relatedEntityTypeController,
               decoration: const InputDecoration(
-                labelText: 'Tipo Entità Correlata',
-                hintText: 'es: knight, weapon, boss',
+                labelText: 'Related Entity Type',
+                hintText: 'e.g: knight, weapon, boss',
               ),
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _relatedEntityIdController,
               decoration: const InputDecoration(
-                labelText: 'ID Entità Correlata',
-                hintText: 'ID numerico',
+                labelText: 'Related Entity ID',
+                hintText: 'Numeric ID',
               ),
               keyboardType: TextInputType.number,
             ),
@@ -207,8 +207,8 @@ class _LoreFormPageState extends State<LoreFormPage> {
               child: _isLoading
                   ? const CircularProgressIndicator()
                   : Text(widget.lore != null && widget.lore!['id'] != null
-                      ? 'Salva Modifiche'
-                      : 'Crea Lore'),
+                      ? 'Save Changes'
+                      : 'Create Lore'),
             ),
           ],
         ),

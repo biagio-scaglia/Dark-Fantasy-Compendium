@@ -50,9 +50,9 @@ class _FactionsListPageState extends State<FactionsListPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
-        title: const Text('Fazioni'),
+        title: const Text('Factions'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push('/factions/new'),
@@ -72,11 +72,11 @@ class _FactionsListPageState extends State<FactionsListPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: $error', style: const TextStyle(color: Colors.red)),
+            Text('Error: $error', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadFactions,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),
@@ -84,7 +84,7 @@ class _FactionsListPageState extends State<FactionsListPage> {
     }
 
     if (factions.isEmpty) {
-      return const Center(child: Text('Nessuna fazione trovata'));
+      return const Center(child: Text('No factions found'));
     }
 
     return RefreshIndicator(

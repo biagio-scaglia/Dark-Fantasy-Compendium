@@ -50,7 +50,7 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Conferma eliminazione'),
-        content: const Text('Sei sicuro di voler eliminare questa arma?'),
+        content: const Text('Are you sure you want to delete this weapon?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -72,7 +72,7 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
       await apiService.delete('weapons', widget.weaponId);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Arma eliminata con successo')),
+          const SnackBar(content: Text('Weapon deleted successfully')),
         );
         context.go('/weapons');
       }
@@ -80,7 +80,7 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Errore: ${e.toString()}'),
+            content: Text('Error: ${e.toString()}'),
             backgroundColor: Colors.red,
           ),
         );
@@ -97,7 +97,7 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
           onPressed: () => context.pop(),
           tooltip: 'Indietro',
         ),
-        title: Text(weapon?['name'] ?? 'Arma'),
+        title: Text(weapon?['name'] ?? 'Weapon'),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
@@ -124,11 +124,11 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: ${error ?? "Arma non trovata"}', style: const TextStyle(color: Colors.red)),
+            Text('Error: ${error ?? "Weapon not found"}', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadWeapon,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),

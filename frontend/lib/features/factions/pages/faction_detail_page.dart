@@ -59,7 +59,7 @@ class _FactionDetailPageState extends State<FactionDetailPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Conferma eliminazione'),
-        content: const Text('Sei sicuro di voler eliminare questa fazione?'),
+        content: const Text('Are you sure you want to delete this faction?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -81,7 +81,7 @@ class _FactionDetailPageState extends State<FactionDetailPage> {
       await apiService.delete('factions', widget.factionId);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Fazione eliminata con successo')),
+          const SnackBar(content: Text('Faction deleted successfully')),
         );
         context.go('/factions');
       }
@@ -89,7 +89,7 @@ class _FactionDetailPageState extends State<FactionDetailPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Errore: ${e.toString()}'),
+            content: Text('Error: ${e.toString()}'),
             backgroundColor: Colors.red,
           ),
         );
@@ -106,7 +106,7 @@ class _FactionDetailPageState extends State<FactionDetailPage> {
           onPressed: () => context.pop(),
           tooltip: 'Indietro',
         ),
-        title: Text(faction?['name'] ?? 'Fazione'),
+        title: Text(faction?['name'] ?? 'Faction'),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
@@ -133,11 +133,11 @@ class _FactionDetailPageState extends State<FactionDetailPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: ${error ?? "Fazione non trovata"}', style: const TextStyle(color: Colors.red)),
+            Text('Error: ${error ?? "Faction not found"}', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadFaction,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),

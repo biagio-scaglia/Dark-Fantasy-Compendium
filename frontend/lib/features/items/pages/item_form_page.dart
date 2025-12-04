@@ -58,7 +58,7 @@ class _ItemFormPageState extends State<ItemFormPage> {
       setState(() => _isLoadingData = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     }
@@ -95,7 +95,7 @@ class _ItemFormPageState extends State<ItemFormPage> {
         await apiService.update('items', widget.item!['id'], data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Oggetto aggiornato!'), backgroundColor: Colors.green),
+            const SnackBar(content: Text('Item updated!'), backgroundColor: Colors.green),
           );
           context.pop();
         }
@@ -103,7 +103,7 @@ class _ItemFormPageState extends State<ItemFormPage> {
         await apiService.create('items', data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Oggetto creato!'), backgroundColor: Colors.green),
+            const SnackBar(content: Text('Item created!'), backgroundColor: Colors.green),
           );
           context.pop();
         }
@@ -111,7 +111,7 @@ class _ItemFormPageState extends State<ItemFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     } finally {
@@ -136,7 +136,7 @@ class _ItemFormPageState extends State<ItemFormPage> {
   Widget build(BuildContext context) {
     if (_isLoadingData) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Oggetto')),
+        appBar: AppBar(title: const Text('Item')),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
@@ -148,8 +148,8 @@ class _ItemFormPageState extends State<ItemFormPage> {
           onPressed: () => context.pop(),
         ),
         title: Text(widget.item != null && widget.item!['id'] != null 
-            ? 'Modifica Oggetto' 
-            : 'Nuovo Oggetto'),
+            ? 'Edit Item' 
+            : 'New Item'),
       ),
       body: Form(
         key: _formKey,
@@ -158,13 +158,13 @@ class _ItemFormPageState extends State<ItemFormPage> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Nome *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              decoration: const InputDecoration(labelText: 'Name *'),
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               value: _itemTypes.contains(_typeController.text) ? _typeController.text : null,
-              decoration: const InputDecoration(labelText: 'Tipo *'),
+              decoration: const InputDecoration(labelText: 'Type *'),
               items: _itemTypes.map((type) {
                 return DropdownMenuItem(
                   value: type,
@@ -176,31 +176,31 @@ class _ItemFormPageState extends State<ItemFormPage> {
                   _typeController.text = value ?? '';
                 });
               },
-              validator: (v) => v == null ? 'Seleziona un tipo' : null,
+              validator: (v) => v == null ? 'Select a type' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Descrizione *'),
+              decoration: const InputDecoration(labelText: 'Description *'),
               maxLines: 3,
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _effectController,
-              decoration: const InputDecoration(labelText: 'Effetto'),
+              decoration: const InputDecoration(labelText: 'Effect'),
               maxLines: 2,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _valueController,
-              decoration: const InputDecoration(labelText: 'Valore'),
+              decoration: const InputDecoration(labelText: 'Value'),
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               value: _selectedRarity,
-              decoration: const InputDecoration(labelText: 'Rarità'),
+              decoration: const InputDecoration(labelText: 'Rarity'),
               items: _rarities.map((rarity) {
                 return DropdownMenuItem(
                   value: rarity,
@@ -229,8 +229,8 @@ class _ItemFormPageState extends State<ItemFormPage> {
               child: _isLoading
                   ? const CircularProgressIndicator()
                   : Text(widget.item != null && widget.item!['id'] != null
-                      ? 'Salva Modifiche'
-                      : 'Crea Oggetto'),
+                      ? 'Save Changes'
+                      : 'Create Item'),
             ),
           ],
         ),

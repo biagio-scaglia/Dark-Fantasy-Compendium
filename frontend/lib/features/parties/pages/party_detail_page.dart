@@ -78,7 +78,7 @@ class _PartyDetailPageState extends State<PartyDetailPage> {
       await apiService.delete('parties', widget.partyId);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Party eliminato con successo')),
+          const SnackBar(content: Text('Party deleted successfully')),
         );
         context.go('/parties');
       }
@@ -106,7 +106,7 @@ class _PartyDetailPageState extends State<PartyDetailPage> {
     if (error != null || party == null) {
       return Scaffold(
         appBar: AppBar(title: const Text('Party')),
-        body: Center(child: Text('Errore: ${error ?? "Party non trovato"}')),
+        body: Center(child: Text('Error: ${error ?? "Party not found"}')),
       );
     }
 

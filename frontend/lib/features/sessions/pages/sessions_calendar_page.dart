@@ -105,7 +105,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
             icon: const Icon(Icons.arrow_back),
             onPressed: () => context.pop(),
           ),
-          title: const Text('Calendario Sessioni'),
+          title: const Text('Session Calendar'),
         ),
         body: const Center(child: CircularProgressIndicator()),
       );
@@ -122,7 +122,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => _showCreateSessionDialog(),
-            tooltip: 'Nuova Sessione',
+            tooltip: 'New Session',
           ),
         ],
       ),
@@ -140,11 +140,11 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: $error', style: const TextStyle(color: Colors.red)),
+            Text('Error: $error', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadCalendar,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),
@@ -288,7 +288,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
                 margin: const EdgeInsets.only(bottom: 8),
                 child: ListTile(
                   leading: const FaIcon(FontAwesomeIcons.diceD20, color: AppTheme.accentGold),
-                  title: Text(session['title'] ?? 'Sessione senza titolo'),
+                  title: Text(session['title'] ?? 'Untitled Session'),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -324,7 +324,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Crea prima una campagna per aggiungere sessioni'),
+            content: Text('Create a campaign first to add sessions'),
             backgroundColor: Colors.orange,
           ),
         );

@@ -101,7 +101,7 @@ class _SessionFormPageState extends State<SessionFormPage> {
         }
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Sessione aggiornata!'), backgroundColor: Colors.green),
+            const SnackBar(content: Text('Session updated!'), backgroundColor: Colors.green),
           );
           context.pop();
         }
@@ -117,13 +117,13 @@ class _SessionFormPageState extends State<SessionFormPage> {
         if (response.statusCode == 200 || response.statusCode == 201) {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Sessione creata!'), backgroundColor: Colors.green),
+              const SnackBar(content: Text('Session created!'), backgroundColor: Colors.green),
             );
             context.pop();
           }
         } else {
           final errorBody = response.body;
-          throw Exception('Errore nella creazione (${response.statusCode}): $errorBody');
+          throw Exception('Error creating session (${response.statusCode}): $errorBody');
         }
       }
     } catch (e) {
@@ -158,8 +158,8 @@ class _SessionFormPageState extends State<SessionFormPage> {
           onPressed: () => context.pop(),
         ),
         title: Text(widget.session != null && widget.session!['id'] != null 
-            ? 'Modifica Sessione' 
-            : 'Nuova Sessione'),
+            ? 'Edit Session' 
+            : 'New Session'),
       ),
       body: Form(
         key: _formKey,
@@ -212,7 +212,7 @@ class _SessionFormPageState extends State<SessionFormPage> {
                   ? const CircularProgressIndicator()
                   : Text(widget.session != null && widget.session!['id'] != null
                       ? 'Salva Modifiche'
-                      : 'Crea Sessione'),
+                      : 'Create Session'),
             ),
           ],
         ),

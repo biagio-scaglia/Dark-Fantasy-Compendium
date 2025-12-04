@@ -51,12 +51,12 @@ class _CharactersListPageState extends State<CharactersListPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
         ),
-        title: const Text('Personaggi'),
+        title: const Text('Characters'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => context.push('/characters/new'),
-            tooltip: 'Nuovo Personaggio',
+            tooltip: 'New Character',
           ),
         ],
       ),
@@ -74,11 +74,11 @@ class _CharactersListPageState extends State<CharactersListPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: $error', style: const TextStyle(color: Colors.red)),
+            Text('Error: $error', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadCharacters,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),
@@ -86,7 +86,7 @@ class _CharactersListPageState extends State<CharactersListPage> {
     }
 
     if (characters.isEmpty) {
-      return const Center(child: Text('Nessun personaggio trovato'));
+      return const Center(child: Text('No characters found'));
     }
 
     return RefreshIndicator(

@@ -76,7 +76,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
       setState(() => _isLoadingData = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore nel caricamento: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Loading error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     }
@@ -134,7 +134,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore nella selezione immagine: $e'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Image selection error: $e'), backgroundColor: Colors.red),
         );
       }
     }
@@ -187,7 +187,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
         await apiService.update('knights', knightId, data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Cavaliere aggiornato con successo')),
+            const SnackBar(content: Text('Knight updated successfully')),
           );
           context.go('/knights/$knightId');
         }
@@ -196,7 +196,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
         final created = await apiService.create('knights', data);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Cavaliere creato con successo')),
+            const SnackBar(content: Text('Knight created successfully')),
           );
           context.go('/knights/${created['id']}');
         }
@@ -204,7 +204,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: ${e.toString()}'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
         );
       }
     } finally {
@@ -222,9 +222,9 @@ class _KnightFormPageState extends State<KnightFormPage> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => context.pop(),
-            tooltip: 'Indietro',
+            tooltip: 'Back',
           ),
-          title: const Text('Caricamento...'),
+          title: const Text('Loading...'),
         ),
         body: const Center(child: CircularProgressIndicator()),
       );
@@ -237,7 +237,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
           onPressed: () => context.pop(),
           tooltip: 'Indietro',
         ),
-        title: Text(widget.knight != null ? 'Modifica Cavaliere' : 'Nuovo Cavaliere'),
+        title: Text(widget.knight != null ? 'Edit Knight' : 'New Knight'),
       ),
       body: Form(
         key: _formKey,
@@ -246,21 +246,21 @@ class _KnightFormPageState extends State<KnightFormPage> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Nome *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              decoration: const InputDecoration(labelText: 'Name *'),
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Titolo *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              decoration: const InputDecoration(labelText: 'Title *'),
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _factionIdController,
-              decoration: const InputDecoration(labelText: 'ID Fazione *'),
+              decoration: const InputDecoration(labelText: 'Faction ID *'),
               keyboardType: TextInputType.number,
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             Row(
@@ -268,7 +268,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _levelController,
-                    decoration: const InputDecoration(labelText: 'Livello'),
+                    decoration: const InputDecoration(labelText: 'Level'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -276,7 +276,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _healthController,
-                    decoration: const InputDecoration(labelText: 'Salute'),
+                    decoration: const InputDecoration(labelText: 'Health'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -288,7 +288,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _maxHealthController,
-                    decoration: const InputDecoration(labelText: 'Salute Max'),
+                    decoration: const InputDecoration(labelText: 'Max Health'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -296,7 +296,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _attackController,
-                    decoration: const InputDecoration(labelText: 'Attacco'),
+                    decoration: const InputDecoration(labelText: 'Attack'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -308,7 +308,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _defenseController,
-                    decoration: const InputDecoration(labelText: 'Difesa'),
+                    decoration: const InputDecoration(labelText: 'Defense'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -316,7 +316,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _weaponIdController,
-                    decoration: const InputDecoration(labelText: 'ID Arma'),
+                    decoration: const InputDecoration(labelText: 'Weapon ID'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -325,15 +325,15 @@ class _KnightFormPageState extends State<KnightFormPage> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _armorIdController,
-              decoration: const InputDecoration(labelText: 'ID Armatura'),
+              decoration: const InputDecoration(labelText: 'Armor ID'),
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Descrizione *'),
+              decoration: const InputDecoration(labelText: 'Description *'),
               maxLines: 3,
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
+              validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -371,7 +371,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
               child: _isLoading
                   ? const CircularProgressIndicator()
                   : Text(
-                      widget.knight != null ? 'Aggiorna' : 'Crea',
+                      widget.knight != null ? 'Update' : 'Create'),
                       style: const TextStyle(fontSize: 16),
                     ),
             ),
@@ -439,7 +439,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
             ElevatedButton.icon(
               onPressed: onTap,
               icon: const Icon(Icons.photo_library),
-              label: Text(file != null ? 'Cambia $label' : 'Seleziona $label'),
+              label: Text(file != null ? 'Change $label' : 'Select $label'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.accentGold,
               ),

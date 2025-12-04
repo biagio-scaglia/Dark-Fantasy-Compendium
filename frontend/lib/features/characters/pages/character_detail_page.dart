@@ -92,15 +92,15 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
   Widget build(BuildContext context) {
     if (isLoading) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Personaggio')),
+        appBar: AppBar(title: const Text('Character')),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
 
     if (error != null || character == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Personaggio')),
-        body: Center(child: Text('Errore: ${error ?? "Personaggio non trovato"}')),
+        appBar: AppBar(title: const Text('Character')),
+        body: Center(child: Text('Error: ${error ?? "Character not found"}')),
       );
     }
 

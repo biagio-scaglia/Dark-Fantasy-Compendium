@@ -50,9 +50,9 @@ class _WeaponsListPageState extends State<WeaponsListPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
-        title: const Text('Armi'),
+        title: const Text('Weapons'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push('/weapons/new'),
@@ -72,11 +72,11 @@ class _WeaponsListPageState extends State<WeaponsListPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Errore: $error', style: const TextStyle(color: Colors.red)),
+            Text('Error: $error', style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadWeapons,
-              child: const Text('Riprova'),
+              child: const Text('Retry'),
             ),
           ],
         ),
@@ -84,7 +84,7 @@ class _WeaponsListPageState extends State<WeaponsListPage> {
     }
 
     if (weapons.isEmpty) {
-      return const Center(child: Text('Nessuna arma trovata'));
+      return const Center(child: Text('No weapons found'));
     }
 
     return RefreshIndicator(
