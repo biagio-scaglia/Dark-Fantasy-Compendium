@@ -153,7 +153,7 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
             if (character!['level'] != null)
               _buildInfoRow(
                 icon: FontAwesomeIcons.chartLine,
-                label: 'Livello',
+                label: 'Level',
                 value: '${character!['level']}',
               ),
             if (character!['current_hit_points'] != null && character!['max_hit_points'] != null)
@@ -214,12 +214,12 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppTheme.accentGold.withOpacity(0.2),
+                  color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
                   modifier >= 0 ? '+$modifier' : '$modifier',
-                  style: TextStyle(color: AppTheme.accentGold),
+                  style: TextStyle(color: AppTheme.getAccentGoldFromContext(context)),
                 ),
               ),
             ],
@@ -234,7 +234,7 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          FaIcon(icon, size: 20, color: AppTheme.accentGold),
+          FaIcon(icon, size: 20, color: AppTheme.getAccentGoldFromContext(context)),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -243,7 +243,7 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
                 Text(
                   label,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppTheme.textSecondary,
+                    color: AppTheme.getTextSecondaryFromContext(context),
                   ),
                 ),
                 Text(

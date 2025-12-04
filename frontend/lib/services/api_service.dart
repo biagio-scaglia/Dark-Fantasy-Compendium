@@ -109,9 +109,9 @@ class ApiService {
       
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as Map<String, dynamic>;
-        // Restituisce l'URL completo
+        // Returns the complete URL
         final url = data['url'] as String;
-        // Se l'URL non inizia con http, aggiungi il baseUrl
+        // If the URL doesn't start with http, add the baseUrl
         if (url.startsWith('http')) {
           return url;
         } else if (url.startsWith('/')) {

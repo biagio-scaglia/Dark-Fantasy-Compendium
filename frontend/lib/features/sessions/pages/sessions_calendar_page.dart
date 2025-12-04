@@ -233,10 +233,10 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
                   margin: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
                     color: isCurrentMonth
-                        ? (isToday ? AppTheme.accentGold.withOpacity(0.3) : Colors.transparent)
+                        ? (isToday ? AppTheme.getAccentGoldFromContext(context).withOpacity(0.3) : Colors.transparent)
                         : Colors.grey.withOpacity(0.1),
                     border: Border.all(
-                      color: isToday ? AppTheme.accentGold : Colors.transparent,
+                      color: isToday ? AppTheme.getAccentGoldFromContext(context) : Colors.transparent,
                       width: 2,
                     ),
                     borderRadius: BorderRadius.circular(8),
@@ -247,7 +247,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
                       Text(
                         '${date.day}',
                         style: TextStyle(
-                          color: isCurrentMonth ? AppTheme.textPrimary : Colors.grey,
+                          color: isCurrentMonth ? AppTheme.getTextPrimaryFromContext(context) : Colors.grey,
                           fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
                         ),
                       ),
@@ -257,7 +257,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
                           width: 6,
                           height: 6,
                           decoration: BoxDecoration(
-                            color: AppTheme.accentGold,
+                            color: AppTheme.getAccentGoldFromContext(context),
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -287,7 +287,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
               return Card(
                 margin: const EdgeInsets.only(bottom: 8),
                 child: ListTile(
-                  leading: const FaIcon(FontAwesomeIcons.diceD20, color: AppTheme.accentGold),
+                  leading: FaIcon(FontAwesomeIcons.diceD20, color: AppTheme.getAccentGoldFromContext(context)),
                   title: Text(session['title'] ?? 'Untitled Session'),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

@@ -23,14 +23,14 @@ class DndClassCard extends StatelessWidget {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: AppTheme.accentGold.withOpacity(0.2),
+                  color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppTheme.accentGold, width: 2),
+                  border: Border.all(color: AppTheme.getAccentGoldFromContext(context), width: 2),
                 ),
-                child: const Icon(
+                child: Icon(
                   FontAwesomeIcons.userShield,
                   size: 40,
-                  color: AppTheme.accentGold,
+                  color: AppTheme.getAccentGoldFromContext(context),
                 ),
               ),
               const SizedBox(width: 16),
@@ -39,7 +39,7 @@ class DndClassCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      dndClass['name'] ?? 'Classe senza nome',
+                      dndClass['name'] ?? 'Unnamed class',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 4),
@@ -52,8 +52,8 @@ class DndClassCard extends StatelessWidget {
                     const SizedBox(height: 8),
                     if (dndClass['hit_dice'] != null)
                       Chip(
-                        label: Text('Dado: ${dndClass['hit_dice']}'),
-                        backgroundColor: AppTheme.accentGold.withOpacity(0.2),
+                        label: Text('Dice: ${dndClass['hit_dice']}'),
+                        backgroundColor: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                       ),
                   ],
                 ),

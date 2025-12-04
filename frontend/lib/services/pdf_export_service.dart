@@ -25,7 +25,7 @@ class PdfExportService {
           ? 'pdf-export/character/$characterId/simple'
           : 'pdf-export/character/$characterId';
       
-      // Costruisci l'URL completo
+      // Build the complete URL
       final baseUrl = apiService.baseUrl;
       final response = await http.get(
         Uri.parse('$baseUrl/$endpoint'),

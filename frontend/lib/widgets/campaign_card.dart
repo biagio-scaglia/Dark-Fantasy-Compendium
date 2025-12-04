@@ -23,14 +23,14 @@ class CampaignCard extends StatelessWidget {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: AppTheme.accentGold.withOpacity(0.2),
+                  color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppTheme.accentGold, width: 2),
+                  border: Border.all(color: AppTheme.getAccentGoldFromContext(context), width: 2),
                 ),
-                child: const Icon(
+                child: Icon(
                   FontAwesomeIcons.diceD20,
                   size: 40,
-                  color: AppTheme.accentGold,
+                  color: AppTheme.getAccentGoldFromContext(context),
                 ),
               ),
               const SizedBox(width: 16),
@@ -39,7 +39,7 @@ class CampaignCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      campaign['name'] ?? 'Campagna senza nome',
+                      campaign['name'] ?? 'Unnamed campaign',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 4),
@@ -54,13 +54,13 @@ class CampaignCard extends StatelessWidget {
                         if (campaign['sessions'] != null)
                           Chip(
                             label: Text('${(campaign['sessions'] as List).length} sessioni'),
-                            backgroundColor: AppTheme.accentGold.withOpacity(0.2),
+                            backgroundColor: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                           ),
                         if (campaign['current_level'] != null)
                           Padding(
                             padding: const EdgeInsets.only(left: 8),
                             child: Text(
-                              'Livello ${campaign['current_level']}',
+                              'Level ${campaign['current_level']}',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ),

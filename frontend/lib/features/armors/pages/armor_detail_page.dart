@@ -218,14 +218,14 @@ class _ArmorDetailPageState extends State<ArmorDetailPage> {
               icon: Icons.shield,
               label: 'Bonus Difesa',
               value: '+${armor!['defense_bonus'] ?? 0}',
-              color: AppTheme.accentGold,
+              color: AppTheme.getAccentGoldFromContext(context),
             ),
             const SizedBox(height: 12),
             _StatRow(
               icon: Icons.build,
               label: 'Durabilità',
               value: '${armor!['durability'] ?? 0}%',
-              color: AppTheme.textSecondary,
+              color: AppTheme.getTextSecondaryFromContext(context),
             ),
           ],
         ),
@@ -241,7 +241,7 @@ class _ArmorDetailPageState extends State<ArmorDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Descrizione',
+              'Description',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
@@ -264,12 +264,12 @@ class _ArmorDetailPageState extends State<ArmorDetailPage> {
           children: [
             Row(
               children: [
-                const Icon(Icons.menu_book, color: AppTheme.accentGold),
+                Icon(Icons.menu_book, color: AppTheme.getAccentGoldFromContext(context)),
                 const SizedBox(width: 8),
                 Text(
                   'Lore',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppTheme.accentGold,
+                    color: AppTheme.getAccentGoldFromContext(context),
                   ),
                 ),
               ],

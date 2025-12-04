@@ -28,8 +28,8 @@ class ArmorCard extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppTheme.secondaryDark,
-                AppTheme.primaryDark,
+                AppTheme.getSecondaryBackgroundFromContext(context),
+                AppTheme.getPrimaryBackgroundFromContext(context),
                 rarityColor.withOpacity(0.15),
               ],
               stops: const [0.0, 0.7, 1.0],
@@ -75,10 +75,10 @@ class ArmorCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.shield,
                   size: 28,
-                  color: AppTheme.primaryDark,
+                  color: AppTheme.getPrimaryBackgroundFromContext(context),
                 ),
               ),
               const SizedBox(width: 14),
@@ -94,7 +94,7 @@ class ArmorCard extends StatelessWidget {
                             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               shadows: [
                                 Shadow(
-                                  color: AppTheme.primaryDark.withOpacity(0.8),
+                                  color: AppTheme.getPrimaryBackgroundFromContext(context).withOpacity(0.8),
                                   blurRadius: 3,
                                   offset: const Offset(1, 1),
                                 ),
@@ -132,7 +132,7 @@ class ArmorCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               shadows: [
                                 Shadow(
-                                  color: AppTheme.primaryDark,
+                                  color: AppTheme.getPrimaryBackgroundFromContext(context),
                                   blurRadius: 2,
                                 ),
                               ],
@@ -155,14 +155,14 @@ class ArmorCard extends StatelessWidget {
                           icon: Icons.shield,
                           value: '+${armor['defense_bonus'] ?? 0}',
                           label: 'DEF',
-                          color: AppTheme.accentGold,
+                          color: AppTheme.getAccentGoldFromContext(context),
                         ),
                         const SizedBox(width: 10),
                         _StatBadge(
                           icon: Icons.build,
                           value: '${armor['durability'] ?? 0}%',
                           label: 'DUR',
-                          color: AppTheme.textSecondary,
+                          color: AppTheme.getTextSecondaryFromContext(context),
                         ),
                       ],
                     ),
@@ -227,7 +227,7 @@ class _StatBadge extends StatelessWidget {
               fontWeight: FontWeight.bold,
               shadows: [
                 Shadow(
-                  color: AppTheme.primaryDark.withOpacity(0.5),
+                  color: AppTheme.getPrimaryBackgroundFromContext(context).withOpacity(0.5),
                   blurRadius: 1,
                 ),
               ],

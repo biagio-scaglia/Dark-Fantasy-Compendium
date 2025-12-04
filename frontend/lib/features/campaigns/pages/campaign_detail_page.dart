@@ -163,7 +163,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          FaIcon(icon, size: 20, color: AppTheme.accentGold),
+          FaIcon(icon, size: 20, color: AppTheme.getAccentGoldFromContext(context)),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -172,7 +172,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
                 Text(
                   label,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppTheme.textSecondary,
+                    color: AppTheme.getTextSecondaryFromContext(context),
                   ),
                 ),
                 Text(
@@ -234,15 +234,15 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
           width: 50,
           height: 50,
           decoration: BoxDecoration(
-            color: AppTheme.accentGold.withOpacity(0.2),
+            color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppTheme.accentGold, width: 2),
+            border: Border.all(color: AppTheme.getAccentGoldFromContext(context), width: 2),
           ),
           child: Center(
             child: Text(
               sessionDate != null ? DateFormat('dd').format(sessionDate) : '?',
               style: TextStyle(
-                color: AppTheme.accentGold,
+                color: AppTheme.getAccentGoldFromContext(context),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -304,7 +304,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
                 const SizedBox(height: 16),
                 Chip(
                   label: Text('XP: ${session['experience_awarded']}'),
-                  backgroundColor: AppTheme.accentGold.withOpacity(0.2),
+                  backgroundColor: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                 ),
               ],
             ],

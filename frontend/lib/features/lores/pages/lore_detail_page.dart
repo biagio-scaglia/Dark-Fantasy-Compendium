@@ -111,14 +111,14 @@ class _LoreDetailPageState extends State<LoreDetailPage> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: AppTheme.accentGold.withOpacity(0.2),
+                color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppTheme.accentGold),
+                border: Border.all(color: AppTheme.getAccentGoldFromContext(context)),
               ),
               child: Text(
                 lore!['category'] ?? '',
-                style: const TextStyle(
-                  color: AppTheme.accentGold,
+                style: TextStyle(
+                  color: AppTheme.getAccentGoldFromContext(context),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -138,12 +138,12 @@ class _LoreDetailPageState extends State<LoreDetailPage> {
           children: [
             Row(
               children: [
-                const Icon(Icons.menu_book, color: AppTheme.accentGold, size: 28),
+                Icon(Icons.menu_book, color: AppTheme.getAccentGoldFromContext(context), size: 28),
                 const SizedBox(width: 12),
                 Text(
-                  'Contenuto',
+                  'Content',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppTheme.accentGold,
+                    color: AppTheme.getAccentGoldFromContext(context),
                   ),
                 ),
               ],

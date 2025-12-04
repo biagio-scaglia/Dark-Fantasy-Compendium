@@ -20,7 +20,7 @@ class KnightCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final card = Card(
       elevation: 8,
-      shadowColor: AppTheme.accentGold.withOpacity(0.3),
+      shadowColor: AppTheme.getAccentGoldFromContext(context).withOpacity(0.3),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -34,20 +34,20 @@ class KnightCard extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppTheme.secondaryDark,
-                AppTheme.primaryDark,
-                AppTheme.accentGold.withOpacity(0.1),
+                AppTheme.getSecondaryBackgroundFromContext(context),
+                AppTheme.getPrimaryBackgroundFromContext(context),
+                AppTheme.getAccentGoldFromContext(context).withOpacity(0.1),
               ],
               stops: const [0.0, 0.7, 1.0],
             ),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppTheme.accentGold.withOpacity(0.4),
+              color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.4),
               width: 2,
             ),
             boxShadow: [
               BoxShadow(
-                color: AppTheme.accentGold.withOpacity(0.2),
+                color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                 blurRadius: 12,
                 offset: const Offset(0, 6),
               ),
@@ -69,7 +69,7 @@ class KnightCard extends StatelessWidget {
                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             shadows: [
                               Shadow(
-                                color: AppTheme.primaryDark.withOpacity(0.8),
+                                color: AppTheme.getPrimaryBackgroundFromContext(context).withOpacity(0.8),
                                 blurRadius: 3,
                                 offset: const Offset(1, 1),
                               ),
@@ -80,7 +80,7 @@ class KnightCard extends StatelessWidget {
                         Text(
                           knight['title'] ?? '',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppTheme.accentGold,
+                            color: AppTheme.getAccentGoldFromContext(context),
                             fontStyle: FontStyle.italic,
                           ),
                         ),
@@ -90,15 +90,15 @@ class KnightCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                      gradient: AppTheme.goldGradient,
+                      gradient: AppTheme.getGoldGradientFromContext(context),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: AppTheme.accentGold.withOpacity(0.6),
+                        color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.6),
                         width: 1.5,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: AppTheme.accentGold.withOpacity(0.4),
+                          color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.4),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
@@ -107,12 +107,12 @@ class KnightCard extends StatelessWidget {
                     child: Text(
                       'Lv. ${knight['level'] ?? 0}',
                       style: TextStyle(
-                        color: AppTheme.primaryDark,
+                        color: AppTheme.getPrimaryBackgroundFromContext(context),
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                         shadows: [
                           Shadow(
-                            color: AppTheme.accentGold.withOpacity(0.5),
+                            color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.5),
                             blurRadius: 2,
                           ),
                         ],
@@ -136,13 +136,13 @@ class KnightCard extends StatelessWidget {
                     icon: FontAwesomeIcons.gavel,
                     label: 'ATK',
                     value: '${knight['attack'] ?? 0}',
-                    color: AppTheme.accentGold,
+                    color: AppTheme.getAccentGoldFromContext(context),
                   ),
                   _StatChip(
                     icon: FontAwesomeIcons.shield,
                     label: 'DEF',
                     value: '${knight['defense'] ?? 0}',
-                    color: AppTheme.accentBrown,
+                    color: AppTheme.getAccentBrownFromContext(context),
                   ),
                 ],
               ),
@@ -216,7 +216,7 @@ class _StatChip extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 shadows: [
                   Shadow(
-                    color: AppTheme.primaryDark.withOpacity(0.5),
+                    color: AppTheme.getPrimaryBackgroundFromContext(context).withOpacity(0.5),
                     blurRadius: 2,
                   ),
                 ],

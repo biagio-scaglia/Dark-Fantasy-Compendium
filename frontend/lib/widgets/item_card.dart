@@ -28,8 +28,8 @@ class ItemCard extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppTheme.secondaryDark,
-                AppTheme.primaryDark,
+                AppTheme.getSecondaryBackgroundFromContext(context),
+                AppTheme.getPrimaryBackgroundFromContext(context),
                 rarityColor.withOpacity(0.15),
               ],
               stops: const [0.0, 0.7, 1.0],
@@ -75,10 +75,10 @@ class ItemCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.inventory_2,
                   size: 26,
-                  color: AppTheme.primaryDark,
+                  color: AppTheme.getPrimaryBackgroundFromContext(context),
                 ),
               ),
               const SizedBox(width: 14),
@@ -94,7 +94,7 @@ class ItemCard extends StatelessWidget {
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               shadows: [
                                 Shadow(
-                                  color: AppTheme.primaryDark.withOpacity(0.8),
+                                  color: AppTheme.getPrimaryBackgroundFromContext(context).withOpacity(0.8),
                                   blurRadius: 3,
                                   offset: const Offset(1, 1),
                                 ),
@@ -106,15 +106,15 @@ class ItemCard extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              gradient: AppTheme.goldGradient,
+                              gradient: AppTheme.getGoldGradientFromContext(context),
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(
-                                color: AppTheme.accentGold.withOpacity(0.6),
+                                color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.6),
                                 width: 1.5,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppTheme.accentGold.withOpacity(0.3),
+                                  color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.3),
                                   blurRadius: 3,
                                   offset: const Offset(0, 1),
                                 ),
@@ -123,17 +123,17 @@ class ItemCard extends StatelessWidget {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(Icons.monetization_on, size: 12, color: AppTheme.primaryDark),
+                                Icon(Icons.monetization_on, size: 12, color: AppTheme.getPrimaryBackgroundFromContext(context)),
                                 const SizedBox(width: 4),
                                 Text(
                                   '${item['value']}',
                                   style: TextStyle(
-                                    color: AppTheme.primaryDark,
+                                    color: AppTheme.getPrimaryBackgroundFromContext(context),
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                     shadows: [
                                       Shadow(
-                                        color: AppTheme.accentGold.withOpacity(0.5),
+                                        color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.5),
                                         blurRadius: 2,
                                       ),
                                     ],
@@ -156,17 +156,17 @@ class ItemCard extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: AppTheme.accentGold.withOpacity(0.15),
+                          color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.15),
                           borderRadius: BorderRadius.circular(6),
                           border: Border.all(
-                            color: AppTheme.accentGold.withOpacity(0.4),
+                            color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.4),
                             width: 1,
                           ),
                         ),
                         child: Text(
                           item['effect'] ?? '',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppTheme.accentGold,
+                            color: AppTheme.getAccentGoldFromContext(context),
                             fontWeight: FontWeight.w600,
                           ),
                         ),

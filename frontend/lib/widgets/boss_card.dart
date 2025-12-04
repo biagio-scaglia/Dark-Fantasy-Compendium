@@ -33,15 +33,15 @@ class BossCard extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppTheme.accentGold,
-                AppTheme.accentDarkGold,
+                AppTheme.getAccentGoldFromContext(context),
+                AppTheme.getAccentDarkGoldFromContext(context),
                 AppTheme.accentCrimson.withOpacity(0.8),
               ],
               stops: const [0.0, 0.5, 1.0],
             ),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppTheme.accentGold.withOpacity(0.6),
+              color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.6),
               width: 2.5,
             ),
             boxShadow: [
@@ -51,7 +51,7 @@ class BossCard extends StatelessWidget {
                 offset: const Offset(0, 8),
               ),
               BoxShadow(
-                color: AppTheme.accentGold.withOpacity(0.3),
+                color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.3),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),

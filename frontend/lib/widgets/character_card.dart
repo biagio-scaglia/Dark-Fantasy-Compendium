@@ -23,14 +23,14 @@ class CharacterCard extends StatelessWidget {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: AppTheme.accentGold.withOpacity(0.2),
+                  color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppTheme.accentGold, width: 2),
+                  border: Border.all(color: AppTheme.getAccentGoldFromContext(context), width: 2),
                 ),
-                child: const Icon(
+                child: Icon(
                   FontAwesomeIcons.user,
                   size: 40,
-                  color: AppTheme.accentGold,
+                  color: AppTheme.getAccentGoldFromContext(context),
                 ),
               ),
               const SizedBox(width: 16),
@@ -39,7 +39,7 @@ class CharacterCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      character['name'] ?? 'Personaggio senza nome',
+                      character['name'] ?? 'Unnamed character',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 4),
@@ -53,8 +53,8 @@ class CharacterCard extends StatelessWidget {
                       children: [
                         if (character['level'] != null)
                           Chip(
-                            label: Text('Livello ${character['level']}'),
-                            backgroundColor: AppTheme.accentGold.withOpacity(0.2),
+                            label: Text('Level ${character['level']}'),
+                            backgroundColor: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                           ),
                         if (character['current_hit_points'] != null && character['max_hit_points'] != null)
                           Padding(

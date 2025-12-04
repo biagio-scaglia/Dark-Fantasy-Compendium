@@ -11,11 +11,11 @@ class EncyclopediaPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Encyclopedia'),
-        backgroundColor: AppTheme.primaryDark,
+        backgroundColor: AppTheme.getPrimaryBackgroundFromContext(context),
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: AppTheme.darkGradient,
+        decoration: BoxDecoration(
+          gradient: AppTheme.getBackgroundGradientFromContext(context),
         ),
         child: SafeArea(
           child: CustomScrollView(
@@ -34,12 +34,12 @@ class EncyclopediaPage extends StatelessWidget {
                       title: 'D&D Classes',
                       icon: FontAwesomeIcons.hatWizard,
                       route: '/dnd-classes',
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppTheme.accentGold,
-                          AppTheme.accentDarkGold,
+                          AppTheme.getAccentGoldFromContext(context),
+                          AppTheme.getAccentDarkGoldFromContext(context),
                         ],
                       ),
                     ),
@@ -47,12 +47,12 @@ class EncyclopediaPage extends StatelessWidget {
                       title: 'Races',
                       icon: FontAwesomeIcons.usersLine,
                       route: '/races',
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppTheme.accentBrown,
-                          AppTheme.primaryDark,
+                          AppTheme.getAccentBrownFromContext(context),
+                          AppTheme.getPrimaryBackgroundFromContext(context),
                         ],
                       ),
                     ),
@@ -60,11 +60,11 @@ class EncyclopediaPage extends StatelessWidget {
                       title: 'Spells',
                       icon: FontAwesomeIcons.wandSparkles,
                       route: '/spells',
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppTheme.accentGold,
+                          AppTheme.getAccentGoldFromContext(context),
                           AppTheme.accentCrimson,
                         ],
                       ),
@@ -73,12 +73,12 @@ class EncyclopediaPage extends StatelessWidget {
                       title: 'Abilities',
                       icon: FontAwesomeIcons.star,
                       route: '/abilities',
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
                           AppTheme.accentCrimson,
-                          AppTheme.accentGold,
+                          AppTheme.getAccentGoldFromContext(context),
                         ],
                       ),
                     ),
@@ -86,12 +86,12 @@ class EncyclopediaPage extends StatelessWidget {
                       title: 'Items',
                       icon: FontAwesomeIcons.box,
                       route: '/items',
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppTheme.accentGold,
-                          AppTheme.accentDarkGold,
+                          AppTheme.getAccentGoldFromContext(context),
+                          AppTheme.getAccentDarkGoldFromContext(context),
                         ],
                       ),
                     ),
@@ -99,11 +99,11 @@ class EncyclopediaPage extends StatelessWidget {
                       title: 'Maps',
                       icon: FontAwesomeIcons.map,
                       route: '/maps',
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppTheme.accentGold,
+                          AppTheme.getAccentGoldFromContext(context),
                           AppTheme.accentCrimson,
                         ],
                       ),
@@ -112,12 +112,12 @@ class EncyclopediaPage extends StatelessWidget {
                       title: 'Knights',
                       icon: FontAwesomeIcons.shieldHalved,
                       route: '/knights',
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppTheme.accentGold,
-                          AppTheme.accentBrown,
+                          AppTheme.getAccentGoldFromContext(context),
+                          AppTheme.getAccentBrownFromContext(context),
                         ],
                       ),
                     ),
@@ -125,12 +125,12 @@ class EncyclopediaPage extends StatelessWidget {
                       title: 'Weapons',
                       icon: FontAwesomeIcons.gavel,
                       route: '/weapons',
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppTheme.accentBrown,
-                          AppTheme.primaryDark,
+                          AppTheme.getAccentBrownFromContext(context),
+                          AppTheme.getPrimaryBackgroundFromContext(context),
                         ],
                       ),
                     ),
@@ -138,12 +138,12 @@ class EncyclopediaPage extends StatelessWidget {
                       title: 'Armor',
                       icon: FontAwesomeIcons.shield,
                       route: '/armors',
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppTheme.accentGold,
-                          AppTheme.accentBrown,
+                          AppTheme.getAccentGoldFromContext(context),
+                          AppTheme.getAccentBrownFromContext(context),
                         ],
                       ),
                     ),
@@ -151,12 +151,12 @@ class EncyclopediaPage extends StatelessWidget {
                       title: 'Bosses',
                       icon: FontAwesomeIcons.dragon,
                       route: '/bosses',
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
                           AppTheme.accentCrimson,
-                          AppTheme.accentBrown,
+                          AppTheme.getAccentBrownFromContext(context),
                         ],
                       ),
                     ),
@@ -164,12 +164,12 @@ class EncyclopediaPage extends StatelessWidget {
                       title: 'Factions',
                       icon: FontAwesomeIcons.chessRook,
                       route: '/factions',
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppTheme.accentDarkGold,
-                          AppTheme.accentBrown,
+                          AppTheme.getAccentDarkGoldFromContext(context),
+                          AppTheme.getAccentBrownFromContext(context),
                         ],
                       ),
                     ),
@@ -177,12 +177,12 @@ class EncyclopediaPage extends StatelessWidget {
                       title: 'Lore',
                       icon: FontAwesomeIcons.feather,
                       route: '/lores',
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppTheme.accentBrown,
-                          AppTheme.primaryDark,
+                          AppTheme.getAccentBrownFromContext(context),
+                          AppTheme.getPrimaryBackgroundFromContext(context),
                         ],
                       ),
                     ),
@@ -222,12 +222,12 @@ class _EncyclopediaCard extends StatelessWidget {
             gradient: gradient,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppTheme.accentGold.withOpacity(0.5),
+              color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.5),
               width: 2,
             ),
             boxShadow: [
               BoxShadow(
-                color: AppTheme.accentGold.withOpacity(0.2),
+                color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -239,28 +239,28 @@ class _EncyclopediaCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryDark.withOpacity(0.3),
+                  color: AppTheme.getPrimaryBackgroundFromContext(context).withOpacity(0.3),
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppTheme.accentGold.withOpacity(0.5),
+                    color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.5),
                     width: 2,
                   ),
                 ),
                 child: FaIcon(
                   icon,
                   size: 48,
-                  color: AppTheme.textPrimary,
+                  color: AppTheme.getTextPrimaryFromContext(context),
                 ),
               ),
               const SizedBox(height: 16),
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppTheme.textPrimary,
+                      color: AppTheme.getTextPrimaryFromContext(context),
                       fontWeight: FontWeight.bold,
                       shadows: [
                         Shadow(
-                          color: AppTheme.primaryDark.withOpacity(0.8),
+                          color: AppTheme.getPrimaryBackgroundFromContext(context).withOpacity(0.8),
                           blurRadius: 4,
                           offset: const Offset(1, 1),
                         ),

@@ -19,7 +19,7 @@ class LoreCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final card = Card(
       elevation: 8,
-      shadowColor: AppTheme.accentGold.withOpacity(0.3),
+      shadowColor: AppTheme.getAccentGoldFromContext(context).withOpacity(0.3),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -33,20 +33,20 @@ class LoreCard extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppTheme.secondaryDark,
-                AppTheme.primaryDark,
-                AppTheme.accentGold.withOpacity(0.15),
+                AppTheme.getSecondaryBackgroundFromContext(context),
+                AppTheme.getPrimaryBackgroundFromContext(context),
+                AppTheme.getAccentGoldFromContext(context).withOpacity(0.15),
               ],
               stops: const [0.0, 0.7, 1.0],
             ),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppTheme.accentGold.withOpacity(0.4),
+              color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.4),
               width: 2,
             ),
             boxShadow: [
               BoxShadow(
-                color: AppTheme.accentGold.withOpacity(0.2),
+                color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                 blurRadius: 12,
                 offset: const Offset(0, 6),
               ),
@@ -59,24 +59,24 @@ class LoreCard extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  gradient: AppTheme.goldGradient,
+                  gradient: AppTheme.getGoldGradientFromContext(context),
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                    color: AppTheme.accentGold.withOpacity(0.8),
+                    color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.8),
                     width: 2,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: AppTheme.accentGold.withOpacity(0.5),
+                      color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.5),
                       blurRadius: 6,
                       offset: const Offset(0, 3),
                     ),
                   ],
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.menu_book,
                   size: 24,
-                  color: AppTheme.primaryDark,
+                  color: AppTheme.getPrimaryBackgroundFromContext(context),
                 ),
               ),
               const SizedBox(width: 14),
@@ -89,7 +89,7 @@ class LoreCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         shadows: [
                           Shadow(
-                            color: AppTheme.primaryDark.withOpacity(0.8),
+                            color: AppTheme.getPrimaryBackgroundFromContext(context).withOpacity(0.8),
                             blurRadius: 3,
                             offset: const Offset(1, 1),
                           ),
@@ -102,18 +102,18 @@ class LoreCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            AppTheme.accentGold.withOpacity(0.3),
-                            AppTheme.accentDarkGold.withOpacity(0.2),
+                            AppTheme.getAccentGoldFromContext(context).withOpacity(0.3),
+                            AppTheme.getAccentDarkGoldFromContext(context).withOpacity(0.2),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(
-                          color: AppTheme.accentGold,
+                          color: AppTheme.getAccentGoldFromContext(context),
                           width: 1.5,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: AppTheme.accentGold.withOpacity(0.3),
+                            color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.3),
                             blurRadius: 3,
                             offset: const Offset(0, 1),
                           ),
@@ -121,13 +121,13 @@ class LoreCard extends StatelessWidget {
                       ),
                       child: Text(
                         lore['category'] ?? '',
-                        style: const TextStyle(
-                          color: AppTheme.accentGold,
+                        style: TextStyle(
+                          color: AppTheme.getAccentGoldFromContext(context),
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
                           shadows: [
                             Shadow(
-                              color: AppTheme.primaryDark,
+                              color: AppTheme.getPrimaryBackgroundFromContext(context),
                               blurRadius: 2,
                             ),
                           ],

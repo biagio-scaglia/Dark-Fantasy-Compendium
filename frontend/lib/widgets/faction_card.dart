@@ -15,18 +15,18 @@ class FactionCard extends StatelessWidget {
     this.animationDelay,
   });
 
-  Color _parseColor(String? colorString) {
-    if (colorString == null) return AppTheme.accentGold;
+  Color _parseColor(BuildContext context, String? colorString) {
+    if (colorString == null) return AppTheme.getAccentGoldFromContext(context);
     try {
       return Color(int.parse(colorString.replaceFirst('#', '0xFF')));
     } catch (e) {
-      return AppTheme.accentGold;
+      return AppTheme.getAccentGoldFromContext(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final factionColor = _parseColor(faction['color']);
+    final factionColor = _parseColor(context, faction['color']);
 
     final card = Card(
       elevation: 8,
@@ -44,8 +44,8 @@ class FactionCard extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppTheme.secondaryDark,
-                AppTheme.primaryDark,
+                AppTheme.getSecondaryBackgroundFromContext(context),
+                AppTheme.getPrimaryBackgroundFromContext(context),
                 factionColor.withOpacity(0.2),
               ],
               stops: const [0.0, 0.6, 1.0],
@@ -94,7 +94,7 @@ class FactionCard extends StatelessWidget {
                 child: Icon(
                   Icons.group,
                   size: 26,
-                  color: AppTheme.primaryDark,
+                  color: AppTheme.getPrimaryBackgroundFromContext(context),
                 ),
               ),
               const SizedBox(width: 14),
@@ -109,7 +109,7 @@ class FactionCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         shadows: [
                           Shadow(
-                            color: AppTheme.primaryDark.withOpacity(0.8),
+                            color: AppTheme.getPrimaryBackgroundFromContext(context).withOpacity(0.8),
                             blurRadius: 3,
                             offset: const Offset(1, 1),
                           ),

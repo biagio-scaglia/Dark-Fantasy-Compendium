@@ -176,21 +176,21 @@ class _KnightDetailPageState extends State<KnightDetailPage> {
             Text(
               knight!['title'] ?? '',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: AppTheme.accentGold,
+                color: AppTheme.getAccentGoldFromContext(context),
               ),
             ),
             const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: AppTheme.accentGold.withOpacity(0.2),
+                color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppTheme.accentGold),
+                border: Border.all(color: AppTheme.getAccentGoldFromContext(context)),
               ),
               child: Text(
-                'Livello ${knight!['level'] ?? 0}',
-                style: const TextStyle(
-                  color: AppTheme.accentGold,
+                'Level ${knight!['level'] ?? 0}',
+                style: TextStyle(
+                  color: AppTheme.getAccentGoldFromContext(context),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -224,14 +224,14 @@ class _KnightDetailPageState extends State<KnightDetailPage> {
               icon: Icons.dangerous,
               label: 'Attacco',
               value: '${knight!['attack'] ?? 0}',
-              color: AppTheme.accentGold,
+              color: AppTheme.getAccentGoldFromContext(context),
             ),
             const SizedBox(height: 12),
             _StatRow(
               icon: Icons.shield,
               label: 'Difesa',
               value: '${knight!['defense'] ?? 0}',
-              color: AppTheme.accentBrown,
+              color: AppTheme.getAccentBrownFromContext(context),
             ),
           ],
         ),
@@ -247,7 +247,7 @@ class _KnightDetailPageState extends State<KnightDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Descrizione',
+              'Description',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
@@ -270,12 +270,12 @@ class _KnightDetailPageState extends State<KnightDetailPage> {
           children: [
             Row(
               children: [
-                const Icon(Icons.menu_book, color: AppTheme.accentGold),
+                Icon(Icons.menu_book, color: AppTheme.getAccentGoldFromContext(context)),
                 const SizedBox(width: 8),
                 Text(
                   'Lore',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppTheme.accentGold,
+                    color: AppTheme.getAccentGoldFromContext(context),
                   ),
                 ),
               ],

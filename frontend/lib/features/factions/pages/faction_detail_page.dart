@@ -46,11 +46,11 @@ class _FactionDetailPageState extends State<FactionDetailPage> {
   }
 
   Color _parseColor(String? colorString) {
-    if (colorString == null) return AppTheme.accentGold;
+    if (colorString == null) return AppTheme.getAccentGoldFromContext(context);
     try {
       return Color(int.parse(colorString.replaceFirst('#', '0xFF')));
     } catch (e) {
-      return AppTheme.accentGold;
+      return AppTheme.getAccentGoldFromContext(context);
     }
   }
 
@@ -174,7 +174,7 @@ class _FactionDetailPageState extends State<FactionDetailPage> {
             end: Alignment.bottomRight,
             colors: [
               factionColor.withOpacity(0.3),
-              AppTheme.secondaryDark,
+              AppTheme.getSecondaryBackgroundFromContext(context),
             ],
           ),
           borderRadius: BorderRadius.circular(12),
@@ -226,7 +226,7 @@ class _FactionDetailPageState extends State<FactionDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Descrizione',
+              'Description',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
@@ -249,12 +249,12 @@ class _FactionDetailPageState extends State<FactionDetailPage> {
           children: [
             Row(
               children: [
-                const Icon(Icons.menu_book, color: AppTheme.accentGold),
+                Icon(Icons.menu_book, color: AppTheme.getAccentGoldFromContext(context)),
                 const SizedBox(width: 8),
                 Text(
                   'Lore',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppTheme.accentGold,
+                    color: AppTheme.getAccentGoldFromContext(context),
                   ),
                 ),
               ],

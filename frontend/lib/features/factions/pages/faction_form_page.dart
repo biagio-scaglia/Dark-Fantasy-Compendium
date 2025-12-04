@@ -198,7 +198,7 @@ class _FactionFormPageState extends State<FactionFormPage> {
               onPressed: _isLoading ? null : _save,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: AppTheme.accentGold,
+                backgroundColor: AppTheme.getAccentGoldFromContext(context),
               ),
               child: _isLoading
                   ? const CircularProgressIndicator()

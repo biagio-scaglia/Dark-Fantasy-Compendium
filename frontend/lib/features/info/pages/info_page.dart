@@ -13,11 +13,11 @@ class InfoPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Info'),
-        backgroundColor: AppTheme.primaryDark,
+        backgroundColor: AppTheme.getPrimaryBackgroundFromContext(context),
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: AppTheme.darkGradient,
+        decoration: BoxDecoration(
+          gradient: AppTheme.getBackgroundGradientFromContext(context),
         ),
         child: SafeArea(
           child: CustomScrollView(
@@ -28,7 +28,7 @@ class InfoPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildHeader(),
+                      _buildHeader(context),
                       const SizedBox(height: 32),
                       _buildVersionSection(),
                       const SizedBox(height: 24),
@@ -36,11 +36,11 @@ class InfoPage extends StatelessWidget {
                       const SizedBox(height: 24),
                       _buildLibrariesSection(),
                       const SizedBox(height: 24),
-                      _buildLicenseSection(),
+                      _buildLicenseSection(context),
                       const SizedBox(height: 24),
                       _buildThemeSection(context),
                       const SizedBox(height: 24),
-                      _buildExtraSection(),
+                      _buildExtraSection(context),
                       const SizedBox(height: 32),
                     ],
                   ),
@@ -53,24 +53,24 @@ class InfoPage extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Center(
       child: Column(
         children: [
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              gradient: AppTheme.medievalGradient,
+              gradient: AppTheme.getMedievalGradientFromContext(context),
               shape: BoxShape.circle,
               border: Border.all(
-                color: AppTheme.accentGold,
+                color: AppTheme.getAccentGoldFromContext(context),
                 width: 3,
               ),
             ),
-            child: const FaIcon(
+            child: FaIcon(
               FontAwesomeIcons.crown,
               size: 64,
-              color: AppTheme.accentGold,
+              color: AppTheme.getAccentGoldFromContext(context),
             ),
           ),
           const SizedBox(height: 16),
@@ -79,7 +79,7 @@ class InfoPage extends StatelessWidget {
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: AppTheme.textPrimary,
+              color: AppTheme.getTextPrimaryFromContext(context),
             ),
           ),
           const SizedBox(height: 8),
@@ -87,7 +87,7 @@ class InfoPage extends StatelessWidget {
             'D&D campaign manager and dark fantasy content library',
             style: TextStyle(
               fontSize: 16,
-              color: AppTheme.textSecondary,
+              color: AppTheme.getTextSecondaryFromContext(context),
             ),
           ),
         ],
@@ -173,23 +173,23 @@ class InfoPage extends StatelessWidget {
     );
   }
 
-  Widget _buildLicenseSection() {
+  Widget _buildLicenseSection(BuildContext context) {
     return _InfoCard(
       title: 'License',
       icon: FontAwesomeIcons.scaleBalanced,
       children: [
-        const Text(
+        Text(
           'MIT License',
           style: TextStyle(
-            color: AppTheme.textPrimary,
+            color: AppTheme.getTextPrimaryFromContext(context),
             fontSize: 16,
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'Contribute on GitHub',
           style: TextStyle(
-            color: AppTheme.accentGold,
+            color: AppTheme.getAccentGoldFromContext(context),
             fontSize: 14,
             decoration: TextDecoration.underline,
           ),
@@ -211,7 +211,7 @@ class InfoPage extends StatelessWidget {
               onChanged: (value) {
                 themeProvider.toggleTheme();
               },
-              activeColor: AppTheme.accentGold,
+              activeColor: AppTheme.getAccentGoldFromContext(context),
             ),
             const SizedBox(height: 8),
             Row(
@@ -243,15 +243,15 @@ class InfoPage extends StatelessWidget {
     );
   }
 
-  Widget _buildExtraSection() {
+  Widget _buildExtraSection(BuildContext context) {
     return _InfoCard(
       title: 'About',
       icon: FontAwesomeIcons.feather,
       children: [
-        const Text(
+        Text(
           'Dark Fantasy Compendium is a comprehensive tool for managing D&D campaigns and dark fantasy content. Track characters, parties, sessions, spells, items, maps, and more. Built for dungeon masters and players who want to organize their tabletop RPG experience.',
           style: TextStyle(
-            color: AppTheme.textSecondary,
+            color: AppTheme.getTextSecondaryFromContext(context),
             fontSize: 14,
             height: 1.5,
           ),
@@ -275,7 +275,7 @@ class _InfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppTheme.secondaryDark,
+      color: AppTheme.getSecondaryBackgroundFromContext(context),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -283,12 +283,12 @@ class _InfoCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                FaIcon(icon, color: AppTheme.accentGold, size: 20),
+                FaIcon(icon, color: AppTheme.getAccentGoldFromContext(context), size: 20),
                 const SizedBox(width: 8),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: AppTheme.textPrimary,
+                        color: AppTheme.getTextPrimaryFromContext(context),
                         fontWeight: FontWeight.bold,
                       ),
                 ),
@@ -319,15 +319,15 @@ class _InfoRow extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
-            color: AppTheme.textSecondary,
+          style: TextStyle(
+            color: AppTheme.getTextSecondaryFromContext(context),
             fontSize: 14,
           ),
         ),
         Text(
           value,
-          style: const TextStyle(
-            color: AppTheme.textPrimary,
+          style: TextStyle(
+            color: AppTheme.getTextPrimaryFromContext(context),
             fontSize: 14,
             fontWeight: FontWeight.bold,
           ),
@@ -355,28 +355,28 @@ class _InfoButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: AppTheme.primaryDark,
+          color: AppTheme.getPrimaryBackgroundFromContext(context),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: AppTheme.accentGold.withOpacity(0.3),
+            color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.3),
           ),
         ),
         child: Row(
           children: [
-            FaIcon(icon, color: AppTheme.accentGold, size: 20),
+            FaIcon(icon, color: AppTheme.getAccentGoldFromContext(context), size: 20),
             const SizedBox(width: 12),
             Text(
               label,
-              style: const TextStyle(
-                color: AppTheme.textPrimary,
+              style: TextStyle(
+                color: AppTheme.getTextPrimaryFromContext(context),
                 fontSize: 14,
               ),
             ),
             const Spacer(),
-            const Icon(
+            Icon(
               Icons.arrow_forward_ios,
               size: 16,
-              color: AppTheme.textSecondary,
+              color: AppTheme.getTextSecondaryFromContext(context),
             ),
           ],
         ),
@@ -407,13 +407,13 @@ class _ThemeOption extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppTheme.accentGold.withOpacity(0.2)
+              ? AppTheme.getAccentGoldFromContext(context).withOpacity(0.2)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: isSelected
-                ? AppTheme.accentGold
-                : AppTheme.textSecondary.withOpacity(0.3),
+                ? AppTheme.getAccentGoldFromContext(context)
+                : AppTheme.getTextSecondaryFromContext(context).withOpacity(0.3),
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -422,14 +422,14 @@ class _ThemeOption extends StatelessWidget {
           children: [
             FaIcon(
               icon,
-              color: isSelected ? AppTheme.accentGold : AppTheme.textSecondary,
+              color: isSelected ? AppTheme.getAccentGoldFromContext(context) : AppTheme.getTextSecondaryFromContext(context),
               size: 24,
             ),
             const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
-                color: isSelected ? AppTheme.accentGold : AppTheme.textSecondary,
+                color: isSelected ? AppTheme.getAccentGoldFromContext(context) : AppTheme.getTextSecondaryFromContext(context),
                 fontSize: 12,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),

@@ -91,7 +91,7 @@ class _SessionFormPageState extends State<SessionFormPage> {
       };
 
       if (widget.session != null && widget.session!['id'] != null) {
-        // Per aggiornare, dobbiamo aggiornare la campagna
+        // To update, we need to update the campaign
         final campaign = await apiService.getOne('campaigns', widget.campaignId);
         final sessions = List<Map<String, dynamic>>.from(campaign['sessions'] ?? []);
         final index = sessions.indexWhere((s) => s['id'] == widget.session!['id']);
@@ -106,7 +106,7 @@ class _SessionFormPageState extends State<SessionFormPage> {
           context.pop();
         }
       } else {
-        // Crea nuova sessione usando POST diretto
+        // Create new session using direct POST
         final baseUrl = apiService.baseUrl;
         final response = await http.post(
           Uri.parse('$baseUrl/campaigns/${widget.campaignId}/sessions'),
@@ -185,7 +185,7 @@ class _SessionFormPageState extends State<SessionFormPage> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Descrizione *'),
+              decoration: const InputDecoration(labelText: 'Description *'),
               maxLines: 3,
               validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
             ),
@@ -205,7 +205,7 @@ class _SessionFormPageState extends State<SessionFormPage> {
             ElevatedButton(
               onPressed: _isLoading ? null : _saveSession,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.accentGold,
+                backgroundColor: AppTheme.getAccentGoldFromContext(context),
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
               child: _isLoading

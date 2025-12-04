@@ -211,14 +211,14 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
           icon: Icons.trending_up,
           label: 'Bonus Attacco',
           value: '+${weapon!['attack_bonus'] ?? 0}',
-          color: AppTheme.accentGold,
+          color: AppTheme.getAccentGoldFromContext(context),
         ),
         const SizedBox(height: 8),
         _StatRow(
           icon: Icons.build,
           label: 'Durabilità',
           value: '${weapon!['durability'] ?? 0}%',
-          color: AppTheme.textSecondary,
+          color: AppTheme.getTextSecondaryFromContext(context),
         ),
       ],
     );
@@ -229,7 +229,7 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Descrizione',
+          'Description',
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 6),
@@ -247,12 +247,12 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
       children: [
         Row(
           children: [
-            const Icon(Icons.menu_book, size: 18, color: AppTheme.accentGold),
+            Icon(Icons.menu_book, size: 18, color: AppTheme.getAccentGoldFromContext(context)),
             const SizedBox(width: 6),
             Text(
               'Lore',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: AppTheme.accentGold,
+                color: AppTheme.getAccentGoldFromContext(context),
               ),
             ),
           ],

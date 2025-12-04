@@ -424,13 +424,13 @@ class _MainScaffoldWithNavBar extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              AppTheme.secondaryDark,
-              AppTheme.primaryDark,
+              AppTheme.getSecondaryBackgroundFromContext(context),
+              AppTheme.getPrimaryBackgroundFromContext(context),
             ],
           ),
           boxShadow: [
             BoxShadow(
-              color: AppTheme.accentGold.withOpacity(0.3),
+              color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.3),
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),
@@ -443,8 +443,8 @@ class _MainScaffoldWithNavBar extends StatelessWidget {
             onTap: _onTap,
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.transparent,
-            selectedItemColor: AppTheme.accentGold,
-            unselectedItemColor: AppTheme.textSecondary,
+            selectedItemColor: AppTheme.getAccentGoldFromContext(context),
+            unselectedItemColor: AppTheme.getTextSecondaryFromContext(context),
             elevation: 0,
             items: const [
               BottomNavigationBarItem(

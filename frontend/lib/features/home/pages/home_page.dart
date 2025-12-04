@@ -90,11 +90,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
-        backgroundColor: AppTheme.primaryDark,
+        backgroundColor: AppTheme.getPrimaryBackgroundFromContext(context),
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: AppTheme.darkGradient,
+        decoration: BoxDecoration(
+          gradient: AppTheme.getBackgroundGradientFromContext(context),
         ),
         child: _isLoading
             ? const Center(child: CircularProgressIndicator())
@@ -119,6 +119,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildWelcomeSection() {
+    final isLight = Theme.of(context).brightness == Brightness.light;
+    final goldColor = AppTheme.getAccentGoldFromContext(context);
+    final brownColor = AppTheme.getAccentBrownFromContext(context);
+    
     return SliverToBoxAdapter(
       child: AppAnimations.fadeSlideIn(
         duration: AppAnimations.longDuration,
@@ -128,15 +132,15 @@ class _HomePageState extends State<HomePage> {
           margin: const EdgeInsets.all(16),
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            gradient: AppTheme.medievalGradient,
+            gradient: AppTheme.getMedievalGradientFromContext(context),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: AppTheme.accentGold,
+              color: goldColor,
               width: 3,
             ),
             boxShadow: [
               BoxShadow(
-                color: AppTheme.accentGold.withOpacity(0.3),
+                color: goldColor.withOpacity(0.3),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
               ),
@@ -148,24 +152,63 @@ class _HomePageState extends State<HomePage> {
                 duration: AppAnimations.longDuration,
                 begin: 0.5,
                 curve: AppAnimations.bounceCurve,
-                child: const FaIcon(
-                  FontAwesomeIcons.crown,
-                  size: 64,
-                  color: AppTheme.accentGold,
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: isLight 
+                      ? Colors.white.withOpacity(0.25)
+                      : Colors.black.withOpacity(0.3),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: goldColor.withOpacity(0.5),
+                      width: 2,
+                    ),
+                  ),
+                  child: FaIcon(
+                    FontAwesomeIcons.crown,
+                    size: 64,
+                    color: isLight ? brownColor : goldColor,
+                  ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               Text(
                 'Welcome to Dark Fantasy Compendium',
-                style: Theme.of(context).textTheme.displayMedium,
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                  color: isLight 
+                    ? const Color(0xFF2C1810) // Marrone scuro per light mode
+                    : Colors.white,
+                  fontWeight: FontWeight.bold,
+                  shadows: [
+                    Shadow(
+                      color: isLight 
+                        ? Colors.white.withOpacity(0.8)
+                        : Colors.black.withOpacity(0.8),
+                      blurRadius: 4,
+                      offset: const Offset(1, 1),
+                    ),
+                  ],
+                ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               Text(
                 'Manage your D&D campaigns and dark fantasy content',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppTheme.textSecondary,
+                  color: isLight 
+                    ? const Color(0xFF4A3A2A) // Marrone medio per light mode
+                    : Colors.white70,
+                  fontWeight: FontWeight.w500,
+                  shadows: [
+                    Shadow(
+                      color: isLight 
+                        ? Colors.white.withOpacity(0.6)
+                        : Colors.black.withOpacity(0.6),
+                      blurRadius: 3,
+                      offset: const Offset(0.5, 0.5),
                     ),
+                  ],
+                ),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -188,9 +231,9 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: Row(
                     children: [
-                      const FaIcon(
+                      FaIcon(
                         FontAwesomeIcons.calendar,
-                        color: AppTheme.accentGold,
+                        color: AppTheme.getAccentGoldFromContext(context),
                         size: 20,
                       ),
                       const SizedBox(width: 8),
@@ -222,7 +265,7 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Card(
-                color: AppTheme.secondaryDark,
+                color: AppTheme.getSecondaryBackgroundFromContext(context),
                 child: const Padding(
                   padding: EdgeInsets.all(16),
                   child: Center(
@@ -261,7 +304,7 @@ class _HomePageState extends State<HomePage> {
       width: 280,
       margin: const EdgeInsets.only(right: 12),
       child: Card(
-        color: AppTheme.secondaryDark,
+        color: AppTheme.getSecondaryBackgroundFromContext(context),
         child: InkWell(
           onTap: () {
             if (session['campaign_id'] != null) {
@@ -279,10 +322,10 @@ class _HomePageState extends State<HomePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: AppTheme.accentGold.withOpacity(0.2),
+                        color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: AppTheme.accentGold,
+                          color: AppTheme.getAccentGoldFromContext(context),
                           width: 2,
                         ),
                       ),
@@ -291,8 +334,8 @@ class _HomePageState extends State<HomePage> {
                           sessionDate != null
                               ? DateFormat('dd').format(sessionDate)
                               : '?',
-                          style: const TextStyle(
-                            color: AppTheme.accentGold,
+                          style: TextStyle(
+                            color: AppTheme.getAccentGoldFromContext(context),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -316,7 +359,7 @@ class _HomePageState extends State<HomePage> {
                                   .textTheme
                                   .bodySmall
                                   ?.copyWith(
-                                    color: AppTheme.textSecondary,
+                                    color: AppTheme.getTextSecondaryFromContext(context),
                                   ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -331,7 +374,7 @@ class _HomePageState extends State<HomePage> {
                   Text(
                     DateFormat('dd MMMM yyyy', 'it_IT').format(sessionDate),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppTheme.accentGold,
+                          color: AppTheme.getAccentGoldFromContext(context),
                         ),
                   ),
                 ],
@@ -356,9 +399,9 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: Row(
                     children: [
-                      const FaIcon(
+                      FaIcon(
                         FontAwesomeIcons.flag,
-                        color: AppTheme.accentGold,
+                        color: AppTheme.getAccentGoldFromContext(context),
                         size: 20,
                       ),
                       const SizedBox(width: 8),
@@ -390,7 +433,7 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Card(
-                color: AppTheme.secondaryDark,
+                color: AppTheme.getSecondaryBackgroundFromContext(context),
                 child: const Padding(
                   padding: EdgeInsets.all(16),
                   child: Center(
@@ -415,9 +458,9 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
             child: Row(
               children: [
-                const FaIcon(
+                FaIcon(
                   FontAwesomeIcons.bolt,
-                  color: AppTheme.accentGold,
+                  color: AppTheme.getAccentGoldFromContext(context),
                   size: 20,
                 ),
                 const SizedBox(width: 8),
@@ -483,9 +526,9 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: Row(
                     children: [
-                      const FaIcon(
+                      FaIcon(
                         FontAwesomeIcons.book,
-                        color: AppTheme.accentGold,
+                        color: AppTheme.getAccentGoldFromContext(context),
                         size: 20,
                       ),
                       const SizedBox(width: 8),
@@ -556,9 +599,9 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
             child: Row(
               children: [
-                const FaIcon(
+                FaIcon(
                   FontAwesomeIcons.bell,
-                  color: AppTheme.accentGold,
+                  color: AppTheme.getAccentGoldFromContext(context),
                   size: 20,
                 ),
                 const SizedBox(width: 8),
@@ -575,13 +618,13 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Card(
-              color: AppTheme.secondaryDark,
-              child: const Padding(
-                padding: EdgeInsets.all(16),
+              color: AppTheme.getSecondaryBackgroundFromContext(context),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
                   child: Center(
                     child: Text(
                       'No notifications',
-                      style: TextStyle(color: AppTheme.textSecondary),
+                      style: TextStyle(color: AppTheme.getTextSecondaryFromContext(context)),
                     ),
                   ),
               ),
@@ -609,7 +652,7 @@ class _QuickActionButton extends StatelessWidget {
     return SizedBox(
       width: 100,
       child: Card(
-        color: AppTheme.secondaryDark,
+        color: AppTheme.getSecondaryBackgroundFromContext(context),
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(12),
@@ -620,7 +663,7 @@ class _QuickActionButton extends StatelessWidget {
               children: [
                 FaIcon(
                   icon,
-                  color: AppTheme.accentGold,
+                  color: AppTheme.getAccentGoldFromContext(context),
                   size: 32,
                 ),
                 const SizedBox(height: 8),
@@ -652,7 +695,7 @@ class _EncyclopediaQuickLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppTheme.secondaryDark,
+      color: AppTheme.getSecondaryBackgroundFromContext(context),
       child: InkWell(
         onTap: () => context.push(route),
         borderRadius: BorderRadius.circular(12),
@@ -663,7 +706,7 @@ class _EncyclopediaQuickLink extends StatelessWidget {
             children: [
               FaIcon(
                 icon,
-                color: AppTheme.accentGold,
+                color: AppTheme.getAccentGoldFromContext(context),
                 size: 20,
               ),
               const SizedBox(width: 8),

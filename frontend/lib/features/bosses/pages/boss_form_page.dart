@@ -247,7 +247,7 @@ class _BossFormPageState extends State<BossFormPage> {
             ElevatedButton(
               onPressed: _isLoading ? null : _saveBoss,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.accentGold,
+                backgroundColor: AppTheme.getAccentGoldFromContext(context),
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
               child: _isLoading

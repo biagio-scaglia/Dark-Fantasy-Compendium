@@ -6,14 +6,13 @@ class DndClass(BaseModel):
     id: int
     name: str
     description: str
-    hit_dice: str = Field(description="Dado vita (es. '1d8', '1d10')")
+    hit_dice: str = Field(description="Hit dice (e.g., '1d8', '1d10')")
     hit_points_at_1st_level: int = Field(ge=1)
-    hit_points_at_higher_levels: str = Field(description="Es. '1d8 (o 5) + modificatore di Costituzione'")
-    proficiencies: List[str] = Field(default_factory=list, description="Lista di competenze")
-    saving_throws: List[str] = Field(default_factory=list, description="Tiri salvezza (es. ['Forza', 'Costituzione'])")
+    hit_points_at_higher_levels: str = Field(description="e.g., '1d8 (or 5) + Constitution modifier'")
+    proficiencies: List[str] = Field(default_factory=list, description="List of proficiencies")
+    saving_throws: List[str] = Field(default_factory=list, description="Saving throws (e.g., ['Strength', 'Constitution'])")
     starting_equipment: List[str] = Field(default_factory=list)
-    class_features: List[str] = Field(default_factory=list, description="Caratteristiche di classe")
-    spellcasting_ability: Optional[str] = Field(None, description="Caratteristica per incantesimi (es. 'Saggezza')")
+    class_features: List[str] = Field(default_factory=list, description="Class features")
+    spellcasting_ability: Optional[str] = Field(None, description="Spellcasting ability (e.g., 'Wisdom')")
     image_url: Optional[str] = None
     icon_url: Optional[str] = None
-

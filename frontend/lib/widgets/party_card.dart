@@ -23,14 +23,14 @@ class PartyCard extends StatelessWidget {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: AppTheme.accentGold.withOpacity(0.2),
+                  color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppTheme.accentGold, width: 2),
+                  border: Border.all(color: AppTheme.getAccentGoldFromContext(context), width: 2),
                 ),
-                child: const Icon(
+                child: Icon(
                   FontAwesomeIcons.users,
                   size: 40,
-                  color: AppTheme.accentGold,
+                  color: AppTheme.getAccentGoldFromContext(context),
                 ),
               ),
               const SizedBox(width: 16),
@@ -39,7 +39,7 @@ class PartyCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      party['name'] ?? 'Party senza nome',
+                      party['name'] ?? 'Unnamed party',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 4),
@@ -55,8 +55,8 @@ class PartyCard extends StatelessWidget {
                       children: [
                         if (party['level'] != null)
                           Chip(
-                            label: Text('Livello ${party['level']}'),
-                            backgroundColor: AppTheme.accentGold.withOpacity(0.2),
+                            label: Text('Level ${party['level']}'),
+                            backgroundColor: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                           ),
                         if (party['characters'] != null)
                           Padding(

@@ -136,15 +136,15 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Nome *'),
-              validator: (value) => value?.isEmpty ?? true ? 'Inserisci un nome' : null,
+              decoration: const InputDecoration(labelText: 'Name *'),
+              validator: (value) => value?.isEmpty ?? true ? 'Enter a name' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Descrizione *'),
+              decoration: const InputDecoration(labelText: 'Description *'),
               maxLines: 5,
-              validator: (value) => value?.isEmpty ?? true ? 'Inserisci una descrizione' : null,
+              validator: (value) => value?.isEmpty ?? true ? 'Enter a description' : null,
             ),
             const SizedBox(height: 16),
             Row(
@@ -152,17 +152,17 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _hitDiceController,
-                    decoration: const InputDecoration(labelText: 'Dado Vita *'),
-                    validator: (value) => value?.isEmpty ?? true ? 'Inserisci il dado vita' : null,
+                    decoration: const InputDecoration(labelText: 'Hit Dice *'),
+                    validator: (value) => value?.isEmpty ?? true ? 'Enter hit dice' : null,
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: TextFormField(
                     controller: _hitPointsController,
-                    decoration: const InputDecoration(labelText: 'PV al 1° Livello *'),
+                    decoration: const InputDecoration(labelText: 'HP at 1st Level *'),
                     keyboardType: TextInputType.number,
-                    validator: (value) => value?.isEmpty ?? true ? 'Inserisci i punti vita' : null,
+                    validator: (value) => value?.isEmpty ?? true ? 'Enter hit points' : null,
                   ),
                 ),
               ],

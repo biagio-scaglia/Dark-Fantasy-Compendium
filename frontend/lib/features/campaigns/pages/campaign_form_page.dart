@@ -210,7 +210,7 @@ class _CampaignFormPageState extends State<CampaignFormPage> {
             ElevatedButton(
               onPressed: _isLoading ? null : _saveCampaign,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.accentGold,
+                backgroundColor: AppTheme.getAccentGoldFromContext(context),
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
               child: _isLoading

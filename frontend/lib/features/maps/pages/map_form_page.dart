@@ -138,21 +138,21 @@ class _MapFormPageState extends State<MapFormPage> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Nome *'),
-              validator: (value) => value?.isEmpty ?? true ? 'Inserisci un nome' : null,
+              decoration: const InputDecoration(labelText: 'Name *'),
+              validator: (value) => value?.isEmpty ?? true ? 'Enter a name' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Descrizione *'),
+              decoration: const InputDecoration(labelText: 'Description *'),
               maxLines: 3,
-              validator: (value) => value?.isEmpty ?? true ? 'Inserisci una descrizione' : null,
+              validator: (value) => value?.isEmpty ?? true ? 'Enter a description' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _imageUrlController,
-              decoration: const InputDecoration(labelText: 'URL Immagine *'),
-              validator: (value) => value?.isEmpty ?? true ? 'Inserisci un URL' : null,
+              decoration: const InputDecoration(labelText: 'Image URL *'),
+              validator: (value) => value?.isEmpty ?? true ? 'Enter a URL' : null,
             ),
             const SizedBox(height: 16),
             Row(
@@ -160,18 +160,18 @@ class _MapFormPageState extends State<MapFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _widthController,
-                    decoration: const InputDecoration(labelText: 'Larghezza *'),
+                    decoration: const InputDecoration(labelText: 'Width *'),
                     keyboardType: TextInputType.number,
-                    validator: (value) => value?.isEmpty ?? true ? 'Inserisci la larghezza' : null,
+                    validator: (value) => value?.isEmpty ?? true ? 'Enter width' : null,
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: TextFormField(
                     controller: _heightController,
-                    decoration: const InputDecoration(labelText: 'Altezza *'),
+                    decoration: const InputDecoration(labelText: 'Height *'),
                     keyboardType: TextInputType.number,
-                    validator: (value) => value?.isEmpty ?? true ? 'Inserisci l\'altezza' : null,
+                    validator: (value) => value?.isEmpty ?? true ? 'Enter height' : null,
                   ),
                 ),
               ],

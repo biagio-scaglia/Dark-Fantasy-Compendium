@@ -163,7 +163,7 @@ class _PartyDetailPageState extends State<PartyDetailPage> {
             if (party!['level'] != null)
               _buildInfoRow(
                 icon: FontAwesomeIcons.chartLine,
-                label: 'Livello',
+                label: 'Level',
                 value: '${party!['level']}',
               ),
             if (party!['experience_points'] != null)
@@ -189,7 +189,7 @@ class _PartyDetailPageState extends State<PartyDetailPage> {
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          FaIcon(icon, size: 20, color: AppTheme.accentGold),
+          FaIcon(icon, size: 20, color: AppTheme.getAccentGoldFromContext(context)),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -198,7 +198,7 @@ class _PartyDetailPageState extends State<PartyDetailPage> {
                 Text(
                   label,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppTheme.textSecondary,
+                    color: AppTheme.getTextSecondaryFromContext(context),
                   ),
                 ),
                 Text(

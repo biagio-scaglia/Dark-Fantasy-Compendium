@@ -366,7 +366,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
               onPressed: _isLoading ? null : _save,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: AppTheme.accentGold,
+                backgroundColor: AppTheme.getAccentGoldFromContext(context),
               ),
               child: _isLoading
                   ? const CircularProgressIndicator()
@@ -441,7 +441,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
               icon: const Icon(Icons.photo_library),
               label: Text(file != null ? 'Change $label' : 'Select $label'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.accentGold,
+                backgroundColor: AppTheme.getAccentGoldFromContext(context),
               ),
             ),
           ],

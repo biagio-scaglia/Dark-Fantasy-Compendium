@@ -165,7 +165,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                 icon: Icons.auto_awesome,
                 label: 'Effetto',
                 value: item!['effect'] ?? '',
-                color: AppTheme.accentGold,
+                color: AppTheme.getAccentGoldFromContext(context),
               ),
             if (item!['value'] != null && item!['value'] > 0) ...[
               const SizedBox(height: 12),
@@ -173,7 +173,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                 icon: Icons.monetization_on,
                 label: 'Valore',
                 value: '${item!['value']}',
-                color: AppTheme.gold,
+                color: AppTheme.getAccentGoldFromContext(context),
               ),
             ],
           ],
@@ -190,7 +190,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Descrizione',
+              'Description',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
@@ -213,12 +213,12 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
           children: [
             Row(
               children: [
-                const Icon(Icons.menu_book, color: AppTheme.accentGold),
+                Icon(Icons.menu_book, color: AppTheme.getAccentGoldFromContext(context)),
                 const SizedBox(width: 8),
                 Text(
                   'Lore',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppTheme.accentGold,
+                    color: AppTheme.getAccentGoldFromContext(context),
                   ),
                 ),
               ],

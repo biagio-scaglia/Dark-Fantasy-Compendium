@@ -23,14 +23,14 @@ class MapCard extends StatelessWidget {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: AppTheme.accentGold.withOpacity(0.2),
+                  color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppTheme.accentGold, width: 2),
+                  border: Border.all(color: AppTheme.getAccentGoldFromContext(context), width: 2),
                 ),
-                child: const Icon(
+                child: Icon(
                   FontAwesomeIcons.map,
                   size: 40,
-                  color: AppTheme.accentGold,
+                  color: AppTheme.getAccentGoldFromContext(context),
                 ),
               ),
               const SizedBox(width: 16),
@@ -39,7 +39,7 @@ class MapCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      map['name'] ?? 'Mappa senza nome',
+                      map['name'] ?? 'Unnamed map',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 4),
@@ -55,7 +55,7 @@ class MapCard extends StatelessWidget {
                         if (map['markers'] != null)
                           Chip(
                             label: Text('${(map['markers'] as List).length} marcatori'),
-                            backgroundColor: AppTheme.accentGold.withOpacity(0.2),
+                            backgroundColor: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                           ),
                         if (map['width'] != null && map['height'] != null)
                           Padding(

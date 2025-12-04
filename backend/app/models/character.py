@@ -7,10 +7,10 @@ class Character(BaseModel):
     name: str
     player_name: Optional[str] = None
     level: int = Field(ge=1, le=20, default=1)
-    class_id: int = Field(description="ID della classe D&D")
-    race_id: int = Field(description="ID della razza")
+    class_id: int = Field(description="D&D class ID")
+    race_id: int = Field(description="Race ID")
     background: Optional[str] = None
-    alignment: Optional[str] = Field(None, description="Allineamento (es. 'Legale Buono')")
+    alignment: Optional[str] = Field(None, description="Alignment (e.g., 'Lawful Good')")
     
     # Ability Scores
     strength: int = Field(ge=1, le=30, default=10)
@@ -37,14 +37,14 @@ class Character(BaseModel):
     
     # Equipment
     equipment: List[str] = Field(default_factory=list)
-    weapons: List[int] = Field(default_factory=list, description="IDs delle armi")
-    armors: List[int] = Field(default_factory=list, description="IDs delle armature")
-    items: List[int] = Field(default_factory=list, description="IDs degli oggetti")
+    weapons: List[int] = Field(default_factory=list, description="Weapon IDs")
+    armors: List[int] = Field(default_factory=list, description="Armor IDs")
+    items: List[int] = Field(default_factory=list, description="Item IDs")
     
     # Spells
-    known_spells: List[int] = Field(default_factory=list, description="IDs degli incantesimi conosciuti")
-    prepared_spells: List[int] = Field(default_factory=list, description="IDs degli incantesimi preparati")
-    spell_slots: Dict[str, int] = Field(default_factory=dict, description="Slot incantesimi per livello")
+    known_spells: List[int] = Field(default_factory=list, description="Known spell IDs")
+    prepared_spells: List[int] = Field(default_factory=list, description="Prepared spell IDs")
+    spell_slots: Dict[str, int] = Field(default_factory=dict, description="Spell slots by level")
     
     # Experience
     experience_points: int = Field(ge=0, default=0)
@@ -54,4 +54,3 @@ class Character(BaseModel):
     backstory: Optional[str] = None
     image_url: Optional[str] = None
     icon_url: Optional[str] = None
-

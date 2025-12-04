@@ -258,13 +258,13 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Nome *'),
+              decoration: const InputDecoration(labelText: 'Name *'),
               validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _playerNameController,
-              decoration: const InputDecoration(labelText: 'Nome Giocatore'),
+              decoration: const InputDecoration(labelText: 'Player Name'),
             ),
             const SizedBox(height: 16),
             Row(
@@ -272,12 +272,12 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _levelController,
-                    decoration: const InputDecoration(labelText: 'Livello *'),
+                    decoration: const InputDecoration(labelText: 'Level *'),
                     keyboardType: TextInputType.number,
                     validator: (v) {
                       final level = int.tryParse(v ?? '');
                       if (level == null || level < 1 || level > 20) {
-                        return 'Livello tra 1 e 20';
+                        return 'Level between 1 and 20';
                       }
                       return null;
                     },
@@ -431,7 +431,7 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
             ElevatedButton(
               onPressed: _isLoading ? null : _saveCharacter,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.accentGold,
+                backgroundColor: AppTheme.getAccentGoldFromContext(context),
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
               child: _isLoading

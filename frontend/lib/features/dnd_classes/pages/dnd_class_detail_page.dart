@@ -165,13 +165,13 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
             if (dndClass!['hit_dice'] != null)
               _buildInfoRow(
                 icon: FontAwesomeIcons.dice,
-                label: 'Dado Vita',
+                label: 'Hit Dice',
                 value: dndClass!['hit_dice'],
               ),
             if (dndClass!['hit_points_at_1st_level'] != null)
               _buildInfoRow(
                 icon: FontAwesomeIcons.heart,
-                label: 'Punti Vita al 1° Livello',
+                label: 'Hit Points at 1st Level',
                 value: '${dndClass!['hit_points_at_1st_level']}',
               ),
             if (dndClass!['spellcasting_ability'] != null)
@@ -191,7 +191,7 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          FaIcon(icon, size: 20, color: AppTheme.accentGold),
+          FaIcon(icon, size: 20, color: AppTheme.getAccentGoldFromContext(context)),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -200,7 +200,7 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
                 Text(
                   label,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppTheme.textSecondary,
+                    color: AppTheme.getTextSecondaryFromContext(context),
                   ),
                 ),
                 Text(
@@ -227,7 +227,7 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
         ...items.map((item) => Card(
           margin: const EdgeInsets.only(bottom: 4),
           child: ListTile(
-            leading: const FaIcon(FontAwesomeIcons.check, size: 16, color: AppTheme.accentGold),
+            leading: FaIcon(FontAwesomeIcons.check, size: 16, color: AppTheme.getAccentGoldFromContext(context)),
             title: Text(item.toString()),
           ),
         )),

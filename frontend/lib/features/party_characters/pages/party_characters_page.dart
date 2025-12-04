@@ -13,7 +13,7 @@ class PartyCharactersPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Party & Characters'),
-          backgroundColor: AppTheme.primaryDark,
+          backgroundColor: AppTheme.getPrimaryBackgroundFromContext(context),
           bottom: const TabBar(
             tabs: [
               Tab(
@@ -28,8 +28,8 @@ class PartyCharactersPage extends StatelessWidget {
           ),
         ),
         body: Container(
-          decoration: const BoxDecoration(
-            gradient: AppTheme.darkGradient,
+          decoration: BoxDecoration(
+            gradient: AppTheme.getBackgroundGradientFromContext(context),
           ),
           child: const TabBarView(
             children: [
@@ -59,7 +59,7 @@ class _PartiesTab extends StatelessWidget {
                   FaIcon(
                     FontAwesomeIcons.users,
                     size: 64,
-                    color: AppTheme.accentGold,
+                    color: AppTheme.getAccentGoldFromContext(context),
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -70,7 +70,7 @@ class _PartiesTab extends StatelessWidget {
                   Text(
                     'Create and manage character groups',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppTheme.textSecondary,
+                          color: AppTheme.getTextSecondaryFromContext(context),
                         ),
                   ),
                   const SizedBox(height: 24),
@@ -79,8 +79,8 @@ class _PartiesTab extends StatelessWidget {
                     icon: const FaIcon(FontAwesomeIcons.users),
                     label: const Text('View Parties'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.accentGold,
-                      foregroundColor: AppTheme.primaryDark,
+                      backgroundColor: AppTheme.getAccentGoldFromContext(context),
+                      foregroundColor: AppTheme.getPrimaryBackgroundFromContext(context),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24,
                         vertical: 12,
@@ -113,7 +113,7 @@ class _CharactersTab extends StatelessWidget {
                   FaIcon(
                     FontAwesomeIcons.userLarge,
                     size: 64,
-                    color: AppTheme.accentGold,
+                    color: AppTheme.getAccentGoldFromContext(context),
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -124,7 +124,7 @@ class _CharactersTab extends StatelessWidget {
                   Text(
                     'Create and manage characters for your campaigns',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppTheme.textSecondary,
+                          color: AppTheme.getTextSecondaryFromContext(context),
                         ),
                   ),
                   const SizedBox(height: 24),
@@ -133,8 +133,8 @@ class _CharactersTab extends StatelessWidget {
                     icon: const FaIcon(FontAwesomeIcons.userLarge),
                     label: const Text('View Characters'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.accentGold,
-                      foregroundColor: AppTheme.primaryDark,
+                      backgroundColor: AppTheme.getAccentGoldFromContext(context),
+                      foregroundColor: AppTheme.getPrimaryBackgroundFromContext(context),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24,
                         vertical: 12,

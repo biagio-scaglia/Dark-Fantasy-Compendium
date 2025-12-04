@@ -109,9 +109,9 @@ class _BossDetailPageState extends State<BossDetailPage> {
   Widget _buildHeader() {
     return Card(
       child: Container(
-        decoration: const BoxDecoration(
-          gradient: AppTheme.goldGradient,
-          borderRadius: BorderRadius.all(Radius.circular(12)),
+        decoration: BoxDecoration(
+          gradient: AppTheme.getGoldGradientFromContext(context),
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -142,7 +142,7 @@ class _BossDetailPageState extends State<BossDetailPage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  'Livello ${boss!['level'] ?? 0}',
+                  'Level ${boss!['level'] ?? 0}',
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -177,14 +177,14 @@ class _BossDetailPageState extends State<BossDetailPage> {
               icon: Icons.dangerous,
               label: 'Attacco',
               value: '${boss!['attack'] ?? 0}',
-              color: AppTheme.accentGold,
+              color: AppTheme.getAccentGoldFromContext(context),
             ),
             const SizedBox(height: 12),
             _StatRow(
               icon: Icons.shield,
               label: 'Difesa',
               value: '${boss!['defense'] ?? 0}',
-              color: AppTheme.accentBrown,
+              color: AppTheme.getAccentBrownFromContext(context),
             ),
           ],
         ),
@@ -200,7 +200,7 @@ class _BossDetailPageState extends State<BossDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Descrizione',
+              'Description',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
@@ -223,12 +223,12 @@ class _BossDetailPageState extends State<BossDetailPage> {
           children: [
             Row(
               children: [
-                const Icon(Icons.menu_book, color: AppTheme.accentGold),
+                Icon(Icons.menu_book, color: AppTheme.getAccentGoldFromContext(context)),
                 const SizedBox(width: 8),
                 Text(
                   'Lore',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppTheme.accentGold,
+                    color: AppTheme.getAccentGoldFromContext(context),
                   ),
                 ),
               ],
@@ -254,12 +254,12 @@ class _BossDetailPageState extends State<BossDetailPage> {
           children: [
             Row(
               children: [
-                const Icon(Icons.star, color: AppTheme.gold),
+                Icon(Icons.star, color: AppTheme.getAccentGoldFromContext(context)),
                 const SizedBox(width: 8),
                 Text(
                   'Ricompense',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppTheme.gold,
+                    color: AppTheme.getAccentGoldFromContext(context),
                   ),
                 ),
               ],
@@ -270,7 +270,7 @@ class _BossDetailPageState extends State<BossDetailPage> {
               children: rewards.map<Widget>((rewardId) {
                 return Chip(
                   label: Text('Item #$rewardId'),
-                  backgroundColor: AppTheme.gold.withOpacity(0.2),
+                  backgroundColor: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
                 );
               }).toList(),
             ),
@@ -315,7 +315,7 @@ class _HealthBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(4),
           child: LinearProgressIndicator(
             value: percentage,
-            backgroundColor: AppTheme.secondaryDark,
+            backgroundColor: AppTheme.getSecondaryBackgroundFromContext(context),
             valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.accentCrimson),
             minHeight: 12,
           ),
