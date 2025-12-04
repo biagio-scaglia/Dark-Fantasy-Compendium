@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/knight_service.dart';
+import '../../../data/models/knight.dart';
 import '../../../core/theme/app_theme.dart';
 import 'knight_form_page.dart';
 
@@ -18,6 +18,7 @@ class _KnightDetailPageState extends State<KnightDetailPage> {
   Map<String, dynamic>? knight;
   bool isLoading = true;
   String? error;
+  final KnightService _service = KnightService();
 
   @override
   void initState() {
@@ -32,12 +33,34 @@ class _KnightDetailPageState extends State<KnightDetailPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('knights', widget.knightId);
-      setState(() {
-        knight = data;
-        isLoading = false;
-      });
+      final knightData = await _service.getById(widget.knightId);
+      if (knightData != null) {
+        setState(() {
+          knight = {
+            'id': knightData.id,
+            'name': knightData.name,
+            'title': knightData.title,
+            'faction_id': knightData.factionId,
+            'level': knightData.level,
+            'health': knightData.health,
+            'max_health': knightData.maxHealth,
+            'attack': knightData.attack,
+            'defense': knightData.defense,
+            'weapon_id': knightData.weaponId,
+            'armor_id': knightData.armorId,
+            'description': knightData.description,
+            'lore': knightData.lore,
+            'image_path': knightData.imagePath,
+            'icon_path': knightData.iconPath,
+          };
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          error = 'Knight not found';
+          isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() {
         error = e.toString();
@@ -69,13 +92,19 @@ class _KnightDetailPageState extends State<KnightDetailPage> {
     if (confirmed != true) return;
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      await apiService.delete('knights', widget.knightId);
-      if (mounted) {
+      final deleted = await _service.delete(widget.knightId);
+      if (deleted && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Knight deleted successfully')),
         );
         context.go('/knights');
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error: Failed to delete knight'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } catch (e) {
       if (mounted) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/party_service.dart';
+import '../../../data/models/party.dart';
 import '../../../core/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'party_form_page.dart';
@@ -19,6 +19,7 @@ class _PartyDetailPageState extends State<PartyDetailPage> {
   Map<String, dynamic>? party;
   bool isLoading = true;
   String? error;
+  final PartyService _service = PartyService();
 
   @override
   void initState() {
@@ -33,11 +34,16 @@ class _PartyDetailPageState extends State<PartyDetailPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('parties', widget.partyId);
-      if (mounted) {
+      final partyData = await _service.getById(widget.partyId);
+      if (partyData != null && mounted) {
+        final data = partyData.toJson();
         setState(() {
           party = data;
+          isLoading = false;
+        });
+      } else if (mounted) {
+        setState(() {
+          error = 'Party not found';
           isLoading = false;
         });
       }
@@ -74,13 +80,19 @@ class _PartyDetailPageState extends State<PartyDetailPage> {
     if (confirmed != true) return;
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      await apiService.delete('parties', widget.partyId);
-      if (mounted) {
+      final deleted = await _service.delete(widget.partyId);
+      if (deleted && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Party deleted successfully')),
         );
         context.go('/parties');
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error: Failed to delete party'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } catch (e) {
       if (mounted) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/map_service.dart';
+import '../../../data/models/map_model.dart';
 
 class MapFormPage extends StatefulWidget {
   final Map<String, dynamic>? map;
@@ -21,6 +21,7 @@ class _MapFormPageState extends State<MapFormPage> {
   late TextEditingController _heightController;
   late TextEditingController _notesController;
   bool _isLoading = false;
+  final MapService _service = MapService();
 
   @override
   void initState() {
@@ -41,9 +42,15 @@ class _MapFormPageState extends State<MapFormPage> {
 
   Future<void> _loadMap() async {
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('maps', widget.map!['id']);
-      _populateFields(data);
+      final mapData = await _service.getById(widget.map!['id']);
+      if (mapData != null) {
+        final data = mapData.toJson();
+        _populateFields(data);
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Map not found'), backgroundColor: Colors.red),
+        );
+      }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -56,7 +63,7 @@ class _MapFormPageState extends State<MapFormPage> {
   void _populateFields(Map<String, dynamic> mapData) {
     _nameController.text = mapData['name'] ?? '';
     _descriptionController.text = mapData['description'] ?? '';
-    _imageUrlController.text = mapData['image_url'] ?? '';
+    _imageUrlController.text = mapData['image_path'] ?? mapData['image_url'] ?? '';
     _widthController.text = mapData['width']?.toString() ?? '1000';
     _heightController.text = mapData['height']?.toString() ?? '1000';
     _notesController.text = mapData['notes'] ?? '';
@@ -68,28 +75,32 @@ class _MapFormPageState extends State<MapFormPage> {
     setState(() => _isLoading = true);
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final mapData = {
-        'name': _nameController.text,
-        'description': _descriptionController.text,
-        'image_url': _imageUrlController.text,
-        'width': int.parse(_widthController.text),
-        'height': int.parse(_heightController.text),
-        'notes': _notesController.text,
-        'markers': [],
-        'layers': [],
-      };
+      final mapModel = MapModel(
+        id: widget.map?['id'] ?? 0,
+        name: _nameController.text,
+        description: _descriptionController.text.isEmpty ? null : _descriptionController.text,
+        imagePath: _imageUrlController.text.isEmpty ? null : _imageUrlController.text,
+        width: int.tryParse(_widthController.text) ?? 1000,
+        height: int.tryParse(_heightController.text) ?? 1000,
+        notes: _notesController.text.isEmpty ? null : _notesController.text,
+        markers: [],
+        layers: [],
+      );
 
       if (widget.map != null && widget.map!['id'] != null) {
-        await apiService.update('maps', widget.map!['id'], mapData);
-        if (mounted) {
+        final updated = await _service.update(mapModel);
+        if (updated != null && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Map updated successfully')),
           );
           context.pop();
+        } else if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Error: Failed to update map'), backgroundColor: Colors.red),
+          );
         }
       } else {
-        await apiService.create('maps', mapData);
+        final created = await _service.create(mapModel);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Map created successfully')),

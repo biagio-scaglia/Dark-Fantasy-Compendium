@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/map_service.dart';
+import '../../../data/models/map_model.dart';
 import '../../../core/theme/app_theme.dart';
 import 'map_form_page.dart';
 
@@ -18,6 +18,7 @@ class _MapDetailPageState extends State<MapDetailPage> {
   Map<String, dynamic>? map;
   bool isLoading = true;
   String? error;
+  final MapService _service = MapService();
 
   @override
   void initState() {
@@ -32,12 +33,19 @@ class _MapDetailPageState extends State<MapDetailPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('maps', widget.mapId);
-      setState(() {
-        map = data;
-        isLoading = false;
-      });
+      final mapData = await _service.getById(widget.mapId);
+      if (mapData != null) {
+        final data = mapData.toJson();
+        setState(() {
+          map = data;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          error = 'Map not found';
+          isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() {
         error = e.toString();

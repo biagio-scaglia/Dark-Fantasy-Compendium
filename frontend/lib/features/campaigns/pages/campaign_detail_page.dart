@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/campaign_service.dart';
+import '../../../data/models/campaign.dart';
 import '../../../core/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -20,6 +20,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
   List<dynamic> sessions = [];
   bool isLoading = true;
   String? error;
+  final CampaignService _service = CampaignService();
 
   @override
   void initState() {
@@ -35,12 +36,19 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('campaigns', widget.campaignId);
-      setState(() {
-        campaign = data;
-        isLoading = false;
-      });
+      final campaignData = await _service.getById(widget.campaignId);
+      if (campaignData != null) {
+        final data = campaignData.toJson();
+        setState(() {
+          campaign = data;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          error = 'Campaign not found';
+          isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() {
         error = e.toString();
@@ -51,11 +59,12 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
 
   Future<void> _loadSessions() async {
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('campaigns/${widget.campaignId}/sessions');
-      setState(() {
-        sessions = data;
-      });
+      final campaignData = await _service.getById(widget.campaignId);
+      if (campaignData != null && campaignData.sessions != null) {
+        setState(() {
+          sessions = campaignData.sessions!;
+        });
+      }
     } catch (e) {
       // Ignora errori per le sessioni
     }

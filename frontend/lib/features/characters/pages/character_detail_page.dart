@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/character_service.dart';
+import '../../../data/models/character.dart';
 import '../../../services/pdf_export_service.dart';
 import '../../../core/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,6 +19,7 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
   Map<String, dynamic>? character;
   bool isLoading = true;
   String? error;
+  final CharacterService _service = CharacterService();
 
   @override
   void initState() {
@@ -34,11 +35,17 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('characters', widget.characterId);
-      if (mounted) {
+      final characterData = await _service.getById(widget.characterId);
+      if (characterData != null && mounted) {
+        // Convert Character to Map for display
+        final data = characterData.toJson();
         setState(() {
           character = data;
+          isLoading = false;
+        });
+      } else if (mounted) {
+        setState(() {
+          error = 'Character not found';
           isLoading = false;
         });
       }
@@ -54,8 +61,7 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
 
   Future<void> _exportPdf() async {
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final pdfService = PdfExportService(apiService);
+      final pdfService = PdfExportService();
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

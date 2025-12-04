@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
-import '../../../services/api_service.dart';
+import '../../../data/services/campaign_service.dart';
+import '../../../data/models/campaign.dart';
 import '../../../core/theme/app_theme.dart';
 
 class SessionFormPage extends StatefulWidget {
@@ -27,6 +25,7 @@ class _SessionFormPageState extends State<SessionFormPage> {
   DateTime _selectedDate = DateTime.now();
   bool _isLoading = false;
   bool _isLoadingData = false;
+  final CampaignService _service = CampaignService();
 
   @override
   void initState() {
@@ -80,51 +79,60 @@ class _SessionFormPageState extends State<SessionFormPage> {
     setState(() => _isLoading = true);
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
+      final campaignData = await _service.getById(widget.campaignId);
+      if (campaignData == null) {
+        throw Exception('Campaign not found');
+      }
+
       final sessionData = {
+        'id': widget.session?['id'] ?? DateTime.now().millisecondsSinceEpoch,
         'date': _dateController.text,
         'title': _titleController.text,
         'description': _descriptionController.text,
         'notes': _notesController.text.isEmpty ? null : _notesController.text,
-        'experience_awarded': int.parse(_xpController.text),
+        'experience_awarded': int.tryParse(_xpController.text) ?? 0,
         'characters_present': [],
       };
 
+      final sessions = List<Map<String, dynamic>>.from(campaignData.sessions ?? []);
+
       if (widget.session != null && widget.session!['id'] != null) {
-        // To update, we need to update the campaign
-        final campaign = await apiService.getOne('campaigns', widget.campaignId);
-        final sessions = List<Map<String, dynamic>>.from(campaign['sessions'] ?? []);
+        // Update existing session
         final index = sessions.indexWhere((s) => s['id'] == widget.session!['id']);
         if (index != -1) {
           sessions[index] = {...sessions[index], ...sessionData};
-          await apiService.update('campaigns', widget.campaignId, {'sessions': sessions});
-        }
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Session updated!'), backgroundColor: Colors.green),
-          );
-          context.pop();
         }
       } else {
-        // Create new session using direct POST
-        final baseUrl = apiService.baseUrl;
-        final response = await http.post(
-          Uri.parse('$baseUrl/campaigns/${widget.campaignId}/sessions'),
-          headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(sessionData),
+        // Create new session
+        sessions.add(sessionData);
+      }
+
+      // Update campaign with new sessions list
+      final updatedCampaign = Campaign(
+        id: campaignData.id,
+        name: campaignData.name,
+        description: campaignData.description,
+        dungeonMaster: campaignData.dungeonMaster,
+        players: campaignData.players,
+        characterIds: campaignData.characterIds,
+        sessions: sessions,
+        currentLevel: campaignData.currentLevel,
+        setting: campaignData.setting,
+        notes: campaignData.notes,
+        imagePath: campaignData.imagePath,
+        iconPath: campaignData.iconPath,
+      );
+
+      final updated = await _service.update(updatedCampaign);
+      if (updated != null && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Session saved!'), backgroundColor: Colors.green),
         );
-        
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Session created!'), backgroundColor: Colors.green),
-            );
-            context.pop();
-          }
-        } else {
-          final errorBody = response.body;
-          throw Exception('Error creating session (${response.statusCode}): $errorBody');
-        }
+        context.pop();
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error: Failed to save session'), backgroundColor: Colors.red),
+        );
       }
     } catch (e) {
       if (mounted) {

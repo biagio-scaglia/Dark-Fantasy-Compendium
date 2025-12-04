@@ -272,7 +272,9 @@ class _IconPickerWidgetState extends State<IconPickerWidget> {
                           border: Border.all(
                             color: isSelected
                                 ? AppTheme.getAccentGoldFromContext(context)
-                                : AppTheme.getBorderFromContext(context),
+                                : (Theme.of(context).brightness == Brightness.light
+                                    ? AppTheme.lightBorder
+                                    : AppTheme.darkBorder),
                             width: isSelected ? 2 : 1,
                           ),
                           boxShadow: isSelected

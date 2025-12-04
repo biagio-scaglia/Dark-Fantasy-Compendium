@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/faction_service.dart';
+import '../../../data/models/faction.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/icon_picker_widget.dart';
 
@@ -25,6 +25,7 @@ class _FactionFormPageState extends State<FactionFormPage> {
   bool _isLoading = false;
   bool _isLoadingData = false;
   Map<String, dynamic>? _factionData;
+  final FactionService _service = FactionService();
 
   @override
   void initState() {
@@ -46,13 +47,30 @@ class _FactionFormPageState extends State<FactionFormPage> {
   Future<void> _loadFaction() async {
     setState(() => _isLoadingData = true);
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('factions', widget.faction!['id']);
-      setState(() {
-        _factionData = data;
-        _populateFields(data);
-        _isLoadingData = false;
-      });
+      final factionData = await _service.getById(widget.faction!['id']);
+      if (factionData != null) {
+        final data = {
+          'id': factionData.id,
+          'name': factionData.name,
+          'description': factionData.description,
+          'lore': factionData.lore,
+          'color': factionData.color,
+          'image_path': factionData.imagePath,
+          'icon_path': factionData.iconPath,
+        };
+        setState(() {
+          _factionData = data;
+          _populateFields(data);
+          _isLoadingData = false;
+        });
+      } else {
+        setState(() => _isLoadingData = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Faction not found'), backgroundColor: Colors.red),
+          );
+        }
+      }
     } catch (e) {
       setState(() => _isLoadingData = false);
       if (mounted) {
@@ -68,8 +86,8 @@ class _FactionFormPageState extends State<FactionFormPage> {
     _descriptionController.text = faction['description'] ?? '';
     _loreController.text = faction['lore'] ?? '';
     _colorController.text = faction['color'] ?? '#8B0000';
-    _imageUrlController.text = faction['image_url'] ?? '';
-    _iconUrlController.text = faction['icon_url'] ?? '';
+    _imageUrlController.text = faction['image_path'] ?? faction['image_url'] ?? '';
+    _iconUrlController.text = faction['icon_path'] ?? faction['icon_url'] ?? '';
   }
 
   @override
@@ -89,32 +107,36 @@ class _FactionFormPageState extends State<FactionFormPage> {
     setState(() => _isLoading = true);
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = {
-        'name': _nameController.text,
-        'description': _descriptionController.text,
-        'lore': _loreController.text.isEmpty ? null : _loreController.text,
-        'color': _colorController.text,
-        'image_url': _imageUrlController.text.isEmpty ? null : _imageUrlController.text,
-        'icon_url': _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
-      };
+      final faction = Faction(
+        id: widget.faction?['id'] ?? _factionData?['id'] ?? 0,
+        name: _nameController.text,
+        description: _descriptionController.text,
+        lore: _loreController.text.isEmpty ? null : _loreController.text,
+        color: _colorController.text,
+        imagePath: _imageUrlController.text.isEmpty ? null : _imageUrlController.text,
+        iconPath: _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
+      );
 
       final factionId = widget.faction?['id'] ?? _factionData?['id'];
       if (factionId != null) {
-        await apiService.update('factions', factionId, data);
-        if (mounted) {
+        final updated = await _service.update(faction);
+        if (updated != null && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Faction updated successfully')),
           );
           context.go('/factions/$factionId');
+        } else if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Error: Failed to update faction'), backgroundColor: Colors.red),
+          );
         }
       } else {
-        final created = await apiService.create('factions', data);
+        final created = await _service.create(faction);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Faction created successfully')),
           );
-          context.go('/factions/${created['id']}');
+          context.go('/factions/${created.id}');
         }
       }
     } catch (e) {

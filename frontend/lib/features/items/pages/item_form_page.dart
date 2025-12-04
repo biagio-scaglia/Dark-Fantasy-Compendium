@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/item_service.dart';
+import '../../../data/models/item.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/icon_picker_widget.dart';
 
@@ -26,6 +26,7 @@ class _ItemFormPageState extends State<ItemFormPage> {
   String _selectedRarity = 'common';
   bool _isLoading = false;
   bool _isLoadingData = false;
+  final ItemService _service = ItemService();
 
   final List<String> _itemTypes = ['consumable', 'material', 'quest_item', 'equipment', 'other'];
   final List<String> _rarities = ['common', 'rare', 'epic', 'legendary'];
@@ -51,12 +52,33 @@ class _ItemFormPageState extends State<ItemFormPage> {
   Future<void> _loadItem() async {
     setState(() => _isLoadingData = true);
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('items', widget.item!['id']);
-      setState(() {
-        _populateFields(data);
-        _isLoadingData = false;
-      });
+      final itemData = await _service.getById(widget.item!['id']);
+      if (itemData != null) {
+        final data = {
+          'id': itemData.id,
+          'name': itemData.name,
+          'type': itemData.type,
+          'description': itemData.description,
+          'effect': itemData.effect,
+          'value': itemData.value,
+          'rarity': itemData.rarity,
+          'lore': itemData.lore,
+          'owner_id': itemData.ownerId,
+          'image_path': itemData.imagePath,
+          'icon_path': itemData.iconPath,
+        };
+        setState(() {
+          _populateFields(data);
+          _isLoadingData = false;
+        });
+      } else {
+        setState(() => _isLoadingData = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Item not found'), backgroundColor: Colors.red),
+          );
+        }
+      }
     } catch (e) {
       setState(() => _isLoadingData = false);
       if (mounted) {
@@ -74,7 +96,7 @@ class _ItemFormPageState extends State<ItemFormPage> {
     _effectController.text = item['effect'] ?? '';
     _valueController.text = item['value']?.toString() ?? '0';
     _loreController.text = item['lore'] ?? '';
-    _iconUrlController.text = item['icon_url'] ?? '';
+    _iconUrlController.text = item['icon_path'] ?? item['icon_url'] ?? '';
     _selectedRarity = item['rarity'] ?? 'common';
   }
 
@@ -84,28 +106,32 @@ class _ItemFormPageState extends State<ItemFormPage> {
     setState(() => _isLoading = true);
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = {
-        'name': _nameController.text,
-        'type': _typeController.text,
-        'description': _descriptionController.text,
-        'effect': _effectController.text.isEmpty ? null : _effectController.text,
-        'value': int.parse(_valueController.text),
-        'rarity': _selectedRarity,
-        'lore': _loreController.text.isEmpty ? null : _loreController.text,
-        'icon_url': _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
-      };
+      final item = Item(
+        id: widget.item?['id'] ?? 0,
+        name: _nameController.text,
+        type: _typeController.text,
+        description: _descriptionController.text,
+        effect: _effectController.text.isEmpty ? null : _effectController.text,
+        value: int.tryParse(_valueController.text) ?? 0,
+        rarity: _selectedRarity,
+        lore: _loreController.text.isEmpty ? null : _loreController.text,
+        iconPath: _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
+      );
 
       if (widget.item != null && widget.item!['id'] != null) {
-        await apiService.update('items', widget.item!['id'], data);
-        if (mounted) {
+        final updated = await _service.update(item);
+        if (updated != null && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Item updated!'), backgroundColor: Colors.green),
           );
           context.pop();
+        } else if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Error: Failed to update item'), backgroundColor: Colors.red),
+          );
         }
       } else {
-        await apiService.create('items', data);
+        final created = await _service.create(item);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Item created!'), backgroundColor: Colors.green),

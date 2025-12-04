@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/class_service.dart';
+import '../../../data/models/class_model.dart';
 import '../../../core/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dnd_class_form_page.dart';
@@ -19,6 +19,7 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
   Map<String, dynamic>? dndClass;
   bool isLoading = true;
   String? error;
+  final ClassService _service = ClassService();
 
   @override
   void initState() {
@@ -34,11 +35,29 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('dnd-classes', widget.classId);
-      if (mounted) {
+      final classData = await _service.getById(widget.classId);
+      if (classData != null && mounted) {
         setState(() {
-          dndClass = data;
+          dndClass = {
+            'id': classData.id,
+            'name': classData.name,
+            'description': classData.description,
+            'hit_dice': classData.hitDice,
+            'hit_points_at_1st_level': classData.hitPointsAt1stLevel,
+            'hit_points_at_higher_levels': classData.hitPointsAtHigherLevels,
+            'proficiencies': classData.proficiencies,
+            'saving_throws': classData.savingThrows,
+            'starting_equipment': classData.startingEquipment,
+            'class_features': classData.classFeatures,
+            'spellcasting_ability': classData.spellcastingAbility,
+            'image_path': classData.imagePath,
+            'icon_path': classData.iconPath,
+          };
+          isLoading = false;
+        });
+      } else if (mounted) {
+        setState(() {
+          error = 'Class not found';
           isLoading = false;
         });
       }
@@ -75,13 +94,19 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
     if (confirmed != true) return;
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      await apiService.delete('dnd-classes', widget.classId);
-      if (mounted) {
+      final deleted = await _service.delete(widget.classId);
+      if (deleted && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Class deleted successfully')),
         );
         context.go('/dnd-classes');
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error: Failed to delete class'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } catch (e) {
       if (mounted) {

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/campaign_service.dart';
 import '../../../core/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'session_form_page.dart';
@@ -21,6 +20,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
   bool isLoading = true;
   String? error;
   bool _localeInitialized = false;
+  final CampaignService _service = CampaignService();
 
   @override
   void initState() {
@@ -45,10 +45,38 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.get('campaigns/sessions/calendar?year=${_selectedDate.year}&month=${_selectedDate.month}');
+      final campaigns = await _service.getAll();
+      final calendarDataMap = <String, List<dynamic>>{};
+      
+      // Raccogli tutte le sessioni da tutte le campagne
+      for (final campaign in campaigns) {
+        if (campaign.sessions != null) {
+          for (final session in campaign.sessions!) {
+            final dateStr = session['date'] as String?;
+            if (dateStr != null) {
+              try {
+                final sessionDate = DateTime.parse(dateStr);
+                if (sessionDate.year == _selectedDate.year && sessionDate.month == _selectedDate.month) {
+                  final dateKey = DateFormat('yyyy-MM-dd').format(sessionDate);
+                  if (!calendarDataMap.containsKey(dateKey)) {
+                    calendarDataMap[dateKey] = [];
+                  }
+                  calendarDataMap[dateKey]!.add({
+                    ...session,
+                    'campaign_id': campaign.id,
+                    'campaign_name': campaign.name,
+                  });
+                }
+              } catch (e) {
+                // Ignora errori di parsing date
+              }
+            }
+          }
+        }
+      }
+      
       setState(() {
-        calendarData = Map<String, List<dynamic>>.from(data);
+        calendarData = calendarDataMap;
         isLoading = false;
       });
     } catch (e) {
@@ -344,11 +372,14 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
             itemCount: campaigns.length,
             itemBuilder: (context, index) {
               final campaign = campaigns[index];
+              final campaignName = campaign is Map ? campaign['name'] : campaign.name;
+              final campaignDm = campaign is Map ? campaign['dungeon_master'] : campaign.dungeonMaster;
+              final campaignId = campaign is Map ? campaign['id'] : campaign.id;
               return ListTile(
-                title: Text(campaign['name'] ?? ''),
-                subtitle: Text('DM: ${campaign['dungeon_master'] ?? ''}'),
+                title: Text(campaignName ?? ''),
+                subtitle: Text('DM: ${campaignDm ?? ''}'),
                 onTap: () {
-                  selectedCampaignId = campaign['id'] as int;
+                  selectedCampaignId = campaignId as int;
                   Navigator.pop(context);
                 },
               );
@@ -365,8 +396,8 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
 
   Future<List<dynamic>> _loadCampaigns() async {
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      return await apiService.getAll('campaigns');
+      final campaigns = await _service.getAll();
+      return campaigns.map((c) => c.toJson()).toList();
     } catch (e) {
       return [];
     }

@@ -9,9 +9,7 @@ Applicazione Flutter con architettura feature-based e tema dark fantasy per la g
 flutter pub get
 ```
 
-2. Assicurati che il backend sia in esecuzione su `http://localhost:8000`
-
-3. Avvia l'app:
+2. Avvia l'app:
 ```bash
 flutter run
 ```
@@ -21,7 +19,8 @@ flutter run
 - `lib/core/` - Tema, router, configurazione
 - `lib/features/` - Feature-based architecture
   - Ogni feature ha le sue pagine (list, detail, form)
-- `lib/services/` - Servizi API
+- `lib/data/services/` - Servizi per la gestione dei dati locali (JSON)
+- `lib/data/models/` - Modelli dei dati
 - `lib/widgets/` - Widget riutilizzabili
 
 ## Features Implementate
@@ -54,16 +53,9 @@ Il tema è definito in `lib/core/theme/app_theme.dart` con:
 - Stili per rarità (common, rare, epic, legendary)
 - Animazioni fluide
 
-## Configurazione API
+## Architettura Dati
 
-L'URL del backend è configurato in `lib/main.dart`. Assicurati che il backend sia in esecuzione su `http://localhost:8000`.
-
-Per cambiare l'URL:
-```dart
-Provider<ApiService>(
-  create: (_) => ApiService(baseUrl: 'YOUR_API_URL'),
-),
-```
+L'app utilizza un sistema di storage locale basato su JSON. I dati vengono caricati dai file JSON in `assets/data/` e salvati localmente sul dispositivo. Non è necessario un backend per utilizzare l'applicazione.
 
 ## Funzionalità Principali
 

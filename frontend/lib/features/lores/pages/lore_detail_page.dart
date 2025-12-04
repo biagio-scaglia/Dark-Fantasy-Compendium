@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/lore_service.dart';
+import '../../../data/models/lore.dart';
 import '../../../core/theme/app_theme.dart';
 
 class LoreDetailPage extends StatefulWidget {
@@ -17,6 +17,7 @@ class _LoreDetailPageState extends State<LoreDetailPage> {
   Map<String, dynamic>? lore;
   bool isLoading = true;
   String? error;
+  final LoreService _service = LoreService();
 
   @override
   void initState() {
@@ -31,12 +32,26 @@ class _LoreDetailPageState extends State<LoreDetailPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('lores', widget.loreId);
-      setState(() {
-        lore = data;
-        isLoading = false;
-      });
+      final loreData = await _service.getById(widget.loreId);
+      if (loreData != null) {
+        setState(() {
+          lore = {
+            'id': loreData.id,
+            'title': loreData.title,
+            'category': loreData.category,
+            'content': loreData.content,
+            'related_entity_type': loreData.relatedEntityType,
+            'related_entity_id': loreData.relatedEntityId,
+            'image_path': loreData.imagePath,
+          };
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          error = 'Lore not found';
+          isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() {
         error = e.toString();

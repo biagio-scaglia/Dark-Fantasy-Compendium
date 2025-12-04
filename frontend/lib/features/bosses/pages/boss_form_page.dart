@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/boss_service.dart';
+import '../../../data/models/boss.dart';
 import '../../../core/theme/app_theme.dart';
 
 class BossFormPage extends StatefulWidget {
@@ -26,6 +26,7 @@ class _BossFormPageState extends State<BossFormPage> {
   late TextEditingController _loreController;
   bool _isLoading = false;
   bool _isLoadingData = false;
+  final BossService _service = BossService();
 
   @override
   void initState() {
@@ -50,12 +51,35 @@ class _BossFormPageState extends State<BossFormPage> {
   Future<void> _loadBoss() async {
     setState(() => _isLoadingData = true);
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('bosses', widget.boss!['id']);
-      setState(() {
-        _populateFields(data);
-        _isLoadingData = false;
-      });
+      final bossData = await _service.getById(widget.boss!['id']);
+      if (bossData != null) {
+        final data = {
+          'id': bossData.id,
+          'name': bossData.name,
+          'title': bossData.title,
+          'level': bossData.level,
+          'health': bossData.health,
+          'max_health': bossData.maxHealth,
+          'attack': bossData.attack,
+          'defense': bossData.defense,
+          'description': bossData.description,
+          'lore': bossData.lore,
+          'reward_ids': bossData.rewardIds,
+          'image_path': bossData.imagePath,
+          'icon_path': bossData.iconPath,
+        };
+        setState(() {
+          _populateFields(data);
+          _isLoadingData = false;
+        });
+      } else {
+        setState(() => _isLoadingData = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Boss not found'), backgroundColor: Colors.red),
+          );
+        }
+      }
     } catch (e) {
       setState(() => _isLoadingData = false);
       if (mounted) {
@@ -84,30 +108,34 @@ class _BossFormPageState extends State<BossFormPage> {
     setState(() => _isLoading = true);
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = {
-        'name': _nameController.text,
-        'title': _titleController.text,
-        'level': int.parse(_levelController.text),
-        'health': int.parse(_healthController.text),
-        'max_health': int.parse(_maxHealthController.text),
-        'attack': int.parse(_attackController.text),
-        'defense': int.parse(_defenseController.text),
-        'description': _descriptionController.text,
-        'lore': _loreController.text.isEmpty ? null : _loreController.text,
-        'rewards': [],
-      };
+      final boss = Boss(
+        id: widget.boss?['id'] ?? 0,
+        name: _nameController.text,
+        title: _titleController.text.isEmpty ? null : _titleController.text,
+        level: int.tryParse(_levelController.text) ?? 1,
+        health: int.tryParse(_healthController.text) ?? 100,
+        maxHealth: int.tryParse(_maxHealthController.text) ?? 100,
+        attack: int.tryParse(_attackController.text) ?? 10,
+        defense: int.tryParse(_defenseController.text) ?? 10,
+        description: _descriptionController.text.isEmpty ? null : _descriptionController.text,
+        lore: _loreController.text.isEmpty ? null : _loreController.text,
+        rewardIds: [],
+      );
 
       if (widget.boss != null && widget.boss!['id'] != null) {
-        await apiService.update('bosses', widget.boss!['id'], data);
-        if (mounted) {
+        final updated = await _service.update(boss);
+        if (updated != null && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Boss updated!'), backgroundColor: Colors.green),
           );
           context.pop();
+        } else if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Error: Failed to update boss'), backgroundColor: Colors.red),
+          );
         }
       } else {
-        await apiService.create('bosses', data);
+        final created = await _service.create(boss);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Boss created!'), backgroundColor: Colors.green),

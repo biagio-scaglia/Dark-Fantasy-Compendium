@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/weapon_service.dart';
+import '../../../data/models/weapon.dart';
 import '../../../core/theme/app_theme.dart';
 
 class WeaponDetailPage extends StatefulWidget {
@@ -17,6 +17,7 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
   Map<String, dynamic>? weapon;
   bool isLoading = true;
   String? error;
+  final WeaponService _service = WeaponService();
 
   @override
   void initState() {
@@ -31,12 +32,29 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('weapons', widget.weaponId);
-      setState(() {
-        weapon = data;
-        isLoading = false;
-      });
+      final weaponData = await _service.getById(widget.weaponId);
+      if (weaponData != null) {
+        setState(() {
+          weapon = {
+            'id': weaponData.id,
+            'name': weaponData.name,
+            'type': weaponData.type,
+            'attack_bonus': weaponData.attackBonus,
+            'durability': weaponData.durability,
+            'rarity': weaponData.rarity,
+            'description': weaponData.description,
+            'lore': weaponData.lore,
+            'image_path': weaponData.imagePath,
+            'icon_path': weaponData.iconPath,
+          };
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          error = 'Weapon not found';
+          isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() {
         error = e.toString();
@@ -68,13 +86,19 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
     if (confirmed != true) return;
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      await apiService.delete('weapons', widget.weaponId);
-      if (mounted) {
+      final deleted = await _service.delete(widget.weaponId);
+      if (deleted && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Weapon deleted successfully')),
         );
         context.go('/weapons');
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error: Failed to delete weapon'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } catch (e) {
       if (mounted) {

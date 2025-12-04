@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/campaign_service.dart';
+import '../../../data/models/campaign.dart';
 import '../../../core/theme/app_theme.dart';
 
 class CampaignFormPage extends StatefulWidget {
@@ -24,6 +24,7 @@ class _CampaignFormPageState extends State<CampaignFormPage> {
   late TextEditingController _notesController;
   bool _isLoading = false;
   bool _isLoadingData = false;
+  final CampaignService _service = CampaignService();
 
   @override
   void initState() {
@@ -46,12 +47,21 @@ class _CampaignFormPageState extends State<CampaignFormPage> {
   Future<void> _loadCampaign() async {
     setState(() => _isLoadingData = true);
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('campaigns', widget.campaign!['id']);
-      setState(() {
-        _populateFields(data);
-        _isLoadingData = false;
-      });
+      final campaignData = await _service.getById(widget.campaign!['id']);
+      if (campaignData != null) {
+        final data = campaignData.toJson();
+        setState(() {
+          _populateFields(data);
+          _isLoadingData = false;
+        });
+      } else {
+        setState(() => _isLoadingData = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Campaign not found'), backgroundColor: Colors.red),
+          );
+        }
+      }
     } catch (e) {
       setState(() => _isLoadingData = false);
       if (mounted) {
@@ -78,35 +88,39 @@ class _CampaignFormPageState extends State<CampaignFormPage> {
     setState(() => _isLoading = true);
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
       final players = _playersController.text
           .split(',')
           .map((e) => e.trim())
           .where((e) => e.isNotEmpty)
           .toList();
       
-      final data = {
-        'name': _nameController.text,
-        'description': _descriptionController.text,
-        'dungeon_master': _dmController.text,
-        'players': players,
-        'current_level': int.parse(_levelController.text),
-        'setting': _settingController.text.isEmpty ? null : _settingController.text,
-        'notes': _notesController.text.isEmpty ? null : _notesController.text,
-        'characters': [],
-        'sessions': [],
-      };
+      final campaign = Campaign(
+        id: widget.campaign?['id'] ?? 0,
+        name: _nameController.text,
+        description: _descriptionController.text.isEmpty ? null : _descriptionController.text,
+        dungeonMaster: _dmController.text.isEmpty ? null : _dmController.text,
+        players: players.isEmpty ? null : players,
+        currentLevel: int.tryParse(_levelController.text) ?? 1,
+        setting: _settingController.text.isEmpty ? null : _settingController.text,
+        notes: _notesController.text.isEmpty ? null : _notesController.text,
+        characterIds: [],
+        sessions: [],
+      );
 
       if (widget.campaign != null && widget.campaign!['id'] != null) {
-        await apiService.update('campaigns', widget.campaign!['id'], data);
-        if (mounted) {
+        final updated = await _service.update(campaign);
+        if (updated != null && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Campaign updated!'), backgroundColor: Colors.green),
           );
           context.pop();
+        } else if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Error: Failed to update campaign'), backgroundColor: Colors.red),
+          );
         }
       } else {
-        await apiService.create('campaigns', data);
+        final created = await _service.create(campaign);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Campaign created!'), backgroundColor: Colors.green),

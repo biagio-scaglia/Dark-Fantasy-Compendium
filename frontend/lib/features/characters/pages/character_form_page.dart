@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/character_service.dart';
+import '../../../data/services/class_service.dart';
+import '../../../data/services/race_service.dart';
+import '../../../data/models/character.dart';
 import '../../../core/theme/app_theme.dart';
 
 class CharacterFormPage extends StatefulWidget {
@@ -39,6 +41,9 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
   List<dynamic> _races = [];
   bool _isLoading = false;
   bool _isLoadingData = false;
+  final CharacterService _service = CharacterService();
+  final ClassService _classService = ClassService();
+  final RaceService _raceService = RaceService();
 
   @override
   void initState() {
@@ -74,17 +79,16 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
 
   Future<void> _loadOptions() async {
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final classes = await apiService.getAll('dnd-classes');
-      final races = await apiService.getAll('races');
+      final classes = await _classService.getAll();
+      final races = await _raceService.getAll();
       setState(() {
-        _classes = classes;
-        _races = races;
+        _classes = classes.map((c) => c.toJson()).toList();
+        _races = races.map((r) => r.toJson()).toList();
         if (classes.isNotEmpty && _classIdController.text.isEmpty) {
-          _classIdController.text = classes.first['id'].toString();
+          _classIdController.text = classes.first.id.toString();
         }
         if (races.isNotEmpty && _raceIdController.text.isEmpty) {
-          _raceIdController.text = races.first['id'].toString();
+          _raceIdController.text = races.first.id.toString();
         }
       });
     } catch (e) {
@@ -99,12 +103,21 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
   Future<void> _loadCharacter() async {
     setState(() => _isLoadingData = true);
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('characters', widget.character!['id']);
-      setState(() {
-        _populateFields(data);
-        _isLoadingData = false;
-      });
+      final characterData = await _service.getById(widget.character!['id']);
+      if (characterData != null) {
+        final data = characterData.toJson();
+        setState(() {
+          _populateFields(data);
+          _isLoadingData = false;
+        });
+      } else {
+        setState(() => _isLoadingData = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Character not found'), backgroundColor: Colors.red),
+          );
+        }
+      }
     } catch (e) {
       setState(() => _isLoadingData = false);
       if (mounted) {
@@ -117,24 +130,25 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
 
   void _populateFields(Map<String, dynamic> character) {
     _nameController.text = character['name'] ?? '';
-    _playerNameController.text = character['player_name'] ?? '';
+    final stats = character['stats'] as Map<String, dynamic>? ?? {};
+    _playerNameController.text = stats['player_name'] ?? character['player_name'] ?? '';
     _levelController.text = character['level']?.toString() ?? '1';
     _classIdController.text = character['class_id']?.toString() ?? '';
     _raceIdController.text = character['race_id']?.toString() ?? '';
-    _backgroundController.text = character['background'] ?? '';
-    _alignmentController.text = character['alignment'] ?? '';
-    _strengthController.text = character['strength']?.toString() ?? '10';
-    _dexterityController.text = character['dexterity']?.toString() ?? '10';
-    _constitutionController.text = character['constitution']?.toString() ?? '10';
-    _intelligenceController.text = character['intelligence']?.toString() ?? '10';
-    _wisdomController.text = character['wisdom']?.toString() ?? '10';
-    _charismaController.text = character['charisma']?.toString() ?? '10';
-    _maxHpController.text = character['max_hit_points']?.toString() ?? '8';
-    _currentHpController.text = character['current_hit_points']?.toString() ?? '8';
-    _acController.text = character['armor_class']?.toString() ?? '10';
-    _xpController.text = character['experience_points']?.toString() ?? '0';
-    _notesController.text = character['notes'] ?? '';
-    _backstoryController.text = character['backstory'] ?? '';
+    _backgroundController.text = stats['background'] ?? character['background'] ?? '';
+    _alignmentController.text = stats['alignment'] ?? character['alignment'] ?? '';
+    _strengthController.text = stats['strength']?.toString() ?? character['strength']?.toString() ?? '10';
+    _dexterityController.text = stats['dexterity']?.toString() ?? character['dexterity']?.toString() ?? '10';
+    _constitutionController.text = stats['constitution']?.toString() ?? character['constitution']?.toString() ?? '10';
+    _intelligenceController.text = stats['intelligence']?.toString() ?? character['intelligence']?.toString() ?? '10';
+    _wisdomController.text = stats['wisdom']?.toString() ?? character['wisdom']?.toString() ?? '10';
+    _charismaController.text = stats['charisma']?.toString() ?? character['charisma']?.toString() ?? '10';
+    _maxHpController.text = stats['max_hit_points']?.toString() ?? character['max_hit_points']?.toString() ?? '8';
+    _currentHpController.text = stats['current_hit_points']?.toString() ?? character['current_hit_points']?.toString() ?? '8';
+    _acController.text = stats['armor_class']?.toString() ?? character['armor_class']?.toString() ?? '10';
+    _xpController.text = stats['experience_points']?.toString() ?? character['experience_points']?.toString() ?? '0';
+    _notesController.text = stats['notes'] ?? character['notes'] ?? '';
+    _backstoryController.text = stats['backstory'] ?? character['backstory'] ?? '';
   }
 
   Future<void> _saveCharacter() async {
@@ -143,25 +157,20 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
     setState(() => _isLoading = true);
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = {
-        'name': _nameController.text,
+      final stats = {
         'player_name': _playerNameController.text.isEmpty ? null : _playerNameController.text,
-        'level': int.parse(_levelController.text),
-        'class_id': int.parse(_classIdController.text),
-        'race_id': int.parse(_raceIdController.text),
         'background': _backgroundController.text.isEmpty ? null : _backgroundController.text,
         'alignment': _alignmentController.text.isEmpty ? null : _alignmentController.text,
-        'strength': int.parse(_strengthController.text),
-        'dexterity': int.parse(_dexterityController.text),
-        'constitution': int.parse(_constitutionController.text),
-        'intelligence': int.parse(_intelligenceController.text),
-        'wisdom': int.parse(_wisdomController.text),
-        'charisma': int.parse(_charismaController.text),
-        'max_hit_points': int.parse(_maxHpController.text),
-        'current_hit_points': int.parse(_currentHpController.text),
-        'armor_class': int.parse(_acController.text),
-        'experience_points': int.parse(_xpController.text),
+        'strength': int.tryParse(_strengthController.text) ?? 10,
+        'dexterity': int.tryParse(_dexterityController.text) ?? 10,
+        'constitution': int.tryParse(_constitutionController.text) ?? 10,
+        'intelligence': int.tryParse(_intelligenceController.text) ?? 10,
+        'wisdom': int.tryParse(_wisdomController.text) ?? 10,
+        'charisma': int.tryParse(_charismaController.text) ?? 10,
+        'max_hit_points': int.tryParse(_maxHpController.text) ?? 8,
+        'current_hit_points': int.tryParse(_currentHpController.text) ?? 8,
+        'armor_class': int.tryParse(_acController.text) ?? 10,
+        'experience_points': int.tryParse(_xpController.text) ?? 0,
         'notes': _notesController.text.isEmpty ? null : _notesController.text,
         'backstory': _backstoryController.text.isEmpty ? null : _backstoryController.text,
         'skill_proficiencies': [],
@@ -177,17 +186,34 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
         'prepared_spells': [],
         'spell_slots': {},
       };
+      
+      // Rimuovi valori nulli
+      stats.removeWhere((key, value) => value == null);
+
+      final character = Character(
+        id: widget.character?['id'] ?? 0,
+        name: _nameController.text,
+        classId: _classIdController.text.isEmpty ? null : int.tryParse(_classIdController.text),
+        raceId: _raceIdController.text.isEmpty ? null : int.tryParse(_raceIdController.text),
+        level: int.tryParse(_levelController.text) ?? 1,
+        stats: stats,
+        description: null,
+      );
 
       if (widget.character != null && widget.character!['id'] != null) {
-        await apiService.update('characters', widget.character!['id'], data);
-        if (mounted) {
+        final updated = await _service.update(character);
+        if (updated != null && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Character updated!'), backgroundColor: Colors.green),
           );
           context.pop();
+        } else if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Error: Failed to update character'), backgroundColor: Colors.red),
+          );
         }
       } else {
-        await apiService.create('characters', data);
+        final created = await _service.create(character);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Character created!'), backgroundColor: Colors.green),

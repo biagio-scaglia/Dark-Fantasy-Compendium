@@ -1,47 +1,17 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
-import 'api_service.dart';
 
 class PdfExportService {
-  final ApiService apiService;
-
-  PdfExportService(this.apiService);
+  PdfExportService();
 
   Future<Map<String, dynamic>> checkStatus() async {
-    try {
-      final response = await apiService.get('pdf-export/status');
-      return response as Map<String, dynamic>;
-    } catch (e) {
-      throw Exception('Error checking PDF export status: $e');
-    }
+    throw UnimplementedError('PDF export is not available in offline mode. This feature requires a backend API.');
   }
 
   Future<void> exportCharacterPdf(int characterId, {bool simple = true}) async {
-    try {
-      final endpoint = simple 
-          ? 'pdf-export/character/$characterId/simple'
-          : 'pdf-export/character/$characterId';
-      
-      // Build the complete URL
-      final baseUrl = apiService.baseUrl;
-      final response = await http.get(
-        Uri.parse('$baseUrl/$endpoint'),
-        headers: {'Accept': 'application/pdf'},
-      );
-
-      if (response.statusCode == 200) {
-        // Salva il PDF
-        final bytes = response.bodyBytes;
-        await _saveAndOpenPdf(bytes, 'character_$characterId.pdf');
-      } else {
-        throw Exception('Error exporting PDF: ${response.body}');
-      }
-    } catch (e) {
-      throw Exception('Error exporting PDF: $e');
-    }
+    throw UnimplementedError('PDF export is not available in offline mode. This feature requires a backend API.');
   }
 
   Future<void> _saveAndOpenPdf(Uint8List bytes, String filename) async {

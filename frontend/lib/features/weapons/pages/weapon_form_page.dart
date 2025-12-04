@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/weapon_service.dart';
+import '../../../data/models/weapon.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/icon_picker_widget.dart';
 
@@ -28,6 +28,7 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
   bool _isLoading = false;
   bool _isLoadingData = false;
   Map<String, dynamic>? _weaponData;
+  final WeaponService _service = WeaponService();
 
   @override
   void initState() {
@@ -52,13 +53,33 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
   Future<void> _loadWeapon() async {
     setState(() => _isLoadingData = true);
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('weapons', widget.weapon!['id']);
-      setState(() {
-        _weaponData = data;
-        _populateFields(data);
-        _isLoadingData = false;
-      });
+      final weaponData = await _service.getById(widget.weapon!['id']);
+      if (weaponData != null) {
+        final data = {
+          'id': weaponData.id,
+          'name': weaponData.name,
+          'type': weaponData.type,
+          'attack_bonus': weaponData.attackBonus,
+          'durability': weaponData.durability,
+          'rarity': weaponData.rarity,
+          'description': weaponData.description,
+          'lore': weaponData.lore,
+          'image_path': weaponData.imagePath,
+          'icon_path': weaponData.iconPath,
+        };
+        setState(() {
+          _weaponData = data;
+          _populateFields(data);
+          _isLoadingData = false;
+        });
+      } else {
+        setState(() => _isLoadingData = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Weapon not found'), backgroundColor: Colors.red),
+          );
+        }
+      }
     } catch (e) {
       setState(() => _isLoadingData = false);
       if (mounted) {
@@ -77,8 +98,8 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
     _rarityController.text = weapon['rarity'] ?? 'common';
     _descriptionController.text = weapon['description'] ?? '';
     _loreController.text = weapon['lore'] ?? '';
-    _imageUrlController.text = weapon['image_url'] ?? '';
-    _iconUrlController.text = weapon['icon_url'] ?? '';
+    _imageUrlController.text = weapon['image_path'] ?? weapon['image_url'] ?? '';
+    _iconUrlController.text = weapon['icon_path'] ?? weapon['icon_url'] ?? '';
   }
 
   @override
@@ -101,35 +122,39 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
     setState(() => _isLoading = true);
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = {
-        'name': _nameController.text,
-        'type': _typeController.text,
-        'attack_bonus': int.tryParse(_attackBonusController.text) ?? 0,
-        'durability': int.tryParse(_durabilityController.text) ?? 100,
-        'rarity': _rarityController.text,
-        'description': _descriptionController.text,
-        'lore': _loreController.text.isEmpty ? null : _loreController.text,
-        'image_url': _imageUrlController.text.isEmpty ? null : _imageUrlController.text,
-        'icon_url': _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
-      };
+      final weapon = Weapon(
+        id: widget.weapon?['id'] ?? _weaponData?['id'] ?? 0,
+        name: _nameController.text,
+        type: _typeController.text,
+        attackBonus: int.tryParse(_attackBonusController.text) ?? 0,
+        durability: int.tryParse(_durabilityController.text) ?? 100,
+        rarity: _rarityController.text,
+        description: _descriptionController.text,
+        lore: _loreController.text.isEmpty ? null : _loreController.text,
+        imagePath: _imageUrlController.text.isEmpty ? null : _imageUrlController.text,
+        iconPath: _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
+      );
 
       final weaponId = widget.weapon?['id'] ?? _weaponData?['id'];
       if (weaponId != null) {
-        await apiService.update('weapons', weaponId, data);
-        if (mounted) {
+        final updated = await _service.update(weapon);
+        if (updated != null && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Weapon updated successfully')),
           );
           context.go('/weapons/$weaponId');
+        } else if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Error: Failed to update weapon'), backgroundColor: Colors.red),
+          );
         }
       } else {
-        final created = await apiService.create('weapons', data);
+        final created = await _service.create(weapon);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Weapon created successfully')),
           );
-          context.go('/weapons/${created['id']}');
+          context.go('/weapons/${created.id}');
         }
       }
     } catch (e) {

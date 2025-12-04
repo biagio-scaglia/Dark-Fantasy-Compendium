@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/item_service.dart';
+import '../../../data/models/item.dart';
 import '../../../core/theme/app_theme.dart';
 
 class ItemDetailPage extends StatefulWidget {
@@ -17,6 +17,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
   Map<String, dynamic>? item;
   bool isLoading = true;
   String? error;
+  final ItemService _service = ItemService();
 
   @override
   void initState() {
@@ -31,12 +32,30 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('items', widget.itemId);
-      setState(() {
-        item = data;
-        isLoading = false;
-      });
+      final itemData = await _service.getById(widget.itemId);
+      if (itemData != null) {
+        setState(() {
+          item = {
+            'id': itemData.id,
+            'name': itemData.name,
+            'type': itemData.type,
+            'description': itemData.description,
+            'effect': itemData.effect,
+            'value': itemData.value,
+            'rarity': itemData.rarity,
+            'lore': itemData.lore,
+            'owner_id': itemData.ownerId,
+            'image_path': itemData.imagePath,
+            'icon_path': itemData.iconPath,
+          };
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          error = 'Item not found';
+          isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() {
         error = e.toString();

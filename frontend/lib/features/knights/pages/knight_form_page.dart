@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/knight_service.dart';
+import '../../../data/models/knight.dart';
+import '../../../data/services/local_json_service.dart';
 import '../../../core/theme/app_theme.dart';
 
 class KnightFormPage extends StatefulWidget {
@@ -38,6 +39,8 @@ class _KnightFormPageState extends State<KnightFormPage> {
   bool _isUploadingImage = false;
   Map<String, dynamic>? _knightData;
   final ImagePicker _imagePicker = ImagePicker();
+  final KnightService _service = KnightService();
+  final LocalJsonService _jsonService = LocalJsonService();
 
   @override
   void initState() {
@@ -65,13 +68,38 @@ class _KnightFormPageState extends State<KnightFormPage> {
   Future<void> _loadKnight() async {
     setState(() => _isLoadingData = true);
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('knights', widget.knight!['id']);
-      setState(() {
-        _knightData = data;
-        _populateFields(data);
-        _isLoadingData = false;
-      });
+      final knightData = await _service.getById(widget.knight!['id']);
+      if (knightData != null) {
+        final data = {
+          'id': knightData.id,
+          'name': knightData.name,
+          'title': knightData.title,
+          'faction_id': knightData.factionId,
+          'level': knightData.level,
+          'health': knightData.health,
+          'max_health': knightData.maxHealth,
+          'attack': knightData.attack,
+          'defense': knightData.defense,
+          'weapon_id': knightData.weaponId,
+          'armor_id': knightData.armorId,
+          'description': knightData.description,
+          'lore': knightData.lore,
+          'image_path': knightData.imagePath,
+          'icon_path': knightData.iconPath,
+        };
+        setState(() {
+          _knightData = data;
+          _populateFields(data);
+          _isLoadingData = false;
+        });
+      } else {
+        setState(() => _isLoadingData = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Knight not found'), backgroundColor: Colors.red),
+          );
+        }
+      }
     } catch (e) {
       setState(() => _isLoadingData = false);
       if (mounted) {
@@ -95,8 +123,8 @@ class _KnightFormPageState extends State<KnightFormPage> {
     _armorIdController.text = knight['armor_id']?.toString() ?? '';
     _descriptionController.text = knight['description'] ?? '';
     _loreController.text = knight['lore'] ?? '';
-    _currentImageUrl = knight['image_url'];
-    _currentIconUrl = knight['icon_url'];
+    _currentImageUrl = knight['image_path'] ?? knight['image_url'];
+    _currentIconUrl = knight['icon_path'] ?? knight['icon_url'];
   }
 
   @override
@@ -149,56 +177,111 @@ class _KnightFormPageState extends State<KnightFormPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
+      // Salva le immagini se selezionate
+      String? imagePath = _currentImageUrl;
+      String? iconPath = _currentIconUrl;
       
-      // Carica le immagini se selezionate
-      String? imageUrl = _currentImageUrl;
-      String? iconUrl = _currentIconUrl;
-      
-      if (_selectedImage != null) {
-        imageUrl = await apiService.uploadImage(_selectedImage!, isIcon: false);
-      }
-      if (_selectedIcon != null) {
-        iconUrl = await apiService.uploadImage(_selectedIcon!, isIcon: true);
-      }
-      
-      setState(() => _isUploadingImage = false);
-      
-      final data = {
-        'name': _nameController.text,
-        'title': _titleController.text,
-        'faction_id': int.tryParse(_factionIdController.text),
-        'level': int.tryParse(_levelController.text) ?? 1,
-        'health': int.tryParse(_healthController.text) ?? 100,
-        'max_health': int.tryParse(_maxHealthController.text) ?? 100,
-        'attack': int.tryParse(_attackController.text) ?? 10,
-        'defense': int.tryParse(_defenseController.text) ?? 10,
-        'weapon_id': _weaponIdController.text.isEmpty ? null : int.tryParse(_weaponIdController.text),
-        'armor_id': _armorIdController.text.isEmpty ? null : int.tryParse(_armorIdController.text),
-        'description': _descriptionController.text,
-        'lore': _loreController.text.isEmpty ? null : _loreController.text,
-        'image_url': imageUrl,
-        'icon_url': iconUrl,
-      };
-
       final knightId = widget.knight?['id'] ?? _knightData?['id'];
-      if (knightId != null) {
-        // Update
-        await apiService.update('knights', knightId, data);
-        if (mounted) {
+      
+      final knight = Knight(
+        id: knightId ?? 0,
+        name: _nameController.text,
+        title: _titleController.text.isEmpty ? null : _titleController.text,
+        factionId: _factionIdController.text.isEmpty ? null : int.tryParse(_factionIdController.text),
+        level: int.tryParse(_levelController.text) ?? 1,
+        health: int.tryParse(_healthController.text) ?? 100,
+        maxHealth: int.tryParse(_maxHealthController.text) ?? 100,
+        attack: int.tryParse(_attackController.text) ?? 10,
+        defense: int.tryParse(_defenseController.text) ?? 10,
+        weaponId: _weaponIdController.text.isEmpty ? null : int.tryParse(_weaponIdController.text),
+        armorId: _armorIdController.text.isEmpty ? null : int.tryParse(_armorIdController.text),
+        description: _descriptionController.text.isEmpty ? null : _descriptionController.text,
+        lore: _loreController.text.isEmpty ? null : _loreController.text,
+        imagePath: imagePath,
+        iconPath: iconPath,
+      );
+
+      if (knightId != null && knightId > 0) {
+        // Update - salva immagini se selezionate
+        if (_selectedImage != null) {
+          imagePath = await _jsonService.saveImage(_selectedImage!, 'knight', knightId);
+        }
+        if (_selectedIcon != null) {
+          iconPath = await _jsonService.saveImage(_selectedIcon!, 'knight', knightId);
+        }
+        
+        final updatedKnight = Knight(
+          id: knight.id,
+          name: knight.name,
+          title: knight.title,
+          factionId: knight.factionId,
+          level: knight.level,
+          health: knight.health,
+          maxHealth: knight.maxHealth,
+          attack: knight.attack,
+          defense: knight.defense,
+          weaponId: knight.weaponId,
+          armorId: knight.armorId,
+          description: knight.description,
+          lore: knight.lore,
+          imagePath: imagePath,
+          iconPath: iconPath,
+        );
+        
+        setState(() => _isUploadingImage = false);
+        
+        final updated = await _service.update(updatedKnight);
+        if (updated != null && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Knight updated successfully')),
           );
           context.go('/knights/$knightId');
+        } else if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Error: Failed to update knight'), backgroundColor: Colors.red),
+          );
         }
       } else {
-        // Create
-        final created = await apiService.create('knights', data);
+        // Create - prima crea, poi salva immagini
+        setState(() => _isUploadingImage = false);
+        
+        final created = await _service.create(knight);
+        
+        // Salva immagini dopo la creazione
+        if (_selectedImage != null) {
+          imagePath = await _jsonService.saveImage(_selectedImage!, 'knight', created.id);
+        }
+        if (_selectedIcon != null) {
+          iconPath = await _jsonService.saveImage(_selectedIcon!, 'knight', created.id);
+        }
+        
+        // Aggiorna con i path delle immagini
+        if (imagePath != knight.imagePath || iconPath != knight.iconPath) {
+          final updatedKnight = Knight(
+            id: created.id,
+            name: created.name,
+            title: created.title,
+            factionId: created.factionId,
+            level: created.level,
+            health: created.health,
+            maxHealth: created.maxHealth,
+            attack: created.attack,
+            defense: created.defense,
+            weaponId: created.weaponId,
+            armorId: created.armorId,
+            description: created.description,
+            lore: created.lore,
+            imagePath: imagePath,
+            iconPath: iconPath,
+          );
+          await _service.update(updatedKnight);
+        }
+        
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Knight created successfully')),
           );
-          context.go('/knights/${created['id']}');
+          context.go('/knights/${created.id}');
         }
       }
     } catch (e) {

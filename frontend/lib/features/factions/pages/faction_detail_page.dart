@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/faction_service.dart';
+import '../../../data/models/faction.dart';
 import '../../../core/theme/app_theme.dart';
 
 class FactionDetailPage extends StatefulWidget {
@@ -17,6 +17,7 @@ class _FactionDetailPageState extends State<FactionDetailPage> {
   Map<String, dynamic>? faction;
   bool isLoading = true;
   String? error;
+  final FactionService _service = FactionService();
 
   @override
   void initState() {
@@ -31,12 +32,26 @@ class _FactionDetailPageState extends State<FactionDetailPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('factions', widget.factionId);
-      setState(() {
-        faction = data;
-        isLoading = false;
-      });
+      final factionData = await _service.getById(widget.factionId);
+      if (factionData != null) {
+        setState(() {
+          faction = {
+            'id': factionData.id,
+            'name': factionData.name,
+            'description': factionData.description,
+            'lore': factionData.lore,
+            'color': factionData.color,
+            'image_path': factionData.imagePath,
+            'icon_path': factionData.iconPath,
+          };
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          error = 'Faction not found';
+          isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() {
         error = e.toString();
@@ -77,13 +92,19 @@ class _FactionDetailPageState extends State<FactionDetailPage> {
     if (confirmed != true) return;
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      await apiService.delete('factions', widget.factionId);
-      if (mounted) {
+      final deleted = await _service.delete(widget.factionId);
+      if (deleted && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Faction deleted successfully')),
         );
         context.go('/factions');
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error: Failed to delete faction'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } catch (e) {
       if (mounted) {

@@ -56,7 +56,7 @@ class ItemCard extends StatelessWidget {
                 assetPath: IconMapper.getIconPath(
                   customPath: item['icon_path'] as String?,
                   entityType: item['type'] as String?,
-                ) ?? IconMapper.getEntityIconPath('magic-item'),
+                ) ?? IconMapper.getEntityIconPath('magic-item') ?? 'assets/icons/icons/entity/magic-item.svg',
                 size: 50,
                 iconColor: AppTheme.getPrimaryBackgroundFromContext(context),
                 gradientColors: [

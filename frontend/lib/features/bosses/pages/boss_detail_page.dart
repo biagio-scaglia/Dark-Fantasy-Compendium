@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/boss_service.dart';
+import '../../../data/models/boss.dart';
 import '../../../core/theme/app_theme.dart';
 
 class BossDetailPage extends StatefulWidget {
@@ -17,6 +17,7 @@ class _BossDetailPageState extends State<BossDetailPage> {
   Map<String, dynamic>? boss;
   bool isLoading = true;
   String? error;
+  final BossService _service = BossService();
 
   @override
   void initState() {
@@ -31,12 +32,32 @@ class _BossDetailPageState extends State<BossDetailPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('bosses', widget.bossId);
-      setState(() {
-        boss = data;
-        isLoading = false;
-      });
+      final bossData = await _service.getById(widget.bossId);
+      if (bossData != null) {
+        setState(() {
+          boss = {
+            'id': bossData.id,
+            'name': bossData.name,
+            'title': bossData.title,
+            'level': bossData.level,
+            'health': bossData.health,
+            'max_health': bossData.maxHealth,
+            'attack': bossData.attack,
+            'defense': bossData.defense,
+            'description': bossData.description,
+            'lore': bossData.lore,
+            'reward_ids': bossData.rewardIds,
+            'image_path': bossData.imagePath,
+            'icon_path': bossData.iconPath,
+          };
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          error = 'Boss not found';
+          isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() {
         error = e.toString();

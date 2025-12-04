@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/armor_service.dart';
+import '../../../data/models/armor.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/icon_picker_widget.dart';
 
@@ -28,6 +28,7 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
   bool _isLoading = false;
   bool _isLoadingData = false;
   Map<String, dynamic>? _armorData;
+  final ArmorService _service = ArmorService();
 
   @override
   void initState() {
@@ -52,13 +53,33 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
   Future<void> _loadArmor() async {
     setState(() => _isLoadingData = true);
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('armors', widget.armor!['id']);
-      setState(() {
-        _armorData = data;
-        _populateFields(data);
-        _isLoadingData = false;
-      });
+      final armorData = await _service.getById(widget.armor!['id']);
+      if (armorData != null) {
+        final data = {
+          'id': armorData.id,
+          'name': armorData.name,
+          'type': armorData.type,
+          'defense_bonus': armorData.defenseBonus,
+          'durability': armorData.durability,
+          'rarity': armorData.rarity,
+          'description': armorData.description,
+          'lore': armorData.lore,
+          'image_path': armorData.imagePath,
+          'icon_path': armorData.iconPath,
+        };
+        setState(() {
+          _armorData = data;
+          _populateFields(data);
+          _isLoadingData = false;
+        });
+      } else {
+        setState(() => _isLoadingData = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Armor not found'), backgroundColor: Colors.red),
+          );
+        }
+      }
     } catch (e) {
       setState(() => _isLoadingData = false);
       if (mounted) {
@@ -77,8 +98,8 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
     _rarityController.text = armor['rarity'] ?? 'common';
     _descriptionController.text = armor['description'] ?? '';
     _loreController.text = armor['lore'] ?? '';
-    _imageUrlController.text = armor['image_url'] ?? '';
-    _iconUrlController.text = armor['icon_url'] ?? '';
+    _imageUrlController.text = armor['image_path'] ?? armor['image_url'] ?? '';
+    _iconUrlController.text = armor['icon_path'] ?? armor['icon_url'] ?? '';
   }
 
   @override
@@ -101,35 +122,39 @@ class _ArmorFormPageState extends State<ArmorFormPage> {
     setState(() => _isLoading = true);
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = {
-        'name': _nameController.text,
-        'type': _typeController.text,
-        'defense_bonus': int.tryParse(_defenseBonusController.text) ?? 0,
-        'durability': int.tryParse(_durabilityController.text) ?? 100,
-        'rarity': _rarityController.text,
-        'description': _descriptionController.text,
-        'lore': _loreController.text.isEmpty ? null : _loreController.text,
-        'image_url': _imageUrlController.text.isEmpty ? null : _imageUrlController.text,
-        'icon_url': _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
-      };
+      final armor = Armor(
+        id: widget.armor?['id'] ?? _armorData?['id'] ?? 0,
+        name: _nameController.text,
+        type: _typeController.text,
+        defenseBonus: int.tryParse(_defenseBonusController.text) ?? 0,
+        durability: int.tryParse(_durabilityController.text) ?? 100,
+        rarity: _rarityController.text,
+        description: _descriptionController.text,
+        lore: _loreController.text.isEmpty ? null : _loreController.text,
+        imagePath: _imageUrlController.text.isEmpty ? null : _imageUrlController.text,
+        iconPath: _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
+      );
 
       final armorId = widget.armor?['id'] ?? _armorData?['id'];
       if (armorId != null) {
-        await apiService.update('armors', armorId, data);
-        if (mounted) {
+        final updated = await _service.update(armor);
+        if (updated != null && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Armor updated successfully')),
           );
           context.go('/armors/$armorId');
+        } else if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Error: Failed to update armor'), backgroundColor: Colors.red),
+          );
         }
       } else {
-        final created = await apiService.create('armors', data);
+        final created = await _service.create(armor);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Armor created successfully')),
           );
-          context.go('/armors/${created['id']}');
+          context.go('/armors/${created.id}');
         }
       }
     } catch (e) {

@@ -57,7 +57,7 @@ class ArmorCard extends StatelessWidget {
                   customPath: armor['icon_path'] as String?,
                   type: armor['type'] as String?,
                   entityType: 'armor',
-                ) ?? IconMapper.getArmorIconPath(armor['type'] as String?),
+                ) ?? IconMapper.getArmorIconPath(armor['type'] as String?) ?? 'assets/icons/icons/entity/armor.svg',
                 size: 55,
                 iconColor: AppTheme.getPrimaryBackgroundFromContext(context),
                 gradientColors: [

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/lore_service.dart';
+import '../../../data/models/lore.dart';
 import '../../../core/theme/app_theme.dart';
 
 class LoreFormPage extends StatefulWidget {
@@ -22,6 +22,7 @@ class _LoreFormPageState extends State<LoreFormPage> {
   late TextEditingController _relatedEntityIdController;
   bool _isLoading = false;
   bool _isLoadingData = false;
+  final LoreService _service = LoreService();
 
   final List<String> _categories = ['history', 'legend', 'prophecy', 'tale', 'other'];
 
@@ -44,12 +45,29 @@ class _LoreFormPageState extends State<LoreFormPage> {
   Future<void> _loadLore() async {
     setState(() => _isLoadingData = true);
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('lores', widget.lore!['id']);
-      setState(() {
-        _populateFields(data);
-        _isLoadingData = false;
-      });
+      final loreData = await _service.getById(widget.lore!['id']);
+      if (loreData != null) {
+        final data = {
+          'id': loreData.id,
+          'title': loreData.title,
+          'category': loreData.category,
+          'content': loreData.content,
+          'related_entity_type': loreData.relatedEntityType,
+          'related_entity_id': loreData.relatedEntityId,
+          'image_path': loreData.imagePath,
+        };
+        setState(() {
+          _populateFields(data);
+          _isLoadingData = false;
+        });
+      } else {
+        setState(() => _isLoadingData = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Lore not found'), backgroundColor: Colors.red),
+          );
+        }
+      }
     } catch (e) {
       setState(() => _isLoadingData = false);
       if (mounted) {
@@ -74,29 +92,29 @@ class _LoreFormPageState extends State<LoreFormPage> {
     setState(() => _isLoading = true);
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = {
-        'title': _titleController.text,
-        'category': _categoryController.text,
-        'content': _contentController.text,
-        'related_entity_type': _relatedEntityTypeController.text.isEmpty 
-            ? null 
-            : _relatedEntityTypeController.text,
-        'related_entity_id': _relatedEntityIdController.text.isEmpty
-            ? null
-            : int.tryParse(_relatedEntityIdController.text),
-      };
+      final lore = Lore(
+        id: widget.lore?['id'] ?? 0,
+        title: _titleController.text,
+        category: _categoryController.text.isEmpty ? null : _categoryController.text,
+        content: _contentController.text.isEmpty ? null : _contentController.text,
+        relatedEntityType: _relatedEntityTypeController.text.isEmpty ? null : _relatedEntityTypeController.text,
+        relatedEntityId: _relatedEntityIdController.text.isEmpty ? null : int.tryParse(_relatedEntityIdController.text),
+      );
 
       if (widget.lore != null && widget.lore!['id'] != null) {
-        await apiService.update('lores', widget.lore!['id'], data);
-        if (mounted) {
+        final updated = await _service.update(lore);
+        if (updated != null && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Lore updated!'), backgroundColor: Colors.green),
           );
           context.pop();
+        } else if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Error: Failed to update lore'), backgroundColor: Colors.red),
+          );
         }
       } else {
-        await apiService.create('lores', data);
+        final created = await _service.create(lore);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Lore created!'), backgroundColor: Colors.green),

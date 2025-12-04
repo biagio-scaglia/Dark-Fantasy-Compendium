@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/party_service.dart';
+import '../../../data/models/party.dart';
 
 class PartyFormPage extends StatefulWidget {
   final Map<String, dynamic>? party;
@@ -23,6 +23,7 @@ class _PartyFormPageState extends State<PartyFormPage> {
   late TextEditingController _notesController;
   bool _isLoading = false;
   bool _isLoadingData = false;
+  final PartyService _service = PartyService();
 
   @override
   void initState() {
@@ -45,12 +46,21 @@ class _PartyFormPageState extends State<PartyFormPage> {
   Future<void> _loadParty() async {
     setState(() => _isLoadingData = true);
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('parties', widget.party!['id']);
-      setState(() {
-        _populateFields(data);
-        _isLoadingData = false;
-      });
+      final partyData = await _service.getById(widget.party!['id']);
+      if (partyData != null) {
+        final data = partyData.toJson();
+        setState(() {
+          _populateFields(data);
+          _isLoadingData = false;
+        });
+      } else {
+        setState(() => _isLoadingData = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Party not found'), backgroundColor: Colors.red),
+          );
+        }
+      }
     } catch (e) {
       setState(() => _isLoadingData = false);
       if (mounted) {
@@ -67,7 +77,7 @@ class _PartyFormPageState extends State<PartyFormPage> {
     _levelController.text = partyData['level']?.toString() ?? '1';
     _experienceController.text = partyData['experience_points']?.toString() ?? '0';
     _campaignIdController.text = partyData['campaign_id']?.toString() ?? '';
-    _charactersController.text = (partyData['characters'] as List?)
+    _charactersController.text = (partyData['member_ids'] as List? ?? partyData['characters'] as List?)
         ?.map((e) => e.toString())
         .join(', ') ?? '';
     _notesController.text = partyData['notes'] ?? '';
@@ -79,12 +89,10 @@ class _PartyFormPageState extends State<PartyFormPage> {
     setState(() => _isLoading = true);
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      
       // Parse characters IDs
-      List<int> characters = [];
+      List<int>? memberIds;
       if (_charactersController.text.isNotEmpty) {
-        characters = _charactersController.text
+        memberIds = _charactersController.text
             .split(',')
             .map((e) => e.trim())
             .where((e) => e.isNotEmpty)
@@ -100,19 +108,20 @@ class _PartyFormPageState extends State<PartyFormPage> {
         campaignId = int.tryParse(_campaignIdController.text.trim());
       }
       
-      final partyData = {
-        'name': _nameController.text,
-        'description': _descriptionController.text.isEmpty ? null : _descriptionController.text,
-        'level': int.parse(_levelController.text),
-        'experience_points': int.parse(_experienceController.text),
-        'campaign_id': campaignId,
-        'characters': characters,
-        'notes': _notesController.text.isEmpty ? null : _notesController.text,
-      };
+      final party = Party(
+        id: widget.party?['id'] ?? 0,
+        name: _nameController.text,
+        description: _descriptionController.text.isEmpty ? null : _descriptionController.text,
+        level: int.tryParse(_levelController.text) ?? 1,
+        experiencePoints: int.tryParse(_experienceController.text) ?? 0,
+        campaignId: campaignId,
+        memberIds: memberIds,
+        notes: _notesController.text.isEmpty ? null : _notesController.text,
+      );
 
       if (widget.party != null && widget.party!['id'] != null) {
-        await apiService.update('parties', widget.party!['id'], partyData);
-        if (mounted) {
+        final updated = await _service.update(party);
+        if (updated != null && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Party updated successfully'),
@@ -120,9 +129,16 @@ class _PartyFormPageState extends State<PartyFormPage> {
             ),
           );
           context.pop();
+        } else if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Error: Failed to update party'),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       } else {
-        await apiService.create('parties', partyData);
+        final created = await _service.create(party);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/armor_service.dart';
+import '../../../data/models/armor.dart';
 import '../../../core/theme/app_theme.dart';
 
 class ArmorDetailPage extends StatefulWidget {
@@ -17,6 +17,7 @@ class _ArmorDetailPageState extends State<ArmorDetailPage> {
   Map<String, dynamic>? armor;
   bool isLoading = true;
   String? error;
+  final ArmorService _service = ArmorService();
 
   @override
   void initState() {
@@ -31,12 +32,29 @@ class _ArmorDetailPageState extends State<ArmorDetailPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getOne('armors', widget.armorId);
-      setState(() {
-        armor = data;
-        isLoading = false;
-      });
+      final armorData = await _service.getById(widget.armorId);
+      if (armorData != null) {
+        setState(() {
+          armor = {
+            'id': armorData.id,
+            'name': armorData.name,
+            'type': armorData.type,
+            'defense_bonus': armorData.defenseBonus,
+            'durability': armorData.durability,
+            'rarity': armorData.rarity,
+            'description': armorData.description,
+            'lore': armorData.lore,
+            'image_path': armorData.imagePath,
+            'icon_path': armorData.iconPath,
+          };
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          error = 'Armor not found';
+          isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() {
         error = e.toString();
@@ -68,13 +86,19 @@ class _ArmorDetailPageState extends State<ArmorDetailPage> {
     if (confirmed != true) return;
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      await apiService.delete('armors', widget.armorId);
-      if (mounted) {
+      final deleted = await _service.delete(widget.armorId);
+      if (deleted && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Armor deleted successfully')),
         );
         context.go('/armors');
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error: Failed to delete armor'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } catch (e) {
       if (mounted) {
