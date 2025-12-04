@@ -1154,6 +1154,35 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             onTap: () => context.push('/parties'),
             delay: 1200,
           ),
+          // D&D Tools
+          _AnimatedHomeCard(
+            title: 'Tiri Dadi',
+            icon: FontAwesomeIcons.dice,
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppTheme.accentGold,
+                AppTheme.accentCrimson,
+              ],
+            ),
+            onTap: () => context.push('/dice'),
+            delay: 1300,
+          ),
+          _AnimatedHomeCard(
+            title: 'Generatore',
+            icon: FontAwesomeIcons.wandMagicSparkles,
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppTheme.accentCrimson,
+                AppTheme.accentGold,
+              ],
+            ),
+            onTap: () => context.push('/character-generator'),
+            delay: 1400,
+          ),
         ]),
       ),
     );

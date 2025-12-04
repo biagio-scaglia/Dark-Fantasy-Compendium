@@ -53,6 +53,13 @@ class _LoresListPageState extends State<LoresListPage> {
           tooltip: 'Indietro',
         ),
         title: const Text('Lore'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => context.push('/lores/new'),
+            tooltip: 'Nuova Lore',
+          ),
+        ],
       ),
       body: _buildBody(),
     );

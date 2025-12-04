@@ -52,6 +52,13 @@ class _CampaignsListPageState extends State<CampaignsListPage> {
           onPressed: () => context.go('/'),
         ),
         title: const Text('Campagne'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => context.push('/campaigns/new'),
+            tooltip: 'Nuova Campagna',
+          ),
+        ],
       ),
       body: _buildBody(),
     );

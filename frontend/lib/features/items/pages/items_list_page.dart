@@ -53,6 +53,13 @@ class _ItemsListPageState extends State<ItemsListPage> {
           tooltip: 'Indietro',
         ),
         title: const Text('Oggetti'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => context.push('/items/new'),
+            tooltip: 'Nuovo Oggetto',
+          ),
+        ],
       ),
       body: _buildBody(),
     );

@@ -4,3 +4,13 @@ pydantic==2.9.0
 pydantic-settings==2.6.0
 python-multipart==0.0.12
 
+# Librerie D&D
+dnd-character>=1.0.0
+dungeonsheets>=0.15.0
+dndice>=2.0.0
+dnd5epy>=0.1.0
+dnd-engine>=0.1.0
+
+# Librerie per PDF export
+reportlab>=4.0.0
+

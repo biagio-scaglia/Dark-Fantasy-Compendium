@@ -59,10 +59,23 @@ source venv/bin/activate  # Su Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+**Nota:** Il progetto include librerie Python per D&D:
+- `dnd-character` - Per generare personaggi automaticamente
+- `dndice` - Per gestire tiri di dadi
+- `dnd5epy` - Per interfacciarsi con contenuti D&D 5e
+- `dnd-engine` - Motore per meccaniche D&D 5e
+- `dungeonsheets` - Per creare schede personaggio (futuro export PDF)
+
 3. I dati di esempio sono già presenti nei file JSON in `app/data/`
 
 ### Avvio
 
+**Opzione 1: Usando Python (consigliato)**
+```bash
+python run.py
+```
+
+**Opzione 2: Usando uvicorn direttamente**
 ```bash
 uvicorn app.main:app --reload
 ```
@@ -98,6 +111,77 @@ Stessi endpoint disponibili per:
 - `/spells` - Incantesimi con livello, scuola, componenti
 - `/abilities` - Abilità e skill
 - `/parties` - Gruppi di personaggi con livelli e XP
+
+#### Strumenti D&D (Librerie Python Integrate)
+- `GET /api/v1/dice/status` - Verifica disponibilità servizio dadi
+- `POST /api/v1/dice/roll` - Tira i dadi (notazione D&D: '1d20', '2d6+3', ecc.)
+- `POST /api/v1/dice/roll/multiple` - Tira multiple notazioni di dadi
+- `POST /api/v1/dice/ability-check` - Tira un d20 per prova di caratteristica
+- `POST /api/v1/dice/saving-throw` - Tira un d20 per tiro salvezza
+- `POST /api/v1/dice/damage` - Tira i dadi per il danno
+- `GET /api/v1/character-generator/status` - Verifica disponibilità generatore personaggi
+- `GET /api/v1/character-generator/classes` - Lista classi disponibili per generazione
+- `GET /api/v1/character-generator/races` - Lista razze disponibili per generazione
+- `POST /api/v1/character-generator/generate` - Genera un personaggio D&D automaticamente
+
+### Esempi di Utilizzo API D&D
+
+#### Tirare i Dadi
+```bash
+# Tira un d20
+curl -X POST "http://localhost:8000/api/v1/dice/roll" \
+  -H "Content-Type: application/json" \
+  -d '{"notation": "1d20"}'
+
+# Tira 2d6+3
+curl -X POST "http://localhost:8000/api/v1/dice/roll" \
+  -H "Content-Type: application/json" \
+  -d '{"notation": "2d6+3"}'
+
+# Prova di caratteristica con modificatore +5
+curl -X POST "http://localhost:8000/api/v1/dice/ability-check" \
+  -H "Content-Type: application/json" \
+  -d '{"modifier": 5}'
+
+# Tiro salvezza
+curl -X POST "http://localhost:8000/api/v1/dice/saving-throw" \
+  -H "Content-Type: application/json" \
+  -d '{"modifier": 3}'
+
+# Tiro di danno (1d8+2)
+curl -X POST "http://localhost:8000/api/v1/dice/damage" \
+  -H "Content-Type: application/json" \
+  -d '{"dice_notation": "1d8", "modifier": 2}'
+```
+
+#### Generare un Personaggio
+```bash
+# Genera un personaggio (senza salvare)
+curl -X POST "http://localhost:8000/api/v1/character-generator/generate" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Aragorn",
+    "class_name": "Ranger",
+    "race_name": "Human",
+    "level": 5,
+    "auto_save": false
+  }'
+
+# Genera e salva automaticamente
+curl -X POST "http://localhost:8000/api/v1/character-generator/generate" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Gandalf",
+    "class_name": "Wizard",
+    "race_name": "Human",
+    "level": 10,
+    "auto_save": true
+  }'
+
+# Verifica classi e razze disponibili
+curl "http://localhost:8000/api/v1/character-generator/classes"
+curl "http://localhost:8000/api/v1/character-generator/races"
+```
 
 ## Frontend (Flutter)
 
@@ -255,6 +339,10 @@ Provider<ApiService>(
 - ✅ Gestione mappe con markers
 - ✅ Database classi e razze D&D
 - ✅ Sistema di incantesimi completo
+- ✅ **Generatore automatico personaggi D&D** (dnd-character)
+- ✅ **Sistema di tiri dadi D&D** (dndice) - supporta notazione completa (1d20, 2d6+3, ecc.)
+- ✅ **API per prove di caratteristica e tiri salvezza**
+- ✅ **API per tiri di danno**
 
 ### Funzionalità D&D
 - ✅ Creazione e gestione campagne
@@ -288,8 +376,8 @@ Il progetto include dati di esempio per:
 - [ ] CI/CD pipeline
 - [ ] Editor mappe avanzato con disegno
 - [ ] Sistema di combattimento
-- [ ] Generatore di personaggi automatico
-- [ ] Export PDF per schede personaggio
+- [ ] Export PDF per schede personaggio (usando dungeonsheets)
+- [ ] Integrazione completa dnd-engine per meccaniche di combattimento
 
 ## Tecnologie Utilizzate
 
@@ -298,6 +386,11 @@ Il progetto include dati di esempio per:
 - FastAPI
 - Pydantic
 - Uvicorn
+- **dnd-character** - Generazione automatica personaggi D&D 5e
+- **dndice** - Sistema di tiri dadi D&D
+- **dnd5epy** - Interfaccia con contenuti D&D 5e
+- **dnd-engine** - Motore per meccaniche D&D 5e
+- **dungeonsheets** - Creazione schede personaggio e note (per export PDF futuro)
 
 ### Frontend
 - Flutter

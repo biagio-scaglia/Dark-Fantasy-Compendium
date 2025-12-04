@@ -75,6 +75,18 @@ async def add_session_to_campaign(campaign_id: int, session: Dict[str, Any]):
     max_id = max([s.get("id", 0) for s in sessions], default=0)
     session["id"] = max_id + 1
     
+    # Assicurati che tutti i campi richiesti siano presenti
+    if "date" not in session:
+        session["date"] = datetime.now().isoformat()
+    if "title" not in session:
+        session["title"] = "Nuova Sessione"
+    if "description" not in session:
+        session["description"] = ""
+    if "experience_awarded" not in session:
+        session["experience_awarded"] = 0
+    if "characters_present" not in session:
+        session["characters_present"] = []
+    
     sessions.append(session)
     campaign["sessions"] = sessions
     

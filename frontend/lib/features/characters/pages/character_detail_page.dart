@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../../services/api_service.dart';
+import '../../../services/pdf_export_service.dart';
 import '../../../core/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -51,6 +52,42 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
     }
   }
 
+  Future<void> _exportPdf() async {
+    try {
+      final apiService = Provider.of<ApiService>(context, listen: false);
+      final pdfService = PdfExportService(apiService);
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Generazione PDF in corso...'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+      
+      await pdfService.exportCharacterPdf(widget.characterId, simple: true);
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('PDF generato con successo!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Errore nell\'export PDF: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
@@ -74,6 +111,13 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
           onPressed: () => context.pop(),
         ),
         title: Text(character!['name'] ?? 'Personaggio'),
+        actions: [
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.filePdf),
+            onPressed: _exportPdf,
+            tooltip: 'Esporta PDF',
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

@@ -6,6 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import '../../../services/api_service.dart';
 import '../../../core/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'session_form_page.dart';
 
 class SessionsCalendarPage extends StatefulWidget {
   const SessionsCalendarPage({super.key});
@@ -117,6 +118,13 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
           onPressed: () => context.pop(),
         ),
         title: const Text('Calendario Sessioni'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => _showCreateSessionDialog(),
+            tooltip: 'Nuova Sessione',
+          ),
+        ],
       ),
       body: _buildBody(),
     );
@@ -214,7 +222,12 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
                 onTap: () {
                   if (sessions.isNotEmpty) {
                     _showSessionsDialog(date, sessions);
+                  } else {
+                    _showCreateSessionDialog(date: date);
                   }
+                },
+                onLongPress: () {
+                  _showCreateSessionDialog(date: date);
                 },
                 child: Container(
                   margin: const EdgeInsets.all(2),
@@ -302,6 +315,61 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
         ],
       ),
     );
+  }
+
+  void _showCreateSessionDialog({DateTime? date}) async {
+    // Prima mostra un dialog per selezionare la campagna
+    final campaigns = await _loadCampaigns();
+    if (campaigns.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Crea prima una campagna per aggiungere sessioni'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+      return;
+    }
+
+    int? selectedCampaignId;
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Seleziona Campagna'),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: campaigns.length,
+            itemBuilder: (context, index) {
+              final campaign = campaigns[index];
+              return ListTile(
+                title: Text(campaign['name'] ?? ''),
+                subtitle: Text('DM: ${campaign['dungeon_master'] ?? ''}'),
+                onTap: () {
+                  selectedCampaignId = campaign['id'] as int;
+                  Navigator.pop(context);
+                },
+              );
+            },
+          ),
+        ),
+      ),
+    );
+
+    if (selectedCampaignId != null && mounted) {
+      context.push('/sessions/new?campaignId=$selectedCampaignId${date != null ? '&date=${DateFormat('yyyy-MM-dd').format(date)}' : ''}');
+    }
+  }
+
+  Future<List<dynamic>> _loadCampaigns() async {
+    try {
+      final apiService = Provider.of<ApiService>(context, listen: false);
+      return await apiService.getAll('campaigns');
+    } catch (e) {
+      return [];
+    }
   }
 }
 

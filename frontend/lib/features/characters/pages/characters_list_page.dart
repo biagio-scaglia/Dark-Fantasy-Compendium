@@ -52,6 +52,13 @@ class _CharactersListPageState extends State<CharactersListPage> {
           onPressed: () => context.go('/'),
         ),
         title: const Text('Personaggi'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => context.push('/characters/new'),
+            tooltip: 'Nuovo Personaggio',
+          ),
+        ],
       ),
       body: _buildBody(),
     );

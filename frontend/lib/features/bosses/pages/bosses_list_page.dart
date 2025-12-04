@@ -53,6 +53,13 @@ class _BossesListPageState extends State<BossesListPage> {
           tooltip: 'Indietro',
         ),
         title: const Text('Boss'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => context.push('/bosses/new'),
+            tooltip: 'Nuovo Boss',
+          ),
+        ],
       ),
       body: _buildBody(),
     );

@@ -86,6 +86,11 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
         title: Text(campaign!['name'] ?? 'Campagna'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => context.push('/sessions/new?campaignId=${widget.campaignId}'),
+            tooltip: 'Nuova Sessione',
+          ),
+          IconButton(
             icon: const FaIcon(FontAwesomeIcons.calendar),
             onPressed: () => context.push('/sessions/calendar'),
             tooltip: 'Calendario Sessioni',

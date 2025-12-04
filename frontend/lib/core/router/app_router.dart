@@ -32,6 +32,14 @@ import '../../features/parties/pages/party_detail_page.dart';
 import '../../features/parties/pages/party_form_page.dart';
 import '../../features/sessions/pages/sessions_calendar_page.dart';
 import '../../features/home/pages/home_page.dart';
+import '../../features/dice/pages/dice_roller_page.dart';
+import '../../features/character_generator/pages/character_generator_page.dart';
+import '../../features/characters/pages/character_form_page.dart';
+import '../../features/campaigns/pages/campaign_form_page.dart';
+import '../../features/items/pages/item_form_page.dart';
+import '../../features/bosses/pages/boss_form_page.dart';
+import '../../features/lores/pages/lore_form_page.dart';
+import '../../features/sessions/pages/session_form_page.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -134,6 +142,17 @@ class AppRouter {
         builder: (context, state) => const BossesListPage(),
       ),
       GoRoute(
+        path: '/bosses/new',
+        builder: (context, state) => const BossFormPage(),
+      ),
+      GoRoute(
+        path: '/bosses/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return BossFormPage(boss: {'id': id});
+        },
+      ),
+      GoRoute(
         path: '/bosses/:id',
         builder: (context, state) {
           final id = int.parse(state.pathParameters['id']!);
@@ -145,6 +164,17 @@ class AppRouter {
         builder: (context, state) => const ItemsListPage(),
       ),
       GoRoute(
+        path: '/items/new',
+        builder: (context, state) => const ItemFormPage(),
+      ),
+      GoRoute(
+        path: '/items/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return ItemFormPage(item: {'id': id});
+        },
+      ),
+      GoRoute(
         path: '/items/:id',
         builder: (context, state) {
           final id = int.parse(state.pathParameters['id']!);
@@ -154,6 +184,17 @@ class AppRouter {
       GoRoute(
         path: '/lores',
         builder: (context, state) => const LoresListPage(),
+      ),
+      GoRoute(
+        path: '/lores/new',
+        builder: (context, state) => const LoreFormPage(),
+      ),
+      GoRoute(
+        path: '/lores/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return LoreFormPage(lore: {'id': id});
+        },
       ),
       GoRoute(
         path: '/lores/:id',
@@ -212,6 +253,17 @@ class AppRouter {
         builder: (context, state) => const CharactersListPage(),
       ),
       GoRoute(
+        path: '/characters/new',
+        builder: (context, state) => const CharacterFormPage(),
+      ),
+      GoRoute(
+        path: '/characters/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return CharacterFormPage(character: {'id': id});
+        },
+      ),
+      GoRoute(
         path: '/characters/:id',
         builder: (context, state) {
           final id = int.parse(state.pathParameters['id']!);
@@ -221,6 +273,17 @@ class AppRouter {
       GoRoute(
         path: '/campaigns',
         builder: (context, state) => const CampaignsListPage(),
+      ),
+      GoRoute(
+        path: '/campaigns/new',
+        builder: (context, state) => const CampaignFormPage(),
+      ),
+      GoRoute(
+        path: '/campaigns/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return CampaignFormPage(campaign: {'id': id});
+        },
       ),
       GoRoute(
         path: '/campaigns/:id',
@@ -254,6 +317,28 @@ class AppRouter {
       GoRoute(
         path: '/sessions/calendar',
         builder: (context, state) => const SessionsCalendarPage(),
+      ),
+      GoRoute(
+        path: '/sessions/new',
+        builder: (context, state) {
+          final campaignIdStr = state.uri.queryParameters['campaignId'];
+          final dateStr = state.uri.queryParameters['date'];
+          final campaignId = campaignIdStr != null ? int.parse(campaignIdStr) : 1;
+          Map<String, dynamic>? session;
+          if (dateStr != null) {
+            session = {'date': dateStr};
+          }
+          return SessionFormPage(campaignId: campaignId, session: session);
+        },
+      ),
+      // D&D Tools Routes
+      GoRoute(
+        path: '/dice',
+        builder: (context, state) => const DiceRollerPage(),
+      ),
+      GoRoute(
+        path: '/character-generator',
+        builder: (context, state) => const CharacterGeneratorPage(),
       ),
     ],
   );
