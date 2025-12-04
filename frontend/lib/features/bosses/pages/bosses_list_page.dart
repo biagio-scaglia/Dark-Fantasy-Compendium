@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/boss_service.dart';
+import '../../../data/models/boss.dart';
 import '../../../widgets/boss_card.dart';
 
 class BossesListPage extends StatefulWidget {
@@ -12,9 +12,10 @@ class BossesListPage extends StatefulWidget {
 }
 
 class _BossesListPageState extends State<BossesListPage> {
-  List<dynamic> bosses = [];
+  List<Boss> bosses = [];
   bool isLoading = true;
   String? error;
+  final BossService _service = BossService();
 
   @override
   void initState() {
@@ -29,8 +30,7 @@ class _BossesListPageState extends State<BossesListPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('bosses');
+      final data = await _service.getAll();
       setState(() {
         bosses = data;
         isLoading = false;
@@ -95,7 +95,21 @@ class _BossesListPageState extends State<BossesListPage> {
       child: ListView.builder(
         itemCount: bosses.length,
         itemBuilder: (context, index) {
-          return BossCard(boss: bosses[index]);
+          final boss = bosses[index];
+          final bossMap = {
+            'id': boss.id,
+            'name': boss.name,
+            'title': boss.title,
+            'level': boss.level,
+            'health': boss.health,
+            'max_health': boss.maxHealth,
+            'attack': boss.attack,
+            'defense': boss.defense,
+            'description': boss.description,
+            'image_path': boss.imagePath,
+            'icon_path': boss.iconPath,
+          };
+          return BossCard(boss: bossMap);
         },
       ),
     );

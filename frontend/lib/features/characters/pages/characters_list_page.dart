@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/character_service.dart';
+import '../../../data/models/character.dart';
 import '../../../widgets/character_card.dart';
 
 class CharactersListPage extends StatefulWidget {
@@ -12,9 +12,10 @@ class CharactersListPage extends StatefulWidget {
 }
 
 class _CharactersListPageState extends State<CharactersListPage> {
-  List<dynamic> characters = [];
+  List<Character> characters = [];
   bool isLoading = true;
   String? error;
+  final CharacterService _service = CharacterService();
 
   @override
   void initState() {
@@ -29,8 +30,7 @@ class _CharactersListPageState extends State<CharactersListPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('characters');
+      final data = await _service.getAll();
       setState(() {
         characters = data;
         isLoading = false;
@@ -94,7 +94,17 @@ class _CharactersListPageState extends State<CharactersListPage> {
       child: ListView.builder(
         itemCount: characters.length,
         itemBuilder: (context, index) {
-          return CharacterCard(character: characters[index]);
+          final char = characters[index];
+          final charMap = {
+            'id': char.id,
+            'name': char.name,
+            'class_id': char.classId,
+            'race_id': char.raceId,
+            'level': char.level,
+            'image_path': char.imagePath,
+            'icon_path': char.iconPath,
+          };
+          return CharacterCard(character: charMap);
         },
       ),
     );

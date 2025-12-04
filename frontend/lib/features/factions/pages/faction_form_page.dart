@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../../services/api_service.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../widgets/icon_picker_widget.dart';
 
 class FactionFormPage extends StatefulWidget {
   final Map<String, dynamic>? faction;
@@ -189,9 +190,14 @@ class _FactionFormPageState extends State<FactionFormPage> {
               decoration: const InputDecoration(labelText: 'Image URL'),
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              controller: _iconUrlController,
-              decoration: const InputDecoration(labelText: 'Icon URL'),
+            IconPickerWidget(
+              selectedIconPath: _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
+              suggestedCategories: ['entity', 'game', 'location'],
+              onIconSelected: (iconPath) {
+                setState(() {
+                  _iconUrlController.text = iconPath;
+                });
+              },
             ),
             const SizedBox(height: 24),
             ElevatedButton(

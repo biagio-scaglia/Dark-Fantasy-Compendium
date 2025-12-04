@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/map_service.dart';
+import '../../../data/models/map_model.dart';
 import '../../../widgets/map_card.dart';
 import 'map_form_page.dart';
 
@@ -13,9 +13,10 @@ class MapsListPage extends StatefulWidget {
 }
 
 class _MapsListPageState extends State<MapsListPage> {
-  List<dynamic> maps = [];
+  List<MapModel> maps = [];
   bool isLoading = true;
   String? error;
+  final MapService _service = MapService();
 
   @override
   void initState() {
@@ -30,8 +31,7 @@ class _MapsListPageState extends State<MapsListPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('maps');
+      final data = await _service.getAll();
       setState(() {
         maps = data;
         isLoading = false;
@@ -93,7 +93,15 @@ class _MapsListPageState extends State<MapsListPage> {
       child: ListView.builder(
         itemCount: maps.length,
         itemBuilder: (context, index) {
-          return MapCard(map: maps[index]);
+          final map = maps[index];
+          final mapMap = {
+            'id': map.id,
+            'name': map.name,
+            'description': map.description,
+            'image_path': map.imagePath,
+            'campaign_id': map.campaignId,
+          };
+          return MapCard(map: mapMap);
         },
       ),
     );

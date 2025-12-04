@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../core/theme/app_theme.dart';
+import 'svg_icon_widget.dart';
+import '../utils/icon_mapper.dart';
 
 class ItemCard extends StatelessWidget {
   final Map<String, dynamic> item;
@@ -50,36 +52,29 @@ class ItemCard extends StatelessWidget {
           padding: const EdgeInsets.all(14),
           child: Row(
             children: [
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      rarityColor,
-                      rarityColor.withOpacity(0.7),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: rarityColor.withOpacity(0.8),
-                    width: 2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: rarityColor.withOpacity(0.5),
-                      blurRadius: 6,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
+              SvgIconWithGradient(
+                assetPath: IconMapper.getIconPath(
+                  customPath: item['icon_path'] as String?,
+                  entityType: item['type'] as String?,
+                ) ?? IconMapper.getEntityIconPath('magic-item'),
+                size: 50,
+                iconColor: AppTheme.getPrimaryBackgroundFromContext(context),
+                gradientColors: [
+                  rarityColor,
+                  rarityColor.withOpacity(0.7),
+                ],
+                borderRadius: 10,
+                border: Border.all(
+                  color: rarityColor.withOpacity(0.8),
+                  width: 2,
                 ),
-                child: Icon(
-                  Icons.inventory_2,
-                  size: 26,
-                  color: AppTheme.getPrimaryBackgroundFromContext(context),
-                ),
+                shadows: [
+                  BoxShadow(
+                    color: rarityColor.withOpacity(0.5),
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
               const SizedBox(width: 14),
               Expanded(

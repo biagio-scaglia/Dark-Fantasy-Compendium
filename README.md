@@ -1,333 +1,365 @@
-# Dark Fantasy Compendium - D&D Manager
+# Dark Fantasy Compendium - Offline D&D Manager
 
-Un'applicazione full stack per la gestione di campagne D&D (Dungeons & Dragons) con Flutter per il frontend e Python FastAPI per il backend.
+A fully offline Flutter application for managing D&D (Dungeons & Dragons) campaigns using local JSON files. All data is stored locally on the device with no backend or internet connection required.
 
-## 🎲 Funzionalità Principali
+## Features
 
-- **Gestione Campagne D&D** - Crea e gestisci le tue campagne con sessioni, DM e giocatori
-- **Calendario Sessioni** - Visualizza e organizza tutte le sessioni in un calendario interattivo
-- **Gestione Personaggi** - Crea personaggi con ability scores, livelli, HP, AC e molto altro
-- **Classi e Razze D&D** - Database completo di classi e razze con tutte le caratteristiche
-- **Mappe Interattive** - Crea e gestisci mappe con markers e layers
-- **Gestione Party** - Organizza gruppi di personaggi con livelli e punti esperienza
-- **Incantesimi** - Database completo di incantesimi con dettagli
-- **Sistema Dark Fantasy** - Gestione di cavalieri, armi, armature, fazioni, boss e lore
+- **Fully Offline** - No backend, no internet required
+- **Local JSON Storage** - All data stored in local JSON files
+- **Full CRUD Operations** - Create, Read, Update, Delete for all entities
+- **Local Image Management** - Pick and store images locally on device
+- **ID-Based Relationships** - Entities linked through IDs
+- **User Profile** - Local user profile with optional PIN protection
+- **D&D Campaign Management** - Create and manage campaigns with sessions, DM, and players
+- **Character Management** - Create characters with ability scores, levels, HP, AC
+- **Classes and Races** - Complete database of D&D classes and races
+- **Interactive Maps** - Create and manage maps with markers and layers
+- **Party Management** - Organize character groups with levels and experience points
+- **Spells Database** - Complete spells database with details
+- **Dark Fantasy System** - Manage knights, weapons, armors, factions, bosses, and lore
 
-## Struttura del Progetto
+## Project Structure
 
 ```
 dark-fantasy-compendium/
-├── backend/
-│   ├── app/
-│   │   ├── api/
-│   │   │   └── routers/      # Router CRUD per ogni entità
-│   │   ├── models/            # Modelli Pydantic
-│   │   ├── schemas/           # Schemas per create/update
-│   │   ├── services/           # Servizi per gestione JSON
-│   │   ├── utils/             # Utilità
-│   │   ├── core/              # Configurazione core
-│   │   ├── data/              # Directory per file JSON
-│   │   └── main.py            # Entry point FastAPI
-│   └── requirements.txt
-│
 └── frontend/
     ├── lib/
-    │   ├── core/              # Tema, router, configurazione
-    │   ├── features/          # Feature-based architecture
-    │   ├── services/          # Servizi API
-    │   ├── widgets/           # Widget riutilizzabili
+    │   ├── core/                    # Theme, router, configuration
+    │   ├── data/
+    │   │   ├── models/              # Entity model classes
+    │   │   ├── services/            # CRUD services and LocalJsonService
+    │   │   └── json/                # JSON utilities
+    │   ├── features/                # Feature-based architecture
+    │   │   ├── characters/
+    │   │   ├── races/
+    │   │   ├── campaigns/
+    │   │   ├── spells/
+    │   │   └── ...
+    │   ├── widgets/                 # Reusable widgets
+    │   │   └── image_picker_helper.dart
     │   └── main.dart
     ├── assets/
+    │   ├── data/                    # Initial JSON data files
+    │   │   ├── classes.json
+    │   │   ├── races.json
+    │   │   ├── characters.json
+    │   │   ├── spells.json
+    │   │   ├── items.json
+    │   │   ├── campaigns.json
+    │   │   ├── parties.json
+    │   │   ├── maps.json
+    │   │   ├── bosses.json
+    │   │   ├── factions.json
+    │   │   ├── armors.json
+    │   │   ├── weapons.json
+    │   │   ├── knights.json
+    │   │   ├── lores.json
+    │   │   └── abilities.json
     │   ├── icons/
     │   └── images/
     └── pubspec.yaml
 ```
 
-## Backend (FastAPI)
+## Architecture
 
-### Installazione
+### Data Layer
 
-1. Crea un ambiente virtuale Python:
+The application uses a three-layer data architecture:
+
+1. **Models** (`lib/data/models/`) - Entity classes with fromJson/toJson methods
+2. **Services** (`lib/data/services/`) - CRUD services for each entity type
+3. **LocalJsonService** - Core service for reading/writing JSON files
+
+### Data Storage
+
+- **Initial Data**: JSON files in `assets/data/` are bundled with the app
+- **User Data**: JSON files are copied to app documents directory on first use
+- **Images**: Stored in app documents directory under `data/images/`
+- **User Profile**: Stored in SharedPreferences
+
+### CRUD Operations
+
+All entities support full CRUD operations:
+
+- **Create**: `service.create(entity)` - Creates new entity with auto-generated ID
+- **Read**: `service.getAll()` or `service.getById(id)` - Retrieves entities
+- **Update**: `service.update(entity)` - Updates existing entity
+- **Delete**: `service.delete(id)` - Deletes entity and associated images
+
+### Relationships Through IDs
+
+Entities are linked through ID references:
+
+- `character.classId` → references `ClassModel.id`
+- `character.raceId` → references `Race.id`
+- `item.ownerId` → references `Character.id`
+- `spell.allowedClassIds` → references `ClassModel.id[]`
+- `map.campaignId` → references `Campaign.id`
+- `map.markers[].campaignId` → references `Campaign.id`
+- `party.memberIds` → references `Character.id[]`
+- `party.campaignId` → references `Campaign.id`
+- `knight.factionId` → references `Faction.id`
+- `knight.weaponId` → references `Weapon.id`
+- `knight.armorId` → references `Armor.id`
+- `boss.rewardIds` → references `Item.id[]`
+
+Helper methods in services fetch related entities:
+- `characterService.getClass(classId)`
+- `characterService.getRace(raceId)`
+- `itemService.getOwner(ownerId)`
+- `spellService.getAllowedClasses(spell)`
+
+### Image Handling
+
+Images are handled entirely offline:
+
+1. **Image Picker**: User can pick images from:
+   - Gallery
+   - Camera
+   - File picker
+
+2. **Image Storage**: Images are saved to app documents directory:
+   - Path format: `data/images/{entityType}_{entityId}.{extension}`
+   - Example: `data/images/character_1.jpg`
+
+3. **Image Display**: Uses `Image.file()` to load local images
+   - Falls back to placeholder if image not found
+   - Handles missing or corrupted files gracefully
+
+4. **Image Deletion**: When entity is deleted, associated images are also deleted
+
+### User Profile
+
+Local user profile stored in SharedPreferences:
+
+- **Username**: Required
+- **PIN**: Optional password for app protection
+- **Storage**: SharedPreferences (encrypted on supported platforms)
+- **Validation**: `UserProfileService.validatePin(pin)` for PIN verification
+
+## Installation
+
+### Prerequisites
+
+- Flutter SDK (>=3.0.0)
+- Dart SDK (>=3.0.0)
+
+### Setup
+
+1. Clone the repository:
 ```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # Su Windows: venv\Scripts\activate
+git clone <repository-url>
+cd dark-fantasy-compendium
 ```
 
-2. Installa le dipendenze:
-```bash
-pip install -r requirements.txt
-```
-
-**Nota:** `dnd5epy` è stata rimossa per conflitti di dipendenze con pydantic>=2.7.0
-
-3. I dati di esempio sono già presenti nei file JSON in `app/data/`
-
-### Avvio
-
-**IMPORTANTE:** Prima di avviare il backend, assicurati di aver installato tutte le dipendenze:
-```bash
-pip install -r requirements.txt
-```
-
-**Opzione 1: Usando Python (consigliato)**
-```bash
-cd backend
-python run.py
-```
-
-**Opzione 2: Usando uvicorn direttamente**
-```bash
-cd backend
-uvicorn app.main:app --reload
-```
-
-L'API sarà disponibile su `http://localhost:8000`
-Documentazione API: `http://localhost:8000/docs`
-
-### Endpoints Disponibili
-
-#### Entità Dark Fantasy
-- `GET /api/v1/knights` - Lista cavalieri
-- `GET /api/v1/knights/{id}` - Dettaglio cavaliere
-- `POST /api/v1/knights` - Crea cavaliere
-- `PUT /api/v1/knights/{id}` - Aggiorna cavaliere
-- `DELETE /api/v1/knights/{id}` - Elimina cavaliere
-
-Stessi endpoint disponibili per:
-- `/weapons` - Armi
-- `/armors` - Armature
-- `/factions` - Fazioni
-- `/bosses` - Boss
-- `/items` - Oggetti
-- `/lores` - Storie/Lore
-
-#### Entità D&D
-- `/dnd-classes` - Classi D&D (Guerriero, Mago, Ranger, Ladro, ecc.)
-- `/races` - Razze (Umano, Elfo, Nano, Halfling, ecc.)
-- `/characters` - Personaggi con ability scores, livelli, HP, AC
-- `/campaigns` - Campagne con DM, giocatori, sessioni
-- `/campaigns/{id}/sessions` - Sessioni di una campagna
-- `/campaigns/sessions/calendar` - Calendario di tutte le sessioni
-- `/maps` - Mappe con markers e layers
-- `/spells` - Incantesimi con livello, scuola, componenti
-- `/abilities` - Abilità e skill
-- `/parties` - Gruppi di personaggi con livelli e XP
-
-## Frontend (Flutter)
-
-### Installazione
-
-1. Assicurati di avere Flutter installato:
-```bash
-flutter --version
-```
-
-2. Installa le dipendenze:
+2. Navigate to frontend directory:
 ```bash
 cd frontend
+```
+
+3. Install dependencies:
+```bash
 flutter pub get
 ```
 
-### Avvio
-
+4. Run the app:
 ```bash
 flutter run
 ```
 
-### Configurazione API
+## Entity Models
 
-Il frontend si connette al backend su `http://localhost:8000/api/v1` di default.
-Per cambiare l'URL, modifica `lib/main.dart`:
+### Core Entities
 
-```dart
-Provider<ApiService>(
-  create: (_) => ApiService(baseUrl: 'YOUR_API_URL'),
-),
-```
+#### Character
+- `id`, `name`, `classId`, `raceId`, `level`
+- `stats` (ability scores, HP, AC, etc.)
+- `imagePath`, `iconPath`
 
-## Entità del Sistema
+#### Race
+- `id`, `name`, `description`, `size`, `speed`
+- `abilityScoreIncreases`, `traits`, `languages`, `subraces`
+- `imagePath`, `iconPath`
 
-### Entità Dark Fantasy
+#### ClassModel
+- `id`, `name`, `description`, `hitDice`
+- `hitPointsAt1stLevel`, `hitPointsAtHigherLevels`
+- `proficiencies`, `savingThrows`, `startingEquipment`
+- `classFeatures`, `spellcastingAbility`
+- `imagePath`, `iconPath`
 
-#### Knight (Cavaliere)
-- Statistiche: livello, salute, attacco, difesa
-- Equipaggiamento: arma, armatura
-- Fazione di appartenenza
+#### Spell
+- `id`, `name`, `level`, `school`, `castingTime`, `range`
+- `components`, `materialComponents`, `duration`
+- `description`, `higherLevel`
+- `allowedClassIds` (array of class IDs)
+- `ritual`, `concentration`
+- `imagePath`, `iconPath`
 
-#### Weapon (Arma)
-- Tipo, bonus attacco, durabilità
-- Rarità: common, rare, epic, legendary
+#### Item
+- `id`, `name`, `type`, `description`, `effect`
+- `value`, `rarity`, `lore`
+- `ownerId` (references Character)
+- `imagePath`, `iconPath`
 
-#### Armor (Armatura)
-- Tipo, bonus difesa, durabilità
-- Rarità: common, rare, epic, legendary
+#### Campaign
+- `id`, `name`, `description`, `dungeonMaster`
+- `players` (array of strings)
+- `characterIds` (array of character IDs)
+- `sessions` (array of session objects)
+- `currentLevel`, `setting`, `notes`
+- `imagePath`, `iconPath`
 
-#### Faction (Fazione)
-- Nome, descrizione, lore
-- Colore identificativo
+#### Party
+- `id`, `name`, `description`
+- `campaignId` (references Campaign)
+- `memberIds` (array of character IDs)
+- `level`, `experiencePoints`, `notes`
+- `imagePath`, `iconPath`
+
+#### MapModel
+- `id`, `name`, `description`
+- `imagePath`, `width`, `height`
+- `markers` (array of marker objects with campaignId)
+- `layers` (array of strings)
+- `campaignId` (references Campaign)
+- `notes`
 
 #### Boss
-- Statistiche elevate
-- Ricompense (lista di item IDs)
+- `id`, `name`, `title`, `level`
+- `health`, `maxHealth`, `attack`, `defense`
+- `description`, `lore`
+- `rewardIds` (array of item IDs)
+- `imagePath`, `iconPath`
 
-#### Item (Oggetto)
-- Tipo: consumable, material, quest_item
-- Effetto, valore, rarità
+#### Faction
+- `id`, `name`, `description`, `lore`, `color`
+- `imagePath`, `iconPath`
 
-#### Lore (Storia)
-- Categoria: history, legend, prophecy
-- Contenuto narrativo
-- Collegamento opzionale ad altre entità
+#### Armor
+- `id`, `name`, `type`, `defenseBonus`, `durability`
+- `rarity`, `description`, `lore`
+- `imagePath`, `iconPath`
 
-### Entità D&D
+#### Weapon
+- `id`, `name`, `type`, `attackBonus`, `durability`
+- `rarity`, `description`, `lore`
+- `imagePath`, `iconPath`
 
-#### DndClass (Classe D&D)
-- Hit dice (es. 1d10, 1d6)
-- Punti vita al 1° livello e livelli superiori
-- Competenze (proficiencies)
-- Tiri salvezza
-- Equipaggiamento iniziale
-- Caratteristiche di classe
-- Caratteristica per incantesimi (se applicabile)
+#### Knight
+- `id`, `name`, `title`, `level`
+- `health`, `maxHealth`, `attack`, `defense`
+- `factionId` (references Faction)
+- `weaponId` (references Weapon)
+- `armorId` (references Armor)
+- `description`, `lore`
+- `imagePath`, `iconPath`
 
-#### Race (Razza)
-- Taglia (Piccola, Media, Grande)
-- Velocità
-- Aumenti ai punteggi di caratteristica
-- Tratti razziali
-- Linguaggi conosciuti
-- Sottorazze disponibili
+#### Lore
+- `id`, `title`, `category`, `content`
+- `relatedEntityType`, `relatedEntityId`
+- `imagePath`
 
-#### Character (Personaggio)
-- Livello (1-20)
-- Classe e razza
-- Ability scores: Forza, Destrezza, Costituzione, Intelligenza, Saggezza, Carisma
-- Punti ferita (correnti, massimi, temporanei)
-- Classe armatura (AC)
-- Competenze: skill, tiri salvezza, strumenti, armi, armature
-- Equipaggiamento e oggetti
-- Incantesimi conosciuti e preparati
-- Slot incantesimi per livello
-- Punti esperienza
-- Background e allineamento
-- Backstory e note
+#### Ability
+- `id`, `name`, `description`
+- `abilityType`, `abilityScore`, `modifier`
+- `proficiencyBonus`
+- `imagePath`, `iconPath`
 
-#### Campaign (Campagna)
-- Nome e descrizione
-- Dungeon Master
-- Giocatori
-- Personaggi della campagna
-- Sessioni con date, titoli, descrizioni, note, XP assegnati
-- Livello attuale della campagna
-- Ambientazione
-- Note
+## Services
 
-#### Map (Mappa)
-- Immagine della mappa
-- Dimensioni (larghezza, altezza)
-- Markers con posizioni (x, y in percentuale)
-- Tipi di marker: location, npc, encounter, treasure
-- Layers (terrain, buildings, npcs)
-- Collegamento a campagna
-- Note
+Each entity has a dedicated service class:
 
-#### Spell (Incantesimo)
-- Livello (0-9, 0 = trucchetti)
-- Scuola di magia
-- Tempo di lancio
-- Gittata
-- Componenti (V, S, M)
-- Componenti materiali specifici
-- Durata
-- Descrizione
-- Effetti a livelli superiori
-- Classi che possono lanciarlo
-- Rituale e concentrazione
+- `CharacterService`
+- `RaceService`
+- `ClassService`
+- `SpellService`
+- `ItemService`
+- `CampaignService`
+- `PartyService`
+- `MapService`
+- `BossService`
+- `FactionService`
+- `ArmorService`
+- `WeaponService`
+- `KnightService`
+- `LoreService`
+- `AbilityService`
+- `UserProfileService`
 
-#### Party (Gruppo)
-- Nome e descrizione
-- Collegamento a campagna
-- Personaggi nel party
-- Livello medio del party
-- Punti esperienza totali
-- Note
+All services use `LocalJsonService` for JSON file operations.
 
-## Caratteristiche
+## JSON File Format
 
-### Funzionalità Implementate
-- ✅ Architettura modulare e scalabile
-- ✅ Tema dark fantasy con colori e gradient
-- ✅ Componenti riutilizzabili
-- ✅ CRUD completo per tutte le entità
-- ✅ Dati JSON locali (senza database)
-- ✅ Routing con go_router
-- ✅ State management con Provider
-- ✅ Design responsive
-- ✅ Calendario sessioni interattivo
-- ✅ Gestione party con livelli e XP
-- ✅ Visualizzazione ability scores con modificatori
-- ✅ Gestione mappe con markers
-- ✅ Database classi e razze D&D
-- ✅ Sistema di incantesimi completo
+JSON files use English keys with snake_case naming:
 
-### Funzionalità D&D
-- ✅ Creazione e gestione campagne
-- ✅ Calendario sessioni con navigazione mensile
-- ✅ Gestione personaggi con tutte le stats D&D
-- ✅ Database classi D&D con hit dice e features
-- ✅ Database razze con ability score increases
-- ✅ Mappe interattive con markers
-- ✅ Gestione party con livelli e XP
-- ✅ Database incantesimi completo
-- ✅ Visualizzazione ability scores con modificatori automatici
+```json
+{
+  "id": 1,
+  "name": "Character Name",
+  "class_id": 1,
+  "race_id": 2,
+  "level": 5,
+  "image_path": "/path/to/image.jpg",
+  "icon_path": "/path/to/icon.jpg"
+}
+```
 
-## Dati di Esempio
+Old format keys (image_url, icon_url) are automatically converted to new format (image_path, icon_path) by `JsonConverter`.
 
-Il progetto include dati di esempio per:
-- **Classi D&D**: Guerriero, Mago, Ranger, Ladro
-- **Razze**: Umano, Elfo, Nano, Halfling
-- **Incantesimi**: Palla di Fuoco, Cura Ferite, Dardo Magico
-- **Campagne**: "La Maledizione di Strahd" con sessione di esempio
-- **Mappe**: Mappa di Barovia con markers
-- **Party**: "I Guardiani della Notte"
+## Image Picker Helper
 
-## Sviluppo Futuro
+The `ImagePickerHelper` widget provides:
 
-- [ ] Autenticazione utenti
-- [ ] Sistema di ricerca e filtri avanzati
-- [ ] Immagini e icone personalizzate
-- [ ] Sistema di notifiche
-- [ ] Database reale (PostgreSQL/MongoDB)
-- [ ] Test unitari e di integrazione
-- [ ] CI/CD pipeline
-- [ ] Editor mappe avanzato con disegno
-- [ ] Sistema di combattimento
-- [ ] Export PDF per schede personaggio (usando dungeonsheets)
-- [ ] Integrazione completa dnd-engine per meccaniche di combattimento
+- `pickImageFromGallery()` - Pick from device gallery
+- `pickImageFromCamera()` - Take photo with camera
+- `pickImageFromFile()` - Pick from file system
+- `showImageSourceDialog(context)` - Show dialog with all options
+- `saveImageForEntity(path, entityType, entityId)` - Save image for entity
+- `deleteImageForEntity(imagePath)` - Delete entity image
+- `buildImageWidget(imagePath, ...)` - Display image widget
 
-## Tecnologie Utilizzate
+## Technologies
 
-### Backend
-- Python 3.x
-- FastAPI
-- Pydantic
-- Uvicorn
-- **dungeonsheets** - Creazione schede personaggio e note (per export PDF futuro)
+- **Flutter** - UI framework
+- **Dart** - Programming language
+- **Provider** - State management
+- **go_router** - Routing
+- **path_provider** - File system access
+- **shared_preferences** - User preferences storage
+- **image_picker** - Image selection
+- **file_picker** - File selection
+- **intl** - Internationalization
 
-### Frontend
-- Flutter
-- Dart
-- Provider (State Management)
-- go_router (Routing)
-- intl (Internazionalizzazione)
-- font_awesome_flutter (Icone)
-- http (HTTP Client)
+## Features Implemented
 
-## Licenza
+- ✅ Fully offline architecture
+- ✅ Local JSON data storage
+- ✅ Full CRUD for all entities
+- ✅ ID-based relationships
+- ✅ Local image management
+- ✅ User profile with PIN
+- ✅ Automatic JSON file creation
+- ✅ Data migration from assets
+- ✅ Image picker integration
+- ✅ Modular service architecture
+- ✅ English naming throughout
+- ✅ Clean, scalable codebase
 
-Questo progetto è stato creato per scopi educativi e di sviluppo.
+## Future Enhancements
 
-## Contribuire
+- [ ] Data export/import functionality
+- [ ] Backup and restore
+- [ ] Search and filtering
+- [ ] Advanced image editing
+- [ ] PDF export for characters
+- [ ] Data synchronization (optional)
+- [ ] Cloud backup (optional)
 
-Le contribuzioni sono benvenute! Sentiti libero di aprire issue o pull request.
+## License
+
+This project is created for educational and development purposes.
+
+## Contributing
+
+Contributions are welcome! Feel free to open issues or pull requests.

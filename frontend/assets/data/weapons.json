@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Sword of Darkness",
+    "type": "sword",
+    "attack_bonus": 25,
+    "durability": 100,
+    "rarity": "legendary",
+    "description": "A sword forged in the flames of hell",
+    "lore": "It is said that this sword was forged with the blood of a thousand demons.",
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 2,
+    "name": "Scourge Axe",
+    "type": "axe",
+    "attack_bonus": 20,
+    "durability": 85,
+    "rarity": "epic",
+    "description": "A heavy axe that deals devastating damage",
+    "lore": null,
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 3,
+    "name": "Corrupted Mace",
+    "type": "mace",
+    "attack_bonus": 15,
+    "durability": 70,
+    "rarity": "rare",
+    "description": "A mace corrupted by dark power",
+    "lore": null,
+    "image_url": null,
+    "icon_url": null
+  }
+]

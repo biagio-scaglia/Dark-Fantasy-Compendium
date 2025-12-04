@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/campaign_service.dart';
+import '../../../data/models/campaign.dart';
 import '../../../widgets/campaign_card.dart';
 
 class CampaignsListPage extends StatefulWidget {
@@ -12,9 +12,10 @@ class CampaignsListPage extends StatefulWidget {
 }
 
 class _CampaignsListPageState extends State<CampaignsListPage> {
-  List<dynamic> campaigns = [];
+  List<Campaign> campaigns = [];
   bool isLoading = true;
   String? error;
+  final CampaignService _service = CampaignService();
 
   @override
   void initState() {
@@ -29,8 +30,7 @@ class _CampaignsListPageState extends State<CampaignsListPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('campaigns');
+      final data = await _service.getAll();
       setState(() {
         campaigns = data;
         isLoading = false;
@@ -70,17 +70,22 @@ class _CampaignsListPageState extends State<CampaignsListPage> {
     }
 
     if (error != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Error: $error', style: const TextStyle(color: Colors.red)),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadCampaigns,
-              child: const Text('Retry'),
+      return SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Error: $error', style: const TextStyle(color: Colors.red)),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _loadCampaigns,
+                  child: const Text('Retry'),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       );
     }
@@ -94,7 +99,19 @@ class _CampaignsListPageState extends State<CampaignsListPage> {
       child: ListView.builder(
         itemCount: campaigns.length,
         itemBuilder: (context, index) {
-          return CampaignCard(campaign: campaigns[index]);
+          final camp = campaigns[index];
+          final campMap = {
+            'id': camp.id,
+            'name': camp.name,
+            'description': camp.description,
+            'dungeon_master': camp.dungeonMaster,
+            'players': camp.players,
+            'current_level': camp.currentLevel,
+            'setting': camp.setting,
+            'image_path': camp.imagePath,
+            'icon_path': camp.iconPath,
+          };
+          return CampaignCard(campaign: campMap);
         },
       ),
     );

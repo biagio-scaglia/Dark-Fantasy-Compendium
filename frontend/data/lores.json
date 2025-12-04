@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "The Great War of Darkness",
+    "category": "history",
+    "content": "A hundred years ago, dark forces invaded the realms. Only the Order of Shadows managed to repel them, but at a great cost.",
+    "related_entity_type": "faction",
+    "related_entity_id": 1,
+    "image_url": null
+  },
+  {
+    "id": 2,
+    "title": "The Knight's Prophecy",
+    "category": "prophecy",
+    "content": "A shadow knight will one day awaken the dragon and bring an end to the darkness.",
+    "related_entity_type": null,
+    "related_entity_id": null,
+    "image_url": null
+  }
+]

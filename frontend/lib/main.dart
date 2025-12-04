@@ -4,7 +4,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart';
 import 'core/router/app_router.dart';
-import 'services/api_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,9 +19,6 @@ class DarkFantasyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        Provider<ApiService>(
-          create: (_) => ApiService(baseUrl: 'http://localhost:8000/api/v1'),
-        ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) {

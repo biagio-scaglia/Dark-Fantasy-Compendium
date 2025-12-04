@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/ability_service.dart';
+import '../../../data/models/ability.dart';
 
 class AbilitiesListPage extends StatefulWidget {
   const AbilitiesListPage({super.key});
@@ -11,9 +11,10 @@ class AbilitiesListPage extends StatefulWidget {
 }
 
 class _AbilitiesListPageState extends State<AbilitiesListPage> {
-  List<dynamic> abilities = [];
+  List<Ability> abilities = [];
   bool isLoading = true;
   String? error;
+  final AbilityService _service = AbilityService();
 
   @override
   void initState() {
@@ -28,8 +29,7 @@ class _AbilitiesListPageState extends State<AbilitiesListPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('abilities');
+      final data = await _service.getAll();
       setState(() {
         abilities = data;
         isLoading = false;
@@ -92,8 +92,8 @@ class _AbilitiesListPageState extends State<AbilitiesListPage> {
         return Card(
           margin: const EdgeInsets.only(bottom: 12),
           child: ListTile(
-            title: Text(ability['name'] ?? 'Unknown'),
-            subtitle: Text(ability['description'] ?? ''),
+            title: Text(ability.name),
+            subtitle: Text(ability.description ?? ''),
             onTap: () {
             },
           ),

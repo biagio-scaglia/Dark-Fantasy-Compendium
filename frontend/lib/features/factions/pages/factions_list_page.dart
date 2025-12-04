@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/faction_service.dart';
+import '../../../data/models/faction.dart';
 import '../../../widgets/faction_card.dart';
 
 class FactionsListPage extends StatefulWidget {
@@ -12,9 +12,10 @@ class FactionsListPage extends StatefulWidget {
 }
 
 class _FactionsListPageState extends State<FactionsListPage> {
-  List<dynamic> factions = [];
+  List<Faction> factions = [];
   bool isLoading = true;
   String? error;
+  final FactionService _service = FactionService();
 
   @override
   void initState() {
@@ -29,8 +30,7 @@ class _FactionsListPageState extends State<FactionsListPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('factions');
+      final data = await _service.getAll();
       setState(() {
         factions = data;
         isLoading = false;
@@ -92,7 +92,16 @@ class _FactionsListPageState extends State<FactionsListPage> {
       child: ListView.builder(
         itemCount: factions.length,
         itemBuilder: (context, index) {
-          return FactionCard(faction: factions[index]);
+          final faction = factions[index];
+          final factionMap = {
+            'id': faction.id,
+            'name': faction.name,
+            'description': faction.description,
+            'color': faction.color,
+            'image_path': faction.imagePath,
+            'icon_path': faction.iconPath,
+          };
+          return FactionCard(faction: factionMap);
         },
       ),
     );

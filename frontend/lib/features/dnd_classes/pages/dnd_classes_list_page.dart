@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/class_service.dart';
+import '../../../data/models/class_model.dart';
 import '../../../widgets/dnd_class_card.dart';
 
 class DndClassesListPage extends StatefulWidget {
@@ -12,9 +12,10 @@ class DndClassesListPage extends StatefulWidget {
 }
 
 class _DndClassesListPageState extends State<DndClassesListPage> {
-  List<dynamic> classes = [];
+  List<ClassModel> classes = [];
   bool isLoading = true;
   String? error;
+  final ClassService _service = ClassService();
 
   @override
   void initState() {
@@ -29,8 +30,7 @@ class _DndClassesListPageState extends State<DndClassesListPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('dnd-classes');
+      final data = await _service.getAll();
       setState(() {
         classes = data;
         isLoading = false;
@@ -91,7 +91,16 @@ class _DndClassesListPageState extends State<DndClassesListPage> {
       child: ListView.builder(
         itemCount: classes.length,
         itemBuilder: (context, index) {
-          return DndClassCard(dndClass: classes[index]);
+          final cls = classes[index];
+          final clsMap = {
+            'id': cls.id,
+            'name': cls.name,
+            'description': cls.description,
+            'hit_dice': cls.hitDice,
+            'image_path': cls.imagePath,
+            'icon_path': cls.iconPath,
+          };
+          return DndClassCard(dndClass: clsMap);
         },
       ),
     );

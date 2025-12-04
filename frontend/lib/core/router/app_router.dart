@@ -44,6 +44,8 @@ import '../../features/encyclopedia/pages/encyclopedia_page.dart';
 import '../../features/party_characters/pages/party_characters_page.dart';
 import '../../features/info/pages/info_page.dart';
 import '../../features/races/pages/races_list_page.dart';
+import '../../features/races/pages/race_form_page.dart';
+import '../../features/races/pages/race_detail_page.dart';
 import '../../features/spells/pages/spells_list_page.dart';
 import '../../features/abilities/pages/abilities_list_page.dart';
 import '../theme/app_theme.dart';
@@ -387,6 +389,24 @@ class AppRouter {
       GoRoute(
         path: '/races',
         builder: (context, state) => const RacesListPage(),
+      ),
+      GoRoute(
+        path: '/races/new',
+        builder: (context, state) => const RaceFormPage(),
+      ),
+      GoRoute(
+        path: '/races/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return RaceFormPage(raceId: id);
+        },
+      ),
+      GoRoute(
+        path: '/races/:id',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return RaceDetailPage(raceId: id);
+        },
       ),
       GoRoute(
         path: '/spells',

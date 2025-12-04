@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1,
+    "name": "Barovia Map",
+    "description": "The complete map of the domain of terror Barovia, with all the main points of interest.",
+    "image_url": "https://example.com/maps/barovia.jpg",
+    "width": 2000,
+    "height": 1500,
+    "markers": [
+      {
+        "id": "1",
+        "name": "Village of Barovia",
+        "x": 30.5,
+        "y": 45.2,
+        "type": "location",
+        "description": "The main village where the adventure begins",
+        "color": "#FFD700"
+      },
+      {
+        "id": "2",
+        "name": "Castle Ravenloft",
+        "x": 70.0,
+        "y": 25.0,
+        "type": "location",
+        "description": "The residence of Count Strahd",
+        "color": "#8B0000"
+      }
+    ],
+    "layers": ["terrain", "buildings", "npcs"],
+    "campaign_id": 1,
+    "notes": "Main campaign map. Update as characters explore."
+  }
+]

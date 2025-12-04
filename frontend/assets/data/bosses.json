@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Shadow Drake",
+    "title": "The Dragon of Darkness",
+    "level": 80,
+    "health": 5000,
+    "max_health": 5000,
+    "attack": 150,
+    "defense": 100,
+    "description": "An ancient dragon corrupted by dark forces",
+    "lore": "Once the guardian of light, it has now become the bearer of darkness.",
+    "rewards": [
+      1,
+      2
+    ],
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 2,
+    "name": "Lich King",
+    "title": "The Lord of the Undead",
+    "level": 90,
+    "health": 6000,
+    "max_health": 6000,
+    "attack": 180,
+    "defense": 120,
+    "description": "A dead king who commands an army of the undead",
+    "lore": "Once a just king, the curse has transformed him into a monster.",
+    "rewards": [
+      1,
+      3
+    ],
+    "image_url": null,
+    "icon_url": null
+  }
+]

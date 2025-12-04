@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "Fighter",
+    "description": "A master of combat, skilled with weapons and armor. Fighters are versatile and resilient.",
+    "hit_dice": "1d10",
+    "hit_points_at_1st_level": 10,
+    "hit_points_at_higher_levels": "1d10 (or 6) + Constitution modifier",
+    "proficiencies": ["Armor", "Shields", "Simple weapons", "Martial weapons"],
+    "saving_throws": ["Strength", "Constitution"],
+    "starting_equipment": ["Leather armor", "Longsword", "Shield"],
+    "class_features": ["Fighting Style", "Second Wind", "Action Surge"],
+    "spellcasting_ability": null,
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 2,
+    "name": "Wizard",
+    "description": "A scholar of the arcane arts. Wizards cast powerful spells through study and research.",
+    "hit_dice": "1d6",
+    "hit_points_at_1st_level": 6,
+    "hit_points_at_higher_levels": "1d6 (or 4) + Constitution modifier",
+    "proficiencies": ["Daggers", "Darts", "Slings", "Quarterstaffs", "Light crossbows"],
+    "saving_throws": ["Intelligence", "Wisdom"],
+    "starting_equipment": ["Quarterstaff", "Component pouch", "Spellbook"],
+    "class_features": ["Spellcasting", "Arcane Recovery", "Arcane Tradition"],
+    "spellcasting_ability": "Intelligence",
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 3,
+    "name": "Ranger",
+    "description": "A warrior who uses martial prowess and knowledge of nature to combat threats on the edges of civilization.",
+    "hit_dice": "1d10",
+    "hit_points_at_1st_level": 10,
+    "hit_points_at_higher_levels": "1d10 (or 6) + Constitution modifier",
+    "proficiencies": ["Light armor", "Medium armor", "Shields", "Simple weapons", "Martial weapons"],
+    "saving_throws": ["Strength", "Dexterity"],
+    "starting_equipment": ["Leather armor", "Shortbow", "Arrows (20)"],
+    "class_features": ["Favored Enemy", "Natural Explorer", "Spellcasting"],
+    "spellcasting_ability": "Wisdom",
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 4,
+    "name": "Rogue",
+    "description": "A skilled opportunist who relies on stealth and trickery rather than brute force.",
+    "hit_dice": "1d8",
+    "hit_points_at_1st_level": 8,
+    "hit_points_at_higher_levels": "1d8 (or 5) + Constitution modifier",
+    "proficiencies": ["Light armor", "Simple weapons", "Martial weapons"],
+    "saving_throws": ["Dexterity", "Intelligence"],
+    "starting_equipment": ["Leather armor", "Dagger", "Thieves' tools"],
+    "class_features": ["Sneak Attack", "Thieves' Cant", "Expertise"],
+    "spellcasting_ability": null,
+    "image_url": null,
+    "icon_url": null
+  }
+]

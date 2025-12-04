@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../../services/api_service.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../widgets/icon_picker_widget.dart';
 
 class ItemFormPage extends StatefulWidget {
   final Map<String, dynamic>? item;
@@ -21,6 +22,7 @@ class _ItemFormPageState extends State<ItemFormPage> {
   late TextEditingController _effectController;
   late TextEditingController _valueController;
   late TextEditingController _loreController;
+  late TextEditingController _iconUrlController;
   String _selectedRarity = 'common';
   bool _isLoading = false;
   bool _isLoadingData = false;
@@ -37,6 +39,7 @@ class _ItemFormPageState extends State<ItemFormPage> {
     _effectController = TextEditingController();
     _valueController = TextEditingController(text: '0');
     _loreController = TextEditingController();
+    _iconUrlController = TextEditingController();
     
     if (widget.item != null && widget.item!['id'] != null) {
       _loadItem();
@@ -71,6 +74,7 @@ class _ItemFormPageState extends State<ItemFormPage> {
     _effectController.text = item['effect'] ?? '';
     _valueController.text = item['value']?.toString() ?? '0';
     _loreController.text = item['lore'] ?? '';
+    _iconUrlController.text = item['icon_url'] ?? '';
     _selectedRarity = item['rarity'] ?? 'common';
   }
 
@@ -89,6 +93,7 @@ class _ItemFormPageState extends State<ItemFormPage> {
         'value': int.parse(_valueController.text),
         'rarity': _selectedRarity,
         'lore': _loreController.text.isEmpty ? null : _loreController.text,
+        'icon_url': _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
       };
 
       if (widget.item != null && widget.item!['id'] != null) {
@@ -129,6 +134,7 @@ class _ItemFormPageState extends State<ItemFormPage> {
     _effectController.dispose();
     _valueController.dispose();
     _loreController.dispose();
+    _iconUrlController.dispose();
     super.dispose();
   }
 
@@ -218,6 +224,16 @@ class _ItemFormPageState extends State<ItemFormPage> {
               controller: _loreController,
               decoration: const InputDecoration(labelText: 'Lore'),
               maxLines: 3,
+            ),
+            const SizedBox(height: 16),
+            IconPickerWidget(
+              selectedIconPath: _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
+              suggestedCategories: ['entity', 'game'],
+              onIconSelected: (iconPath) {
+                setState(() {
+                  _iconUrlController.text = iconPath;
+                });
+              },
             ),
             const SizedBox(height: 24),
             ElevatedButton(

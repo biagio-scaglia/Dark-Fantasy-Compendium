@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "name": "Curse of Strahd",
+    "description": "A gothic horror campaign set in the domain of terror Barovia, ruled by the vampire Strahd von Zarovich.",
+    "dungeon_master": "Alessandro",
+    "players": [
+      "Marco",
+      "Giulia",
+      "Luca",
+      "Sofia"
+    ],
+    "characters": [],
+    "sessions": [
+      {
+        "id": 1,
+        "date": "2025-01-15",
+        "title": "The Journey Begins",
+        "description": "The characters meet in a tavern and receive a mysterious letter.",
+        "notes": "First session, party creation. All players created their characters.",
+        "experience_awarded": 300,
+        "characters_present": []
+      }
+    ],
+    "current_level": 1,
+    "setting": "Barovia, Domain of Terror",
+    "notes": "Official D&D 5e campaign. Recommended level: 1-10.",
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "name": "The Cursed Adventure",
+    "description": "example",
+    "dungeon_master": "Biagigio",
+    "players": [
+      "Mario",
+      "Luigi"
+    ],
+    "characters": [],
+    "sessions": [],
+    "current_level": 1,
+    "setting": "Modugno",
+    "notes": null,
+    "image_url": null,
+    "icon_url": null,
+    "id": 2
+  }
+]

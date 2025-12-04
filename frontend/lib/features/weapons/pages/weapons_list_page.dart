@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/weapon_service.dart';
+import '../../../data/models/weapon.dart';
 import '../../../widgets/weapon_card.dart';
 
 class WeaponsListPage extends StatefulWidget {
@@ -12,9 +12,10 @@ class WeaponsListPage extends StatefulWidget {
 }
 
 class _WeaponsListPageState extends State<WeaponsListPage> {
-  List<dynamic> weapons = [];
+  List<Weapon> weapons = [];
   bool isLoading = true;
   String? error;
+  final WeaponService _service = WeaponService();
 
   @override
   void initState() {
@@ -29,8 +30,7 @@ class _WeaponsListPageState extends State<WeaponsListPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('weapons');
+      final data = await _service.getAll();
       setState(() {
         weapons = data;
         isLoading = false;
@@ -92,7 +92,17 @@ class _WeaponsListPageState extends State<WeaponsListPage> {
       child: ListView.builder(
         itemCount: weapons.length,
         itemBuilder: (context, index) {
-          return WeaponCard(weapon: weapons[index]);
+          final weapon = weapons[index];
+          final weaponMap = {
+            'id': weapon.id,
+            'name': weapon.name,
+            'type': weapon.type,
+            'attack_bonus': weapon.attackBonus,
+            'rarity': weapon.rarity,
+            'image_path': weapon.imagePath,
+            'icon_path': weapon.iconPath,
+          };
+          return WeaponCard(weapon: weaponMap);
         },
       ),
     );

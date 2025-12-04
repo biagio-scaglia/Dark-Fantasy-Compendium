@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../../services/api_service.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../widgets/icon_picker_widget.dart';
 
 class DndClassFormPage extends StatefulWidget {
   final Map<String, dynamic>? dndClass;
@@ -19,6 +21,7 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
   late TextEditingController _hitDiceController;
   late TextEditingController _hitPointsController;
   late TextEditingController _spellcastingController;
+  late TextEditingController _iconUrlController;
   bool _isLoading = false;
 
   @override
@@ -29,6 +32,7 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
     _hitDiceController = TextEditingController(text: '1d8');
     _hitPointsController = TextEditingController(text: '8');
     _spellcastingController = TextEditingController();
+    _iconUrlController = TextEditingController();
     
     if (widget.dndClass != null && widget.dndClass!['id'] != null) {
       _loadClass();
@@ -57,6 +61,7 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
     _hitDiceController.text = classData['hit_dice'] ?? '1d8';
     _hitPointsController.text = classData['hit_points_at_1st_level']?.toString() ?? '8';
     _spellcastingController.text = classData['spellcasting_ability'] ?? '';
+    _iconUrlController.text = classData['icon_url'] ?? '';
   }
 
   Future<void> _saveClass() async {
@@ -77,6 +82,7 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
         'starting_equipment': [],
         'class_features': [],
         'spellcasting_ability': _spellcastingController.text.isEmpty ? null : _spellcastingController.text,
+        'icon_url': _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
       };
 
       if (widget.dndClass != null && widget.dndClass!['id'] != null) {
@@ -116,6 +122,7 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
     _hitDiceController.dispose();
     _hitPointsController.dispose();
     _spellcastingController.dispose();
+    _iconUrlController.dispose();
     super.dispose();
   }
 
@@ -171,6 +178,16 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
             TextFormField(
               controller: _spellcastingController,
               decoration: const InputDecoration(labelText: 'Caratteristica Incantesimi (opzionale)'),
+            ),
+            const SizedBox(height: 16),
+            IconPickerWidget(
+              selectedIconPath: _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
+              suggestedCategories: ['class'],
+              onIconSelected: (iconPath) {
+                setState(() {
+                  _iconUrlController.text = iconPath;
+                });
+              },
             ),
             const SizedBox(height: 24),
             ElevatedButton(

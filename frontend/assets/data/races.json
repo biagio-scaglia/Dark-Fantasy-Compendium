@@ -1,0 +1,67 @@
+[
+  {
+    "id": 1,
+    "name": "Human",
+    "description": "Humans are the most versatile and ambitious race. They adapt quickly to any environment.",
+    "size": "Medium",
+    "speed": 30,
+    "ability_score_increases": {
+      "Strength": 1,
+      "Dexterity": 1,
+      "Constitution": 1,
+      "Intelligence": 1,
+      "Wisdom": 1,
+      "Charisma": 1
+    },
+    "traits": ["Human Versatility", "Extra Skill"],
+    "languages": ["Common", "One language of choice"],
+    "subraces": [],
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 2,
+    "name": "Elf",
+    "description": "Elves are a magical race of supernatural grace, living in places of unspoiled beauty in the world.",
+    "size": "Medium",
+    "speed": 30,
+    "ability_score_increases": {
+      "Dexterity": 2
+    },
+    "traits": ["Darkvision", "Fey Ancestry", "Trance", "Weapon Training"],
+    "languages": ["Common", "Elvish"],
+    "subraces": ["High Elf", "Wood Elf", "Dark Elf"],
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 3,
+    "name": "Dwarf",
+    "description": "Dwarves are a robust and hardy race, known for their skills in combat and metalworking.",
+    "size": "Medium",
+    "speed": 25,
+    "ability_score_increases": {
+      "Constitution": 2
+    },
+    "traits": ["Darkvision", "Dwarven Resilience", "Tool Proficiency"],
+    "languages": ["Common", "Dwarvish"],
+    "subraces": ["Mountain Dwarf", "Hill Dwarf"],
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 4,
+    "name": "Halfling",
+    "description": "Halflings are a small and brave race, known for their luck and courage.",
+    "size": "Small",
+    "speed": 25,
+    "ability_score_increases": {
+      "Dexterity": 2
+    },
+    "traits": ["Lucky", "Brave", "Nimble"],
+    "languages": ["Common", "Halfling"],
+    "subraces": ["Lightfoot Halfling", "Stout Halfling"],
+    "image_url": null,
+    "icon_url": null
+  }
+]

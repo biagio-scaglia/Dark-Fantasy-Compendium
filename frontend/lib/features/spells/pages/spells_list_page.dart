@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/spell_service.dart';
+import '../../../data/models/spell.dart';
 
 class SpellsListPage extends StatefulWidget {
   const SpellsListPage({super.key});
@@ -11,9 +11,10 @@ class SpellsListPage extends StatefulWidget {
 }
 
 class _SpellsListPageState extends State<SpellsListPage> {
-  List<dynamic> spells = [];
+  List<Spell> spells = [];
   bool isLoading = true;
   String? error;
+  final SpellService _service = SpellService();
 
   @override
   void initState() {
@@ -28,8 +29,7 @@ class _SpellsListPageState extends State<SpellsListPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('spells');
+      final data = await _service.getAll();
       setState(() {
         spells = data;
         isLoading = false;
@@ -92,9 +92,9 @@ class _SpellsListPageState extends State<SpellsListPage> {
         return Card(
           margin: const EdgeInsets.only(bottom: 12),
           child: ListTile(
-            title: Text(spell['name'] ?? 'Unknown'),
-            subtitle: Text('Level ${spell['level'] ?? 0} - ${spell['school'] ?? ''}'),
-            trailing: Text('${spell['level'] ?? 0}'),
+            title: Text(spell.name),
+            subtitle: Text('Level ${spell.level} - ${spell.school ?? ''}'),
+            trailing: Text('${spell.level}'),
             onTap: () {
             },
           ),

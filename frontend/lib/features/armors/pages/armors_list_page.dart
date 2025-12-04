@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/armor_service.dart';
+import '../../../data/models/armor.dart';
 import '../../../widgets/armor_card.dart';
 
 class ArmorsListPage extends StatefulWidget {
@@ -12,9 +12,10 @@ class ArmorsListPage extends StatefulWidget {
 }
 
 class _ArmorsListPageState extends State<ArmorsListPage> {
-  List<dynamic> armors = [];
+  List<Armor> armors = [];
   bool isLoading = true;
   String? error;
+  final ArmorService _service = ArmorService();
 
   @override
   void initState() {
@@ -29,8 +30,7 @@ class _ArmorsListPageState extends State<ArmorsListPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('armors');
+      final data = await _service.getAll();
       setState(() {
         armors = data;
         isLoading = false;
@@ -92,7 +92,17 @@ class _ArmorsListPageState extends State<ArmorsListPage> {
       child: ListView.builder(
         itemCount: armors.length,
         itemBuilder: (context, index) {
-          return ArmorCard(armor: armors[index]);
+          final armor = armors[index];
+          final armorMap = {
+            'id': armor.id,
+            'name': armor.name,
+            'type': armor.type,
+            'defense_bonus': armor.defenseBonus,
+            'rarity': armor.rarity,
+            'image_path': armor.imagePath,
+            'icon_path': armor.iconPath,
+          };
+          return ArmorCard(armor: armorMap);
         },
       ),
     );

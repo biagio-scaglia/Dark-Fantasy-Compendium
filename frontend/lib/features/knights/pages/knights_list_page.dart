@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/knight_service.dart';
+import '../../../data/models/knight.dart';
 import '../../../widgets/knight_card.dart';
 import 'knight_form_page.dart';
 
@@ -13,9 +13,10 @@ class KnightsListPage extends StatefulWidget {
 }
 
 class _KnightsListPageState extends State<KnightsListPage> {
-  List<dynamic> knights = [];
+  List<Knight> knights = [];
   bool isLoading = true;
   String? error;
+  final KnightService _service = KnightService();
 
   @override
   void initState() {
@@ -30,8 +31,7 @@ class _KnightsListPageState extends State<KnightsListPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('knights');
+      final data = await _service.getAll();
       setState(() {
         knights = data;
         isLoading = false;
@@ -93,7 +93,20 @@ class _KnightsListPageState extends State<KnightsListPage> {
       child: ListView.builder(
         itemCount: knights.length,
         itemBuilder: (context, index) {
-          return KnightCard(knight: knights[index]);
+          final knight = knights[index];
+          final knightMap = {
+            'id': knight.id,
+            'name': knight.name,
+            'title': knight.title,
+            'level': knight.level,
+            'health': knight.health,
+            'max_health': knight.maxHealth,
+            'attack': knight.attack,
+            'defense': knight.defense,
+            'image_path': knight.imagePath,
+            'icon_path': knight.iconPath,
+          };
+          return KnightCard(knight: knightMap);
         },
       ),
     );

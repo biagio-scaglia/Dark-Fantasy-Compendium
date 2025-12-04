@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/lore_service.dart';
+import '../../../data/models/lore.dart';
 import '../../../widgets/lore_card.dart';
 
 class LoresListPage extends StatefulWidget {
@@ -12,9 +12,10 @@ class LoresListPage extends StatefulWidget {
 }
 
 class _LoresListPageState extends State<LoresListPage> {
-  List<dynamic> lores = [];
+  List<Lore> lores = [];
   bool isLoading = true;
   String? error;
+  final LoreService _service = LoreService();
 
   @override
   void initState() {
@@ -29,8 +30,7 @@ class _LoresListPageState extends State<LoresListPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('lores');
+      final data = await _service.getAll();
       setState(() {
         lores = data;
         isLoading = false;
@@ -95,7 +95,15 @@ class _LoresListPageState extends State<LoresListPage> {
       child: ListView.builder(
         itemCount: lores.length,
         itemBuilder: (context, index) {
-          return LoreCard(lore: lores[index]);
+          final lore = lores[index];
+          final loreMap = {
+            'id': lore.id,
+            'title': lore.title,
+            'category': lore.category,
+            'content': lore.content,
+            'image_path': lore.imagePath,
+          };
+          return LoreCard(lore: loreMap);
         },
       ),
     );

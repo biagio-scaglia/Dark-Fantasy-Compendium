@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "name": "The Night Guardians",
+    "description": "A group of brave adventurers who fight the forces of evil.",
+    "campaign_id": 1,
+    "characters": [],
+    "level": 1,
+    "experience_points": 300,
+    "notes": "Main campaign party. All characters are at level 1.",
+    "image_url": null,
+    "icon_url": null
+  }
+]

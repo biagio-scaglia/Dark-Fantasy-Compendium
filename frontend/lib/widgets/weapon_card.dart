@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../core/theme/app_theme.dart';
 import '../core/animations/app_animations.dart';
+import 'svg_icon_widget.dart';
+import '../utils/icon_mapper.dart';
 
 class WeaponCard extends StatelessWidget {
   final Map<String, dynamic> weapon;
@@ -59,38 +61,30 @@ class WeaponCard extends StatelessWidget {
           padding: const EdgeInsets.all(14),
           child: Row(
             children: [
-              Container(
-                width: 65,
-                height: 65,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      rarityColor,
-                      rarityColor.withOpacity(0.7),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: rarityColor.withOpacity(0.8),
-                    width: 2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: rarityColor.withOpacity(0.5),
-                      blurRadius: 6,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
+              SvgIconWithGradient(
+                assetPath: IconMapper.getIconPath(
+                  customPath: weapon['icon_path'] as String?,
+                  type: weapon['type'] as String?,
+                  entityType: 'weapon',
+                ) ?? IconMapper.getWeaponIconPath(weapon['type'] as String?),
+                size: 65,
+                iconColor: AppTheme.getPrimaryBackgroundFromContext(context),
+                gradientColors: [
+                  rarityColor,
+                  rarityColor.withOpacity(0.7),
+                ],
+                borderRadius: 10,
+                border: Border.all(
+                  color: rarityColor.withOpacity(0.8),
+                  width: 2,
                 ),
-                child: Center(
-                  child: FaIcon(
-                    FontAwesomeIcons.gavel,
-                    size: 32,
-                    color: AppTheme.getPrimaryBackgroundFromContext(context),
+                shadows: [
+                  BoxShadow(
+                    color: rarityColor.withOpacity(0.5),
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
                   ),
-                ),
+                ],
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -163,6 +157,7 @@ class WeaponCard extends StatelessWidget {
                     Row(
                       children: [
                         _StatBadge(
+                          iconPath: IconMapper.getAttributeIconPath('bonus'),
                           icon: Icons.trending_up,
                           value: '+${weapon['attack_bonus'] ?? 0}',
                           label: 'ATK',
@@ -200,13 +195,15 @@ class WeaponCard extends StatelessWidget {
 }
 
 class _StatBadge extends StatelessWidget {
-  final IconData icon;
+  final IconData? icon;
+  final String? iconPath;
   final String value;
   final String label;
   final Color color;
 
   const _StatBadge({
-    required this.icon,
+    this.icon,
+    this.iconPath,
     required this.value,
     required this.label,
     required this.color,
@@ -214,6 +211,20 @@ class _StatBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget iconWidget;
+    
+    if (iconPath != null) {
+      iconWidget = SvgIconWidget(
+        assetPath: iconPath!,
+        size: 13,
+        color: color,
+      );
+    } else if (icon != null) {
+      iconWidget = Icon(icon!, size: 13, color: color);
+    } else {
+      iconWidget = const SizedBox(width: 13, height: 13);
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
@@ -239,7 +250,7 @@ class _StatBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 13, color: color),
+          iconWidget,
           const SizedBox(width: 5),
           Text(
             '$value $label',

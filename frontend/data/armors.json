@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Armor of Shadows",
+    "type": "chest",
+    "defense_bonus": 30,
+    "durability": 100,
+    "rarity": "legendary",
+    "description": "An armor that absorbs light",
+    "lore": "Forged with metal from fallen stars.",
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 2,
+    "name": "Helm of the Void",
+    "type": "helmet",
+    "defense_bonus": 15,
+    "durability": 80,
+    "rarity": "epic",
+    "description": "A helm that hides the face in darkness",
+    "lore": null,
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 3,
+    "name": "Corrupted Leggings",
+    "type": "legs",
+    "defense_bonus": 12,
+    "durability": 65,
+    "rarity": "rare",
+    "description": "Leggings protected by dark runes",
+    "lore": null,
+    "image_url": null,
+    "icon_url": null
+  }
+]

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../core/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'svg_icon_widget.dart';
+import '../utils/icon_mapper.dart';
 
 class DndClassCard extends StatelessWidget {
   final Map<String, dynamic> dndClass;
@@ -19,19 +21,29 @@ class DndClassCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppTheme.getAccentGoldFromContext(context), width: 2),
-                ),
-                child: Icon(
-                  FontAwesomeIcons.userShield,
-                  size: 40,
+              SvgIconWithGradient(
+                assetPath: IconMapper.getIconPath(
+                  customPath: dndClass['icon_path'] as String?,
+                  className: dndClass['name'] as String?,
+                ) ?? IconMapper.getClassIconPath(dndClass['name'] as String?),
+                size: 80,
+                iconColor: AppTheme.getAccentGoldFromContext(context),
+                gradientColors: [
+                  AppTheme.getAccentGoldFromContext(context).withOpacity(0.3),
+                  AppTheme.getAccentGoldFromContext(context).withOpacity(0.1),
+                ],
+                borderRadius: 8,
+                border: Border.all(
                   color: AppTheme.getAccentGoldFromContext(context),
+                  width: 2,
                 ),
+                shadows: [
+                  BoxShadow(
+                    color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
               const SizedBox(width: 16),
               Expanded(

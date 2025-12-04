@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/party_service.dart';
+import '../../../data/models/party.dart';
 import '../../../widgets/party_card.dart';
 
 class PartiesListPage extends StatefulWidget {
@@ -12,9 +12,10 @@ class PartiesListPage extends StatefulWidget {
 }
 
 class _PartiesListPageState extends State<PartiesListPage> {
-  List<dynamic> parties = [];
+  List<Party> parties = [];
   bool isLoading = true;
   String? error;
+  final PartyService _service = PartyService();
 
   @override
   void initState() {
@@ -29,8 +30,7 @@ class _PartiesListPageState extends State<PartiesListPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('parties');
+      final data = await _service.getAll();
       setState(() {
         parties = data;
         isLoading = false;
@@ -91,7 +91,17 @@ class _PartiesListPageState extends State<PartiesListPage> {
       child: ListView.builder(
         itemCount: parties.length,
         itemBuilder: (context, index) {
-          return PartyCard(party: parties[index]);
+          final party = parties[index];
+          final partyMap = {
+            'id': party.id,
+            'name': party.name,
+            'description': party.description,
+            'level': party.level,
+            'experience_points': party.experiencePoints,
+            'image_path': party.imagePath,
+            'icon_path': party.iconPath,
+          };
+          return PartyCard(party: partyMap);
         },
       ),
     );

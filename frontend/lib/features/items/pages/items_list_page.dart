@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/item_service.dart';
+import '../../../data/models/item.dart';
 import '../../../widgets/item_card.dart';
 
 class ItemsListPage extends StatefulWidget {
@@ -12,9 +12,10 @@ class ItemsListPage extends StatefulWidget {
 }
 
 class _ItemsListPageState extends State<ItemsListPage> {
-  List<dynamic> items = [];
+  List<Item> items = [];
   bool isLoading = true;
   String? error;
+  final ItemService _service = ItemService();
 
   @override
   void initState() {
@@ -29,8 +30,7 @@ class _ItemsListPageState extends State<ItemsListPage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final data = await apiService.getAll('items');
+      final data = await _service.getAll();
       setState(() {
         items = data;
         isLoading = false;
@@ -95,7 +95,18 @@ class _ItemsListPageState extends State<ItemsListPage> {
       child: ListView.builder(
         itemCount: items.length,
         itemBuilder: (context, index) {
-          return ItemCard(item: items[index]);
+          final item = items[index];
+          final itemMap = {
+            'id': item.id,
+            'name': item.name,
+            'type': item.type,
+            'description': item.description,
+            'rarity': item.rarity,
+            'value': item.value,
+            'image_path': item.imagePath,
+            'icon_path': item.iconPath,
+          };
+          return ItemCard(item: itemMap);
         },
       ),
     );

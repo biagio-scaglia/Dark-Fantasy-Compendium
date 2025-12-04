@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../core/theme/app_theme.dart';
+import 'svg_icon_widget.dart';
+import '../utils/icon_mapper.dart';
 
 class ArmorCard extends StatelessWidget {
   final Map<String, dynamic> armor;
@@ -50,36 +52,30 @@ class ArmorCard extends StatelessWidget {
           padding: const EdgeInsets.all(14),
           child: Row(
             children: [
-              Container(
-                width: 55,
-                height: 55,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      rarityColor,
-                      rarityColor.withOpacity(0.7),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: rarityColor.withOpacity(0.8),
-                    width: 2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: rarityColor.withOpacity(0.5),
-                      blurRadius: 6,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
+              SvgIconWithGradient(
+                assetPath: IconMapper.getIconPath(
+                  customPath: armor['icon_path'] as String?,
+                  type: armor['type'] as String?,
+                  entityType: 'armor',
+                ) ?? IconMapper.getArmorIconPath(armor['type'] as String?),
+                size: 55,
+                iconColor: AppTheme.getPrimaryBackgroundFromContext(context),
+                gradientColors: [
+                  rarityColor,
+                  rarityColor.withOpacity(0.7),
+                ],
+                borderRadius: 10,
+                border: Border.all(
+                  color: rarityColor.withOpacity(0.8),
+                  width: 2,
                 ),
-                child: Icon(
-                  Icons.shield,
-                  size: 28,
-                  color: AppTheme.getPrimaryBackgroundFromContext(context),
-                ),
+                shadows: [
+                  BoxShadow(
+                    color: rarityColor.withOpacity(0.5),
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -152,6 +148,7 @@ class ArmorCard extends StatelessWidget {
                     Row(
                       children: [
                         _StatBadge(
+                          iconPath: IconMapper.getAttributeIconPath('ac'),
                           icon: Icons.shield,
                           value: '+${armor['defense_bonus'] ?? 0}',
                           label: 'DEF',
@@ -178,13 +175,15 @@ class ArmorCard extends StatelessWidget {
 }
 
 class _StatBadge extends StatelessWidget {
-  final IconData icon;
+  final IconData? icon;
+  final String? iconPath;
   final String value;
   final String label;
   final Color color;
 
   const _StatBadge({
-    required this.icon,
+    this.icon,
+    this.iconPath,
     required this.value,
     required this.label,
     required this.color,
@@ -192,6 +191,20 @@ class _StatBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget iconWidget;
+    
+    if (iconPath != null) {
+      iconWidget = SvgIconWidget(
+        assetPath: iconPath!,
+        size: 13,
+        color: color,
+      );
+    } else if (icon != null) {
+      iconWidget = Icon(icon!, size: 13, color: color);
+    } else {
+      iconWidget = const SizedBox(width: 13, height: 13);
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
@@ -217,7 +230,7 @@ class _StatBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 13, color: color),
+          iconWidget,
           const SizedBox(width: 5),
           Text(
             '$value $label',

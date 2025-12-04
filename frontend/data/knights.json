@@ -1,0 +1,53 @@
+[
+  {
+    "id": 1,
+    "name": "Sir Malachar",
+    "title": "The Knight of Shadows",
+    "faction_id": 1,
+    "level": 50,
+    "health": 500,
+    "max_health": 500,
+    "attack": 80,
+    "defense": 60,
+    "weapon_id": 1,
+    "armor_id": 1,
+    "description": "A legendary knight who has fought a thousand battles",
+    "lore": "Sir Malachar lost his family during the Great War. Now he fights only for revenge.",
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 2,
+    "name": "Void Knight",
+    "title": "Guardian of the Abyss",
+    "faction_id": 2,
+    "level": 45,
+    "health": 450,
+    "max_health": 450,
+    "attack": 75,
+    "defense": 55,
+    "weapon_id": 2,
+    "armor_id": 2,
+    "description": "A knight who gazed into the void and was transformed by it",
+    "lore": null,
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 3,
+    "name": "Bloodreaver",
+    "title": "The Bloodthirsty",
+    "faction_id": 3,
+    "level": 60,
+    "health": 600,
+    "max_health": 600,
+    "attack": 90,
+    "defense": 50,
+    "weapon_id": 3,
+    "armor_id": 3,
+    "description": "A cursed knight thirsting for blood",
+    "lore": "Cursed by an ancient pact, Bloodreaver is immortal but must feed on battles.",
+    "image_url": null,
+    "icon_url": null
+  }
+]

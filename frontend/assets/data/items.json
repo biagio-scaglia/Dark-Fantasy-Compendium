@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Blood Potion",
+    "type": "consumable",
+    "description": "Restores 200 HP",
+    "effect": "heal_200",
+    "value": 50,
+    "rarity": "common",
+    "lore": null,
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 2,
+    "name": "Dark Crystal",
+    "type": "material",
+    "description": "Rare material for forging",
+    "effect": null,
+    "value": 500,
+    "rarity": "epic",
+    "lore": "A crystal that pulses with dark energy.",
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 3,
+    "name": "Key of the Void",
+    "type": "quest_item",
+    "description": "A key that opens portals to the void",
+    "effect": null,
+    "value": 0,
+    "rarity": "legendary",
+    "lore": "It is said that this key can open doors to other dimensions.",
+    "image_url": null,
+    "icon_url": null
+  }
+]

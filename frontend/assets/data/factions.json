@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "name": "Order of Shadows",
+    "description": "A secret order of knights who fight dark forces",
+    "lore": "Founded during the Great War of Darkness, the Order of Shadows protects the realms from demons.",
+    "color": "#8B0000",
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 2,
+    "name": "Guardians of the Void",
+    "description": "Knights who have embraced the power of the void",
+    "lore": "Those who gazed into the abyss and emerged transformed.",
+    "color": "#4B0082",
+    "image_url": null,
+    "icon_url": null
+  },
+  {
+    "id": 3,
+    "name": "Knights of Blood",
+    "description": "A cursed order that feeds on battles",
+    "lore": "Cursed by an ancient pact, these knights are immortal but thirst for blood.",
+    "color": "#DC143C",
+    "image_url": null,
+    "icon_url": null
+  }
+]

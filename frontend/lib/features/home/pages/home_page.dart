@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/animations/app_animations.dart';
-import '../../../services/api_service.dart';
+import '../../../data/services/campaign_service.dart';
+import '../../../data/models/campaign.dart';
 import '../../../widgets/campaign_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,9 +16,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<dynamic> _recentCampaigns = [];
-  List<dynamic> _upcomingSessions = [];
+  List<Campaign> _recentCampaigns = [];
+  List<Map<String, dynamic>> _upcomingSessions = [];
   bool _isLoading = true;
+  final CampaignService _service = CampaignService();
 
   @override
   void initState() {
@@ -32,25 +33,23 @@ class _HomePageState extends State<HomePage> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
-      final campaigns = await apiService.getAll('campaigns');
+      final campaigns = await _service.getAll();
       
       final now = DateTime.now();
       final upcomingSessions = <Map<String, dynamic>>[];
       
       for (var campaign in campaigns) {
-        final sessions = campaign['sessions'] as List<dynamic>? ?? [];
+        final sessions = campaign.sessions as List<dynamic>? ?? [];
         for (var session in sessions) {
           try {
             final sessionDate = DateTime.parse(session['date'] ?? '');
             if (sessionDate.isAfter(now)) {
               final sessionWithCampaign = Map<String, dynamic>.from(session);
-              sessionWithCampaign['campaign_name'] = campaign['name'];
-              sessionWithCampaign['campaign_id'] = campaign['id'];
+              sessionWithCampaign['campaign_name'] = campaign.name;
+              sessionWithCampaign['campaign_id'] = campaign.id;
               upcomingSessions.add(sessionWithCampaign);
             }
           } catch (e) {
-            // Skip invalid dates
           }
         }
       }
@@ -443,7 +442,18 @@ class _HomePageState extends State<HomePage> {
               ),
             )
           else
-            ..._recentCampaigns.map((campaign) => CampaignCard(campaign: campaign)),
+            ..._recentCampaigns.map((campaign) {
+              final campMap = {
+                'id': campaign.id,
+                'name': campaign.name,
+                'description': campaign.description,
+                'dungeon_master': campaign.dungeonMaster,
+                'current_level': campaign.currentLevel,
+                'image_path': campaign.imagePath,
+                'icon_path': campaign.iconPath,
+              };
+              return CampaignCard(campaign: campMap);
+            }),
         ],
       ),
     );
