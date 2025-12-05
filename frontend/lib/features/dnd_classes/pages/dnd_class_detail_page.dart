@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../data/services/class_service.dart';
 import '../../../data/models/class_model.dart';
 import '../../../core/theme/app_theme.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../../widgets/svg_icon_widget.dart';
 import 'dnd_class_form_page.dart';
 
 class DndClassDetailPage extends StatefulWidget {
@@ -189,19 +189,19 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
           children: [
             if (dndClass!['hit_dice'] != null)
               _buildInfoRow(
-                icon: FontAwesomeIcons.dice,
+                iconPath: 'delapouite/dice-twenty-faces-twenty.svg',
                 label: 'Hit Dice',
                 value: dndClass!['hit_dice'],
               ),
             if (dndClass!['hit_points_at_1st_level'] != null)
               _buildInfoRow(
-                icon: FontAwesomeIcons.heart,
+                iconPath: 'zeromancer/heart-plus.svg',
                 label: 'Hit Points at 1st Level',
                 value: '${dndClass!['hit_points_at_1st_level']}',
               ),
             if (dndClass!['spellcasting_ability'] != null)
               _buildInfoRow(
-                icon: FontAwesomeIcons.wandMagicSparkles,
+                iconPath: 'lorc/wizard-staff.svg',
                 label: 'Caratteristica Incantesimi',
                 value: dndClass!['spellcasting_ability'],
               ),
@@ -211,12 +211,17 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
     );
   }
 
-  Widget _buildInfoRow({required IconData icon, required String label, required String value}) {
+  Widget _buildInfoRow({required String iconPath, required String label, required String value}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          FaIcon(icon, size: 20, color: AppTheme.getAccentGoldFromContext(context)),
+          SvgIconWidget(
+            iconPath: iconPath,
+            size: 20,
+            color: AppTheme.getAccentGoldFromContext(context),
+            useThemeColor: false,
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -252,7 +257,12 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
         ...items.map((item) => Card(
           margin: const EdgeInsets.only(bottom: 4),
           child: ListTile(
-            leading: FaIcon(FontAwesomeIcons.check, size: 16, color: AppTheme.getAccentGoldFromContext(context)),
+            leading: SvgIconWidget(
+              iconPath: 'lorc/checked-shield.svg',
+              size: 16,
+              color: AppTheme.getAccentGoldFromContext(context),
+              useThemeColor: false,
+            ),
             title: Text(item.toString()),
           ),
         )),

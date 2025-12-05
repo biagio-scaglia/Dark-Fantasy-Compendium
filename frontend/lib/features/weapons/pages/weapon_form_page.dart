@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../data/services/weapon_service.dart';
 import '../../../data/models/weapon.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../widgets/icon_picker_widget.dart';
+import '../../../widgets/svg_icon_picker_widget.dart';
 
 class WeaponFormPage extends StatefulWidget {
   final Map<String, dynamic>? weapon;
@@ -259,9 +259,10 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
               decoration: const InputDecoration(labelText: 'Image URL'),
             ),
             const SizedBox(height: 16),
-            IconPickerWidget(
+            SvgIconPickerWidget(
               selectedIconPath: _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
-              suggestedCategories: ['weapon', 'entity'],
+              entityType: 'weapon',
+              suggestedCategories: ['weapon'],
               onIconSelected: (iconPath) {
                 setState(() {
                   _iconUrlController.text = iconPath;

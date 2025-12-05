@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../widgets/svg_icon_widget.dart';
 import '../../features/knights/pages/knights_list_page.dart';
 import '../../features/knights/pages/knight_detail_page.dart';
 import '../../features/knights/pages/knight_form_page.dart';
@@ -63,8 +64,11 @@ class AppRouter {
     routes: [
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
-          return _MainScaffoldWithNavBar(
+          return _RouteListener(
             navigationShell: navigationShell,
+            child: _MainScaffoldWithNavBar(
+              navigationShell: navigationShell,
+            ),
           );
         },
         branches: [
@@ -425,24 +429,112 @@ class AppRouter {
   );
 }
 
-class _MainScaffoldWithNavBar extends StatelessWidget {
+class _MainScaffoldWithNavBar extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
 
   const _MainScaffoldWithNavBar({
     required this.navigationShell,
   });
 
+  @override
+  State<_MainScaffoldWithNavBar> createState() => _MainScaffoldWithNavBarState();
+}
+
+class _MainScaffoldWithNavBarState extends State<_MainScaffoldWithNavBar> {
   void _onTap(int index) {
-    navigationShell.goBranch(
+    widget.navigationShell.goBranch(
       index,
-      initialLocation: index == navigationShell.currentIndex,
+      initialLocation: index == widget.navigationShell.currentIndex,
     );
+  }
+
+  List<BottomNavigationBarItem> _buildNavBarItems(BuildContext context) {
+    final goldColor = AppTheme.getAccentGoldFromContext(context);
+    final secondaryColor = AppTheme.getTextSecondaryFromContext(context);
+    
+    return [
+      BottomNavigationBarItem(
+        icon: SvgIconWidget(
+          iconPath: 'delapouite/house.svg',
+          size: 24,
+          color: secondaryColor,
+          useThemeColor: false,
+        ),
+        activeIcon: SvgIconWidget(
+          iconPath: 'delapouite/house.svg',
+          size: 24,
+          color: goldColor,
+          useThemeColor: false,
+        ),
+        label: 'Home',
+      ),
+      BottomNavigationBarItem(
+        icon: SvgIconWidget(
+          iconPath: 'delapouite/flag-objective.svg',
+          size: 24,
+          color: secondaryColor,
+          useThemeColor: false,
+        ),
+        activeIcon: SvgIconWidget(
+          iconPath: 'delapouite/flag-objective.svg',
+          size: 24,
+          color: goldColor,
+          useThemeColor: false,
+        ),
+        label: 'Campaigns',
+      ),
+      BottomNavigationBarItem(
+        icon: SvgIconWidget(
+          iconPath: 'lorc/book-cover.svg',
+          size: 24,
+          color: secondaryColor,
+          useThemeColor: false,
+        ),
+        activeIcon: SvgIconWidget(
+          iconPath: 'lorc/book-cover.svg',
+          size: 24,
+          color: goldColor,
+          useThemeColor: false,
+        ),
+        label: 'Encyclopedia',
+      ),
+      BottomNavigationBarItem(
+        icon: SvgIconWidget(
+          iconPath: 'delapouite/team-idea.svg',
+          size: 24,
+          color: secondaryColor,
+          useThemeColor: false,
+        ),
+        activeIcon: SvgIconWidget(
+          iconPath: 'delapouite/team-idea.svg',
+          size: 24,
+          color: goldColor,
+          useThemeColor: false,
+        ),
+        label: 'Party',
+      ),
+      BottomNavigationBarItem(
+        icon: SvgIconWidget(
+          iconPath: 'delapouite/info.svg',
+          size: 24,
+          color: secondaryColor,
+          useThemeColor: false,
+        ),
+        activeIcon: SvgIconWidget(
+          iconPath: 'delapouite/info.svg',
+          size: 24,
+          color: goldColor,
+          useThemeColor: false,
+        ),
+        label: 'Info',
+      ),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: navigationShell,
+      body: widget.navigationShell,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -464,38 +556,102 @@ class _MainScaffoldWithNavBar extends StatelessWidget {
         child: SafeArea(
           top: false,
           child: BottomNavigationBar(
-            currentIndex: navigationShell.currentIndex,
+            currentIndex: widget.navigationShell.currentIndex,
             onTap: _onTap,
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.transparent,
             selectedItemColor: AppTheme.getAccentGoldFromContext(context),
             unselectedItemColor: AppTheme.getTextSecondaryFromContext(context),
             elevation: 0,
-            items: const [
-              BottomNavigationBarItem(
-                icon: FaIcon(FontAwesomeIcons.house),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: FaIcon(FontAwesomeIcons.flag),
-                label: 'Campaigns',
-              ),
-              BottomNavigationBarItem(
-                icon: FaIcon(FontAwesomeIcons.book),
-                label: 'Encyclopedia',
-              ),
-              BottomNavigationBarItem(
-                icon: FaIcon(FontAwesomeIcons.users),
-                label: 'Party',
-              ),
-              BottomNavigationBarItem(
-                icon: FaIcon(FontAwesomeIcons.circleInfo),
-                label: 'Info',
-              ),
-            ],
+            items: _buildNavBarItems(context),
           ),
         ),
       ),
     );
+  }
+}
+
+/// Widget helper per ascoltare i cambiamenti di route e aggiornare la tab-bar
+class _RouteListener extends StatefulWidget {
+  final StatefulNavigationShell navigationShell;
+  final Widget child;
+
+  const _RouteListener({
+    required this.navigationShell,
+    required this.child,
+  });
+
+  @override
+  State<_RouteListener> createState() => _RouteListenerState();
+}
+
+class _RouteListenerState extends State<_RouteListener> {
+  // Mappa route -> indice tab
+  static const Map<String, int> _routeToIndex = {
+    '/home': 0,
+    '/campaigns': 1,
+    '/encyclopedia': 2,
+    '/party-characters': 3,
+    '/info': 4,
+  };
+
+  String? _lastRoute;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _checkRoute();
+  }
+
+  void _checkRoute() {
+    if (!mounted) return;
+    
+    final router = GoRouter.of(context);
+    String currentLocation;
+    
+    try {
+      // Prova a ottenere la route corrente dal router delegate
+      currentLocation = router.routerDelegate.currentConfiguration.uri.path;
+    } catch (e) {
+      // Se fallisce, prova con GoRouterState
+      try {
+        currentLocation = GoRouterState.of(context).uri.path;
+      } catch (e2) {
+        return; // Non possiamo determinare la route corrente
+      }
+    }
+    
+    if (_lastRoute == currentLocation) return;
+    _lastRoute = currentLocation;
+    
+    // Cerca la route corrispondente
+    int? targetIndex;
+    for (final entry in _routeToIndex.entries) {
+      if (currentLocation == entry.key || currentLocation.startsWith('${entry.key}/')) {
+        targetIndex = entry.value;
+        break;
+      }
+    }
+    
+    // Se abbiamo trovato un indice e non corrisponde all'indice corrente, aggiornalo
+    if (targetIndex != null && widget.navigationShell.currentIndex != targetIndex) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          widget.navigationShell.goBranch(
+            targetIndex!,
+            initialLocation: false,
+          );
+        }
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Controlla la route ad ogni build per catturare i cambiamenti
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkRoute();
+    });
+    return widget.child;
   }
 }

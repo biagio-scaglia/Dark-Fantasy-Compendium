@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/theme_provider.dart';
+import '../../../widgets/svg_icon_widget.dart';
 
 class InfoPage extends StatelessWidget {
   const InfoPage({super.key});
@@ -36,6 +36,8 @@ class InfoPage extends StatelessWidget {
                       const SizedBox(height: 24),
                       _buildLibrariesSection(),
                       const SizedBox(height: 24),
+                      _buildPrivacySection(context),
+                      const SizedBox(height: 24),
                       _buildLicenseSection(context),
                       const SizedBox(height: 24),
                       _buildThemeSection(context),
@@ -54,6 +56,10 @@ class InfoPage extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
+    final goldColor = AppTheme.getAccentGoldFromContext(context);
+    final brownColor = AppTheme.getAccentBrownFromContext(context);
+    
     return Center(
       child: Column(
         children: [
@@ -63,14 +69,28 @@ class InfoPage extends StatelessWidget {
               gradient: AppTheme.getMedievalGradientFromContext(context),
               shape: BoxShape.circle,
               border: Border.all(
-                color: AppTheme.getAccentGoldFromContext(context),
+                color: goldColor,
                 width: 3,
               ),
             ),
-            child: FaIcon(
-              FontAwesomeIcons.crown,
-              size: 64,
-              color: AppTheme.getAccentGoldFromContext(context),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isLight 
+                  ? Colors.white.withOpacity(0.25)
+                  : Colors.black.withOpacity(0.3),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: goldColor.withOpacity(0.5),
+                  width: 2,
+                ),
+              ),
+              child: SvgIconWidget(
+                iconPath: 'lorc/crown.svg',
+                size: 64,
+                color: isLight ? brownColor : goldColor,
+                useThemeColor: false,
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -98,16 +118,16 @@ class InfoPage extends StatelessWidget {
   Widget _buildVersionSection() {
     return _InfoCard(
       title: 'App Version',
-      icon: FontAwesomeIcons.code,
+      iconPath: 'lorc/crystal-shine.svg',
       children: [
         _InfoRow(
-          label: 'Frontend (Flutter)',
+          label: 'Version',
           value: '1.0.0',
         ),
         const SizedBox(height: 8),
         _InfoRow(
-          label: 'Backend (FastAPI)',
-          value: '1.0.0',
+          label: 'Platform',
+          value: 'Flutter',
         ),
       ],
     );
@@ -116,7 +136,7 @@ class InfoPage extends StatelessWidget {
   Widget _buildCreditsSection() {
     return _InfoCard(
       title: 'Credits',
-      icon: FontAwesomeIcons.user,
+      iconPath: 'delapouite/character.svg',
       children: [
         _InfoRow(
           label: 'Developer',
@@ -129,7 +149,7 @@ class InfoPage extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         _InfoButton(
-          icon: FontAwesomeIcons.github,
+          iconPath: 'lorc/crystal-shine.svg',
           label: 'GitHub Repository',
           onTap: () async {
             final url = Uri.parse('https://github.com/yourusername/dark-fantasy-compendium');
@@ -140,7 +160,7 @@ class InfoPage extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         _InfoButton(
-          icon: FontAwesomeIcons.globe,
+          iconPath: 'lorc/globe.svg',
           label: 'Website',
           onTap: () async {
             final url = Uri.parse('https://yourwebsite.com');
@@ -156,19 +176,19 @@ class InfoPage extends StatelessWidget {
   Widget _buildLibrariesSection() {
     return _InfoCard(
       title: 'Technologies',
-      icon: FontAwesomeIcons.book,
+      iconPath: 'lorc/book-cover.svg',
       children: [
-        _InfoRow(label: 'Flutter', value: 'SDK'),
+        _InfoRow(label: 'Flutter', value: 'UI Framework'),
         const SizedBox(height: 4),
         _InfoRow(label: 'Provider', value: 'State Management'),
         const SizedBox(height: 4),
         _InfoRow(label: 'go_router', value: 'Navigation'),
         const SizedBox(height: 4),
-        _InfoRow(label: 'FastAPI', value: 'Backend'),
+        _InfoRow(label: 'path_provider', value: 'File System'),
         const SizedBox(height: 4),
-        _InfoRow(label: 'Pydantic', value: 'Data Validation'),
+        _InfoRow(label: 'shared_preferences', value: 'Local Storage'),
         const SizedBox(height: 4),
-        _InfoRow(label: 'FontAwesome', value: 'Icons'),
+        _InfoRow(label: 'SVG Icons', value: 'Game-Icons.net'),
       ],
     );
   }
@@ -176,7 +196,7 @@ class InfoPage extends StatelessWidget {
   Widget _buildLicenseSection(BuildContext context) {
     return _InfoCard(
       title: 'License',
-      icon: FontAwesomeIcons.scaleBalanced,
+      iconPath: 'lorc/scales.svg',
       children: [
         Text(
           'MIT License',
@@ -203,7 +223,7 @@ class InfoPage extends StatelessWidget {
       builder: (context, themeProvider, _) {
         return _InfoCard(
           title: 'Theme',
-          icon: FontAwesomeIcons.palette,
+          iconPath: 'delapouite/palette.svg',
           children: [
             SwitchListTile(
               title: const Text('Dark Mode'),
@@ -219,19 +239,19 @@ class InfoPage extends StatelessWidget {
               children: [
                 _ThemeOption(
                   label: 'Light',
-                  icon: FontAwesomeIcons.sun,
+                  iconPath: 'lorc/sun.svg',
                   isSelected: themeProvider.themeMode == ThemeMode.light,
                   onTap: () => themeProvider.setThemeMode(ThemeMode.light),
                 ),
                 _ThemeOption(
                   label: 'Dark',
-                  icon: FontAwesomeIcons.moon,
+                  iconPath: 'lorc/moon.svg',
                   isSelected: themeProvider.themeMode == ThemeMode.dark,
                   onTap: () => themeProvider.setThemeMode(ThemeMode.dark),
                 ),
                 _ThemeOption(
                   label: 'System',
-                  icon: FontAwesomeIcons.circleHalfStroke,
+                  iconPath: 'lorc/half-heart.svg',
                   isSelected: themeProvider.themeMode == ThemeMode.system,
                   onTap: () => themeProvider.setThemeMode(ThemeMode.system),
                 ),
@@ -243,10 +263,72 @@ class InfoPage extends StatelessWidget {
     );
   }
 
+  Widget _buildPrivacySection(BuildContext context) {
+    return _InfoCard(
+      title: 'Privacy & Data',
+      iconPath: 'sbed/shield.svg',
+      children: [
+        Text(
+          'Privacy Policy',
+          style: TextStyle(
+            color: AppTheme.getTextPrimaryFromContext(context),
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          'Dark Fantasy Compendium is a fully offline application. All your data is stored locally on your device and never leaves it.',
+          style: TextStyle(
+            color: AppTheme.getTextSecondaryFromContext(context),
+            fontSize: 14,
+            height: 1.5,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          'Data Storage',
+          style: TextStyle(
+            color: AppTheme.getTextPrimaryFromContext(context),
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          '• All data is stored locally in JSON files\n• Images are saved on your device\n• No cloud synchronization\n• No data collection or analytics\n• No third-party services',
+          style: TextStyle(
+            color: AppTheme.getTextSecondaryFromContext(context),
+            fontSize: 13,
+            height: 1.6,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          'Permissions',
+          style: TextStyle(
+            color: AppTheme.getTextPrimaryFromContext(context),
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'The app may request permissions for:\n• Storage: To save images and data files\n• Camera: To take photos for entities (optional)\n• Gallery: To select images (optional)',
+          style: TextStyle(
+            color: AppTheme.getTextSecondaryFromContext(context),
+            fontSize: 13,
+            height: 1.6,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildExtraSection(BuildContext context) {
     return _InfoCard(
       title: 'About',
-      icon: FontAwesomeIcons.feather,
+      iconPath: 'lorc/quill.svg',
       children: [
         Text(
           'Dark Fantasy Compendium is a comprehensive tool for managing D&D campaigns and dark fantasy content. Track characters, parties, sessions, spells, items, maps, and more. Built for dungeon masters and players who want to organize their tabletop RPG experience.',
@@ -263,12 +345,12 @@ class InfoPage extends StatelessWidget {
 
 class _InfoCard extends StatelessWidget {
   final String title;
-  final IconData icon;
+  final String iconPath;
   final List<Widget> children;
 
-  const _InfoCard({
+  _InfoCard({
     required this.title,
-    required this.icon,
+    required this.iconPath,
     required this.children,
   });
 
@@ -283,7 +365,12 @@ class _InfoCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                FaIcon(icon, color: AppTheme.getAccentGoldFromContext(context), size: 20),
+                SvgIconWidget(
+                  iconPath: iconPath,
+                  size: 20,
+                  color: AppTheme.getAccentGoldFromContext(context),
+                  useThemeColor: false,
+                ),
                 const SizedBox(width: 8),
                 Text(
                   title,
@@ -338,12 +425,12 @@ class _InfoRow extends StatelessWidget {
 }
 
 class _InfoButton extends StatelessWidget {
-  final IconData icon;
+  final String iconPath;
   final String label;
   final VoidCallback onTap;
 
-  const _InfoButton({
-    required this.icon,
+  _InfoButton({
+    required this.iconPath,
     required this.label,
     required this.onTap,
   });
@@ -363,7 +450,12 @@ class _InfoButton extends StatelessWidget {
         ),
         child: Row(
           children: [
-            FaIcon(icon, color: AppTheme.getAccentGoldFromContext(context), size: 20),
+            SvgIconWidget(
+              iconPath: iconPath,
+              size: 20,
+              color: AppTheme.getAccentGoldFromContext(context),
+              useThemeColor: false,
+            ),
             const SizedBox(width: 12),
             Text(
               label,
@@ -387,13 +479,13 @@ class _InfoButton extends StatelessWidget {
 
 class _ThemeOption extends StatelessWidget {
   final String label;
-  final IconData icon;
+  final String iconPath;
   final bool isSelected;
   final VoidCallback onTap;
 
-  const _ThemeOption({
+  _ThemeOption({
     required this.label,
-    required this.icon,
+    required this.iconPath,
     required this.isSelected,
     required this.onTap,
   });
@@ -420,10 +512,11 @@ class _ThemeOption extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            FaIcon(
-              icon,
-              color: isSelected ? AppTheme.getAccentGoldFromContext(context) : AppTheme.getTextSecondaryFromContext(context),
+            SvgIconWidget(
+              iconPath: iconPath,
               size: 24,
+              color: isSelected ? AppTheme.getAccentGoldFromContext(context) : AppTheme.getTextSecondaryFromContext(context),
+              useThemeColor: false,
             ),
             const SizedBox(height: 4),
             Text(

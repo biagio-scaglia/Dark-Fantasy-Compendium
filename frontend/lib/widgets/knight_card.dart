@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../core/theme/app_theme.dart';
 import '../core/animations/app_animations.dart';
+import 'svg_icon_widget.dart';
 
 class KnightCard extends StatelessWidget {
   final Map<String, dynamic> knight;
@@ -127,19 +127,19 @@ class KnightCard extends StatelessWidget {
                 runSpacing: 8,
                 children: [
                   _StatChip(
-                    icon: FontAwesomeIcons.heart,
+                    iconPath: 'zeromancer/heart-plus.svg',
                     label: 'HP',
                     value: '${knight['health'] ?? 0}/${knight['max_health'] ?? 0}',
                     color: AppTheme.accentCrimson,
                   ),
                   _StatChip(
-                    icon: FontAwesomeIcons.gavel,
+                    iconPath: 'lorc/hammer-drop.svg',
                     label: 'ATK',
                     value: '${knight['attack'] ?? 0}',
                     color: AppTheme.getAccentGoldFromContext(context),
                   ),
                   _StatChip(
-                    icon: FontAwesomeIcons.shield,
+                    iconPath: 'sbed/shield.svg',
                     label: 'DEF',
                     value: '${knight['defense'] ?? 0}',
                     color: AppTheme.getAccentBrownFromContext(context),
@@ -166,13 +166,13 @@ class KnightCard extends StatelessWidget {
 }
 
 class _StatChip extends StatelessWidget {
-  final IconData icon;
+  final String iconPath;
   final String label;
   final String value;
   final Color color;
 
-  const _StatChip({
-    required this.icon,
+  _StatChip({
+    required this.iconPath,
     required this.label,
     required this.value,
     required this.color,
@@ -205,7 +205,12 @@ class _StatChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FaIcon(icon, size: 13, color: color),
+          SvgIconWidget(
+            iconPath: iconPath,
+            size: 13,
+            color: color,
+            useThemeColor: false,
+          ),
           const SizedBox(width: 5),
           Flexible(
             child: Text(

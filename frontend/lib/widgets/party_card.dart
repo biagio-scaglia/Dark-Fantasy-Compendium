@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../core/theme/app_theme.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'svg_icon_widget.dart';
 
 class PartyCard extends StatelessWidget {
   final Map<String, dynamic> party;
@@ -27,10 +27,13 @@ class PartyCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: AppTheme.getAccentGoldFromContext(context), width: 2),
                 ),
-                child: Icon(
-                  FontAwesomeIcons.users,
-                  size: 40,
-                  color: AppTheme.getAccentGoldFromContext(context),
+                child: Center(
+                  child: SvgIconWidget(
+                    iconPath: 'delapouite/team-idea.svg',
+                    size: 40,
+                    color: AppTheme.getAccentGoldFromContext(context),
+                    useThemeColor: false,
+                  ),
                 ),
               ),
               const SizedBox(width: 16),

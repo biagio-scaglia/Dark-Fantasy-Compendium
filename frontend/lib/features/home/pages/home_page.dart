@@ -7,6 +7,7 @@ import '../../../core/animations/app_animations.dart';
 import '../../../data/services/campaign_service.dart';
 import '../../../data/models/campaign.dart';
 import '../../../widgets/campaign_card.dart';
+import '../../../widgets/svg_icon_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -106,6 +107,7 @@ class _HomePageState extends State<HomePage> {
                     _buildRecentCampaignsSection(),
                     _buildQuickActionsSection(),
                     _buildQuickEncyclopediaSection(),
+                    _buildInfoPrivacySection(),
                     _buildNotificationsSection(),
                     const SliverToBoxAdapter(
                       child: SizedBox(height: 80),
@@ -163,10 +165,11 @@ class _HomePageState extends State<HomePage> {
                       width: 2,
                     ),
                   ),
-                  child: FaIcon(
-                    FontAwesomeIcons.crown,
+                  child: SvgIconWidget(
+                    iconPath: 'lorc/crown.svg',
                     size: 64,
                     color: isLight ? brownColor : goldColor,
+                    useThemeColor: false,
                   ),
                 ),
               ),
@@ -230,10 +233,11 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: Row(
                     children: [
-                      FaIcon(
-                        FontAwesomeIcons.calendar,
-                        color: AppTheme.getAccentGoldFromContext(context),
+                      SvgIconWidget(
+                        iconPath: 'delapouite/calendar.svg',
                         size: 20,
+                        color: AppTheme.getAccentGoldFromContext(context),
+                        useThemeColor: false,
                       ),
                       const SizedBox(width: 8),
                       Flexible(
@@ -398,10 +402,11 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: Row(
                     children: [
-                      FaIcon(
-                        FontAwesomeIcons.flag,
-                        color: AppTheme.getAccentGoldFromContext(context),
+                      SvgIconWidget(
+                        iconPath: 'delapouite/flag-objective.svg',
                         size: 20,
+                        color: AppTheme.getAccentGoldFromContext(context),
+                        useThemeColor: false,
                       ),
                       const SizedBox(width: 8),
                       Flexible(
@@ -468,10 +473,11 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
             child: Row(
               children: [
-                FaIcon(
-                  FontAwesomeIcons.bolt,
-                  color: AppTheme.getAccentGoldFromContext(context),
+                SvgIconWidget(
+                  iconPath: 'lorc/arcing-bolt.svg',
                   size: 20,
+                  color: AppTheme.getAccentGoldFromContext(context),
+                  useThemeColor: false,
                 ),
                 const SizedBox(width: 8),
                 Flexible(
@@ -491,32 +497,32 @@ class _HomePageState extends State<HomePage> {
               runSpacing: 12,
               children: [
                 _QuickActionButton(
-                  icon: FontAwesomeIcons.userLarge,
+                  iconPath: 'delapouite/character.svg',
                   label: 'Create\nCharacter',
                   onTap: () => context.push('/characters/new'),
                 ),
                 _QuickActionButton(
-                  icon: FontAwesomeIcons.flag,
+                  iconPath: 'delapouite/flag-objective.svg',
                   label: 'New\nCampaign',
                   onTap: () => context.push('/campaigns/new'),
                 ),
                 _QuickActionButton(
-                  icon: FontAwesomeIcons.calendar,
+                  iconPath: 'delapouite/calendar.svg',
                   label: 'View\nCalendar',
                   onTap: () => context.push('/sessions/calendar'),
                 ),
                 _QuickActionButton(
-                  icon: FontAwesomeIcons.map,
+                  iconPath: 'lorc/scroll-unfurled.svg',
                   label: 'Add\nMap',
                   onTap: () => context.push('/maps/new'),
                 ),
                 _QuickActionButton(
-                  icon: FontAwesomeIcons.feather,
+                  iconPath: 'lorc/quill.svg',
                   label: 'New\nLore',
                   onTap: () => context.push('/lores/new'),
                 ),
                 _QuickActionButton(
-                  icon: FontAwesomeIcons.images,
+                  iconPath: 'lorc/crystal-shine.svg',
                   label: 'SVG\nIcons',
                   onTap: () => context.push('/examples/svg-icons'),
                 ),
@@ -541,10 +547,11 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: Row(
                     children: [
-                      FaIcon(
-                        FontAwesomeIcons.book,
-                        color: AppTheme.getAccentGoldFromContext(context),
+                      SvgIconWidget(
+                        iconPath: 'lorc/book-cover.svg',
                         size: 20,
+                        color: AppTheme.getAccentGoldFromContext(context),
+                        useThemeColor: false,
                       ),
                       const SizedBox(width: 8),
                       Flexible(
@@ -578,26 +585,122 @@ class _HomePageState extends State<HomePage> {
               runSpacing: 12,
               children: [
                 _EncyclopediaQuickLink(
-                  icon: FontAwesomeIcons.hatWizard,
+                  iconPath: 'delapouite/wizard-face.svg',
                   label: 'Classes',
                   route: '/dnd-classes',
                 ),
                 _EncyclopediaQuickLink(
-                  icon: FontAwesomeIcons.wandSparkles,
+                  iconPath: 'lorc/wizard-staff.svg',
                   label: 'Spells',
                   route: '/spells',
                 ),
                 _EncyclopediaQuickLink(
-                  icon: FontAwesomeIcons.shieldHalved,
+                  iconPath: 'sbed/shield.svg',
                   label: 'Knights',
                   route: '/knights',
                 ),
                 _EncyclopediaQuickLink(
-                  icon: FontAwesomeIcons.gavel,
+                  iconPath: 'lorc/hammer-drop.svg',
                   label: 'Weapons',
                   route: '/weapons',
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoPrivacySection() {
+    final isLight = Theme.of(context).brightness == Brightness.light;
+    final goldColor = AppTheme.getAccentGoldFromContext(context);
+    
+    return SliverToBoxAdapter(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
+            child: Row(
+              children: [
+                SvgIconWidget(
+                  iconPath: 'delapouite/info.svg',
+                  size: 20,
+                  color: AppTheme.getAccentGoldFromContext(context),
+                  useThemeColor: false,
+                ),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    'Info & Privacy',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Card(
+              color: AppTheme.getSecondaryBackgroundFromContext(context),
+              child: InkWell(
+                onTap: () => context.push('/info'),
+                borderRadius: BorderRadius.circular(12),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: isLight 
+                            ? Colors.white.withOpacity(0.25)
+                            : Colors.black.withOpacity(0.3),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: goldColor.withOpacity(0.5),
+                            width: 2,
+                          ),
+                        ),
+                        child: SvgIconWidget(
+                          iconPath: 'sbed/shield.svg',
+                          size: 40,
+                          color: isLight 
+                            ? AppTheme.getAccentBrownFromContext(context)
+                            : goldColor,
+                          useThemeColor: false,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Privacy & Info',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Scopri di più sull\'app, privacy e dati',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: AppTheme.getTextSecondaryFromContext(context),
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 20,
+                        color: AppTheme.getAccentGoldFromContext(context),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
         ],
@@ -614,10 +717,11 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
             child: Row(
               children: [
-                FaIcon(
-                  FontAwesomeIcons.bell,
-                  color: AppTheme.getAccentGoldFromContext(context),
+                SvgIconWidget(
+                  iconPath: 'lorc/bell-shield.svg',
                   size: 20,
+                  color: AppTheme.getAccentGoldFromContext(context),
+                  useThemeColor: false,
                 ),
                 const SizedBox(width: 8),
                 Flexible(
@@ -652,12 +756,12 @@ class _HomePageState extends State<HomePage> {
 }
 
 class _QuickActionButton extends StatelessWidget {
-  final IconData icon;
+  final String iconPath;
   final String label;
   final VoidCallback onTap;
 
   const _QuickActionButton({
-    required this.icon,
+    required this.iconPath,
     required this.label,
     required this.onTap,
   });
@@ -676,10 +780,11 @@ class _QuickActionButton extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                FaIcon(
-                  icon,
-                  color: AppTheme.getAccentGoldFromContext(context),
+                SvgIconWidget(
+                  iconPath: iconPath,
                   size: 32,
+                  color: AppTheme.getAccentGoldFromContext(context),
+                  useThemeColor: false,
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -697,12 +802,12 @@ class _QuickActionButton extends StatelessWidget {
 }
 
 class _EncyclopediaQuickLink extends StatelessWidget {
-  final IconData icon;
+  final String iconPath;
   final String label;
   final String route;
 
   const _EncyclopediaQuickLink({
-    required this.icon,
+    required this.iconPath,
     required this.label,
     required this.route,
   });
@@ -719,10 +824,11 @@ class _EncyclopediaQuickLink extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              FaIcon(
-                icon,
-                color: AppTheme.getAccentGoldFromContext(context),
+              SvgIconWidget(
+                iconPath: iconPath,
                 size: 20,
+                color: AppTheme.getAccentGoldFromContext(context),
+                useThemeColor: false,
               ),
               const SizedBox(width: 8),
               Flexible(

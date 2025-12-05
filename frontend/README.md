@@ -97,11 +97,11 @@ L'app utilizza un sistema di storage locale basato su JSON. I dati vengono caric
 - `flutter` - Framework UI
 - `provider` - State management
 - `go_router` - Routing
-- `http` - HTTP client
 - `intl` - Internazionalizzazione e formattazione date
-- `font_awesome_flutter` - Icone
 - `image_picker` - Selezione immagini
 - `flutter_svg` - Rendering icone SVG
+- `path_provider` - Accesso al file system
+- `shared_preferences` - Storage preferenze utente
 
 ## Note
 

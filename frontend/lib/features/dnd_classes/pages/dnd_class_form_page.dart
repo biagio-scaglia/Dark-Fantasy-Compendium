@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../data/services/class_service.dart';
 import '../../../data/models/class_model.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../widgets/icon_picker_widget.dart';
+import '../../../widgets/svg_icon_picker_widget.dart';
 
 class DndClassFormPage extends StatefulWidget {
   final Map<String, dynamic>? dndClass;
@@ -205,9 +205,10 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
               decoration: const InputDecoration(labelText: 'Caratteristica Incantesimi (opzionale)'),
             ),
             const SizedBox(height: 16),
-            IconPickerWidget(
+            SvgIconPickerWidget(
               selectedIconPath: _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
-              suggestedCategories: ['class'],
+              entityType: 'character',
+              suggestedCategories: ['character', 'spell'],
               onIconSelected: (iconPath) {
                 setState(() {
                   _iconUrlController.text = iconPath;

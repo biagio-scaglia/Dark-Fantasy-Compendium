@@ -4,7 +4,7 @@ import '../../../data/services/character_service.dart';
 import '../../../data/models/character.dart';
 import '../../../services/pdf_export_service.dart';
 import '../../../core/theme/app_theme.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../../widgets/svg_icon_widget.dart';
 
 class CharacterDetailPage extends StatefulWidget {
   final int characterId;
@@ -119,7 +119,11 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
         title: Text(character!['name'] ?? 'Personaggio'),
         actions: [
           IconButton(
-            icon: const FaIcon(FontAwesomeIcons.filePdf),
+            icon: SvgIconWidget(
+              iconPath: 'lorc/scroll-unfurled.svg',
+              size: 24,
+              useThemeColor: true,
+            ),
             onPressed: _exportPdf,
             tooltip: 'Esporta PDF',
           ),
@@ -158,19 +162,19 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
           children: [
             if (character!['level'] != null)
               _buildInfoRow(
-                icon: FontAwesomeIcons.chartLine,
+                iconPath: 'delapouite/level-end-flag.svg',
                 label: 'Level',
                 value: '${character!['level']}',
               ),
             if (character!['current_hit_points'] != null && character!['max_hit_points'] != null)
               _buildInfoRow(
-                icon: FontAwesomeIcons.heart,
+                iconPath: 'zeromancer/heart-plus.svg',
                 label: 'Punti Ferita',
                 value: '${character!['current_hit_points']}/${character!['max_hit_points']}',
               ),
             if (character!['armor_class'] != null)
               _buildInfoRow(
-                icon: FontAwesomeIcons.shield,
+                iconPath: 'sbed/shield.svg',
                 label: 'Classe Armatura',
                 value: '${character!['armor_class']}',
               ),
@@ -235,12 +239,17 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
     );
   }
 
-  Widget _buildInfoRow({required IconData icon, required String label, required String value}) {
+  Widget _buildInfoRow({required String iconPath, required String label, required String value}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          FaIcon(icon, size: 20, color: AppTheme.getAccentGoldFromContext(context)),
+          SvgIconWidget(
+            iconPath: iconPath,
+            size: 20,
+            color: AppTheme.getAccentGoldFromContext(context),
+            useThemeColor: false,
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

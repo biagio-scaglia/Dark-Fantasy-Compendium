@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../widgets/svg_icon_widget.dart';
 
 class PartyCharactersPage extends StatelessWidget {
   const PartyCharactersPage({super.key});
@@ -14,14 +14,22 @@ class PartyCharactersPage extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Party & Characters'),
           backgroundColor: AppTheme.getPrimaryBackgroundFromContext(context),
-          bottom: const TabBar(
+          bottom: TabBar(
             tabs: [
               Tab(
-                icon: FaIcon(FontAwesomeIcons.users),
+                icon: SvgIconWidget(
+                  iconPath: 'delapouite/team-idea.svg',
+                  size: 24,
+                  useThemeColor: true,
+                ),
                 text: 'Party',
               ),
               Tab(
-                icon: FaIcon(FontAwesomeIcons.userLarge),
+                icon: SvgIconWidget(
+                  iconPath: 'delapouite/character.svg',
+                  size: 24,
+                  useThemeColor: true,
+                ),
                 text: 'Characters',
               ),
             ],
@@ -56,10 +64,11 @@ class _PartiesTab extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FaIcon(
-                    FontAwesomeIcons.users,
+                  SvgIconWidget(
+                    iconPath: 'delapouite/team-idea.svg',
                     size: 64,
                     color: AppTheme.getAccentGoldFromContext(context),
+                    useThemeColor: false,
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -76,7 +85,12 @@ class _PartiesTab extends StatelessWidget {
                   const SizedBox(height: 24),
                   ElevatedButton.icon(
                     onPressed: () => context.push('/parties'),
-                    icon: const FaIcon(FontAwesomeIcons.users),
+                    icon: SvgIconWidget(
+                      iconPath: 'delapouite/team-idea.svg',
+                      size: 20,
+                      color: AppTheme.getPrimaryBackgroundFromContext(context),
+                      useThemeColor: false,
+                    ),
                     label: const Text('View Parties'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.getAccentGoldFromContext(context),
@@ -110,10 +124,11 @@ class _CharactersTab extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FaIcon(
-                    FontAwesomeIcons.userLarge,
+                  SvgIconWidget(
+                    iconPath: 'delapouite/character.svg',
                     size: 64,
                     color: AppTheme.getAccentGoldFromContext(context),
+                    useThemeColor: false,
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -130,7 +145,12 @@ class _CharactersTab extends StatelessWidget {
                   const SizedBox(height: 24),
                   ElevatedButton.icon(
                     onPressed: () => context.push('/characters'),
-                    icon: const FaIcon(FontAwesomeIcons.userLarge),
+                    icon: SvgIconWidget(
+                      iconPath: 'delapouite/character.svg',
+                      size: 20,
+                      color: AppTheme.getPrimaryBackgroundFromContext(context),
+                      useThemeColor: false,
+                    ),
                     label: const Text('View Characters'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.getAccentGoldFromContext(context),

@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../data/services/party_service.dart';
 import '../../../data/models/party.dart';
 import '../../../core/theme/app_theme.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../../widgets/svg_icon_widget.dart';
 import 'party_form_page.dart';
 
 class PartyDetailPage extends StatefulWidget {
@@ -174,19 +174,19 @@ class _PartyDetailPageState extends State<PartyDetailPage> {
           children: [
             if (party!['level'] != null)
               _buildInfoRow(
-                icon: FontAwesomeIcons.chartLine,
+                iconPath: 'delapouite/level-end-flag.svg',
                 label: 'Level',
                 value: '${party!['level']}',
               ),
             if (party!['experience_points'] != null)
               _buildInfoRow(
-                icon: FontAwesomeIcons.star,
+                iconPath: 'lorc/star-swirl.svg',
                 label: 'Punti Esperienza',
                 value: '${party!['experience_points']}',
               ),
             if (party!['characters'] != null)
               _buildInfoRow(
-                icon: FontAwesomeIcons.users,
+                iconPath: 'delapouite/team-idea.svg',
                 label: 'Personaggi',
                 value: '${(party!['characters'] as List).length}',
               ),
@@ -196,12 +196,17 @@ class _PartyDetailPageState extends State<PartyDetailPage> {
     );
   }
 
-  Widget _buildInfoRow({required IconData icon, required String label, required String value}) {
+  Widget _buildInfoRow({required String iconPath, required String label, required String value}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          FaIcon(icon, size: 20, color: AppTheme.getAccentGoldFromContext(context)),
+          SvgIconWidget(
+            iconPath: iconPath,
+            size: 20,
+            color: AppTheme.getAccentGoldFromContext(context),
+            useThemeColor: false,
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

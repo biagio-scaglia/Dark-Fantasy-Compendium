@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../data/services/item_service.dart';
 import '../../../data/models/item.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../widgets/icon_picker_widget.dart';
+import '../../../widgets/svg_icon_picker_widget.dart';
 
 class ItemFormPage extends StatefulWidget {
   final Map<String, dynamic>? item;
@@ -252,9 +252,10 @@ class _ItemFormPageState extends State<ItemFormPage> {
               maxLines: 3,
             ),
             const SizedBox(height: 16),
-            IconPickerWidget(
+            SvgIconPickerWidget(
               selectedIconPath: _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
-              suggestedCategories: ['entity', 'game'],
+              entityType: 'item',
+              suggestedCategories: ['item'],
               onIconSelected: (iconPath) {
                 setState(() {
                   _iconUrlController.text = iconPath;

@@ -377,6 +377,8 @@ Access the SVG icons example page from the home screen via the "SVG Icons" butto
 - **intl** - Internationalization
 - **flutter_svg** - SVG icon rendering
 
+**Note**: This is a fully offline application. No backend server (FastAPI) is required. All data is stored locally on the device.
+
 ## Features Implemented
 
 - ✅ Fully offline architecture

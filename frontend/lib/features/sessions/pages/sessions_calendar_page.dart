@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import '../../../data/services/campaign_service.dart';
 import '../../../core/theme/app_theme.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../../widgets/svg_icon_widget.dart';
 import 'session_form_page.dart';
 
 class SessionsCalendarPage extends StatefulWidget {
@@ -315,7 +315,12 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
               return Card(
                 margin: const EdgeInsets.only(bottom: 8),
                 child: ListTile(
-                  leading: FaIcon(FontAwesomeIcons.diceD20, color: AppTheme.getAccentGoldFromContext(context)),
+                  leading: SvgIconWidget(
+                    iconPath: 'delapouite/dice-twenty-faces-twenty.svg',
+                    size: 24,
+                    color: AppTheme.getAccentGoldFromContext(context),
+                    useThemeColor: false,
+                  ),
                   title: Text(session['title'] ?? 'Untitled Session'),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
