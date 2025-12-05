@@ -1,24 +1,25 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../core/theme/app_theme.dart';
 
 /// Base path for all SVG icons
-const String _iconsBasePath = 'icons/';
+const String _iconsBasePath = 'assets/icons/';
 
-/// Widget per caricare e visualizzare icone SVG con colori personalizzati
-/// Supporta automaticamente Light e Dark mode con colori adeguati al tema
+/// Widget to load and display SVG icons with custom colors
+/// Automatically supports Light and Dark mode with theme-appropriate colors
 class SvgIconWidget extends StatelessWidget {
-  /// Path relativo all'icona dentro assets/icons/
-  /// Esempio: "lorc/sword.svg" o "delapouite/shield.svg"
+  /// Relative path to the icon inside assets/icons/
+  /// Example: "sword.svg" or "shield.svg"
   final String iconPath;
   
-  /// Dimensione dell'icona (larghezza e altezza)
+  /// Icon size (width and height)
   final double? size;
   
-  /// Colore personalizzato (opzionale). Se null, usa il colore del tema
+  /// Custom color (optional). If null, uses theme color
   final Color? color;
   
-  /// Se true, applica automaticamente il colore del tema in base a Light/Dark mode
+  /// If true, automatically applies theme color based on Light/Dark mode
   final bool useThemeColor;
   
   final BoxFit fit;
@@ -26,7 +27,7 @@ class SvgIconWidget extends StatelessWidget {
   final double? padding;
   final List<BoxShadow>? shadows;
   
-  /// Path completo dell'icona placeholder da usare in caso di errore
+  /// Full path of placeholder icon to use in case of error
   final String? placeholderPath;
 
   SvgIconWidget({
@@ -44,7 +45,7 @@ class SvgIconWidget extends StatelessWidget {
   }) : iconPath = _resolveIconPath(iconPath, assetPath),
         assert(iconPath != null || assetPath != null, 'Either iconPath or assetPath must be provided');
 
-  /// Costruttore che accetta il path completo (per retrocompatibilità)
+  /// Constructor that accepts full path (for backward compatibility)
   SvgIconWidget.fromFullPath({
     super.key,
     required String assetPath,
@@ -58,26 +59,28 @@ class SvgIconWidget extends StatelessWidget {
     this.placeholderPath,
   }) : iconPath = assetPath.startsWith(_iconsBasePath)
           ? assetPath.substring(_iconsBasePath.length)
-          : assetPath.startsWith('assets/icons/')
-            ? assetPath.substring('assets/icons/'.length)
-            : assetPath;
+          : assetPath.startsWith('icons/')
+            ? assetPath.substring('icons/'.length)
+            : assetPath.startsWith('assets/icons/')
+              ? assetPath.substring('assets/icons/'.length)
+              : assetPath;
 
   /// Helper method to resolve icon path from either iconPath or assetPath
-  /// Returns a relative path (without icons/ prefix) that can be used with _fullAssetPath
+  /// Returns a relative path (without assets/icons/ prefix) that can be used with _fullAssetPath
   static String _resolveIconPath(String? iconPath, String? assetPath) {
     String? pathToResolve = iconPath ?? assetPath;
     if (pathToResolve == null) {
       throw ArgumentError('Either iconPath or assetPath must be provided');
     }
     
-    // Se il path inizia con icons/, rimuovi il prefisso per ottenere il path relativo
+    // If path starts with assets/icons/, remove prefix to get relative path
     if (pathToResolve.startsWith(_iconsBasePath)) {
       return pathToResolve.substring(_iconsBasePath.length);
     }
     
-    // Se inizia con assets/icons/, convertilo a path relativo
-    if (pathToResolve.startsWith('assets/icons/')) {
-      return pathToResolve.substring('assets/icons/'.length);
+    // If it starts with icons/, convert to relative path (remove icons/ prefix)
+    if (pathToResolve.startsWith('icons/')) {
+      return pathToResolve.substring('icons/'.length);
     }
     
     // Se inizia con assets/ ma non con assets/icons/, è un path completo diverso
@@ -86,31 +89,31 @@ class SvgIconWidget extends StatelessWidget {
       return pathToResolve;
     }
     
-    // Altrimenti è un path relativo (es: "lorc/sword.svg"), restituiscilo così com'è
+    // Otherwise it's a relative path (e.g: "sword.svg"), return it as is
     return pathToResolve;
   }
 
-  /// Costruisce il path completo dell'icona
-  /// In Flutter, se nel pubspec.yaml c'è "- icons/", dobbiamo passare "icons/..." a SvgPicture.asset()
+  /// Builds the full icon path
+  /// In Flutter, if pubspec.yaml has "- assets/icons/", we need to pass "assets/icons/..." to SvgPicture.asset()
   String get _fullAssetPath {
-    // Se iconPath inizia già con icons/, è già corretto
+    // If iconPath already starts with assets/icons/, it's already correct
     if (iconPath.startsWith(_iconsBasePath)) {
       return iconPath;
     }
-    // Se inizia con assets/icons/, convertilo a icons/
-    if (iconPath.startsWith('assets/icons/')) {
-      return iconPath.replaceFirst('assets/icons/', 'icons/');
+    // If it starts with icons/, convert to assets/icons/
+    if (iconPath.startsWith('icons/')) {
+      return iconPath.replaceFirst('icons/', 'assets/icons/');
     }
-    // Se inizia con assets/icons/icons/, correggilo
+    // If it starts with assets/icons/icons/, fix it
     if (iconPath.startsWith('assets/icons/icons/')) {
-      return iconPath.replaceFirst('assets/icons/icons/', 'icons/');
+      return iconPath.replaceFirst('assets/icons/icons/', 'assets/icons/');
     }
-    // Se inizia con assets/ ma non con assets/icons/, è un path completo diverso
-    // Restituiscilo così com'è (sarà gestito da SvgPicture.asset)
+    // If it starts with assets/ but not with assets/icons/, it's a different full path
+    // Return it as is (will be handled by SvgPicture.asset)
     if (iconPath.startsWith('assets/')) {
       return iconPath;
     }
-    // Altrimenti è un path relativo (es: "lorc/sword.svg"), aggiungi il prefisso icons/
+    // Altrimenti è un path relativo (es: "sword.svg"), aggiungi il prefisso assets/icons/
     return '$_iconsBasePath$iconPath';
   }
 
@@ -131,7 +134,7 @@ class SvgIconWidget extends StatelessWidget {
     final themeColor = _getThemeColor(context);
     final fullPath = _fullAssetPath;
     
-    // Debug: print per vedere il path costruito
+    // Debug: print to see the built path
     // print('SvgIconWidget: iconPath=$iconPath, fullPath=$fullPath');
 
     Widget iconWidget = _SvgIconWithErrorHandling(
@@ -274,15 +277,20 @@ class _SvgIconWithErrorHandling extends StatelessWidget {
 
   Future<bool> _loadAsset(BuildContext context) async {
     try {
+      // Try to load the asset to verify it exists
       await DefaultAssetBundle.of(context).load(assetPath);
       return true;
     } catch (e) {
+      // Log error in debug mode for troubleshooting
+      if (kDebugMode) {
+        debugPrint('SvgIconWidget: Failed to load asset $assetPath: $e');
+      }
       return false;
     }
   }
 }
 
-/// Widget per icone SVG con sfondo gradiente e ombre
+/// Widget for SVG icons with gradient background and shadows
 class SvgIconWithGradient extends StatelessWidget {
   final String iconPath;
   final double size;
@@ -353,4 +361,5 @@ class SvgIconWithGradient extends StatelessWidget {
     );
   }
 }
+
 

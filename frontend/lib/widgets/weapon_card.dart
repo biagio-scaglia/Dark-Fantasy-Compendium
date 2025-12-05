@@ -66,7 +66,7 @@ class WeaponCard extends StatelessWidget {
                   customPath: weapon['icon_path'] as String?,
                   type: weapon['type'] as String?,
                   entityType: 'weapon',
-                ) ?? IconMapper.getWeaponIconPath(weapon['type'] as String?) ?? 'assets/icons/icons/entity/weapon.svg',
+                ) ?? IconMapper.getWeaponIconPath(weapon['type'] as String?) ?? 'assets/icons/broadsword.svg',
                 size: 65,
                 iconColor: AppTheme.getPrimaryBackgroundFromContext(context),
                 gradientColors: [
@@ -271,4 +271,5 @@ class _StatBadge extends StatelessWidget {
     );
   }
 }
+
 

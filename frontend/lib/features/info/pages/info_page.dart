@@ -86,7 +86,7 @@ class InfoPage extends StatelessWidget {
                 ),
               ),
               child: SvgIconWidget(
-                iconPath: 'lorc/crown.svg',
+                iconPath: 'crown.svg',
                 size: 64,
                 color: isLight ? brownColor : goldColor,
                 useThemeColor: false,
@@ -118,7 +118,7 @@ class InfoPage extends StatelessWidget {
   Widget _buildVersionSection() {
     return _InfoCard(
       title: 'App Version',
-      iconPath: 'lorc/crystal-shine.svg',
+      iconPath: 'crystal-shine.svg',
       children: [
         _InfoRow(
           label: 'Version',
@@ -136,7 +136,7 @@ class InfoPage extends StatelessWidget {
   Widget _buildCreditsSection() {
     return _InfoCard(
       title: 'Credits',
-      iconPath: 'delapouite/character.svg',
+      iconPath: 'character.svg',
       children: [
         _InfoRow(
           label: 'Developer',
@@ -149,7 +149,7 @@ class InfoPage extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         _InfoButton(
-          iconPath: 'lorc/crystal-shine.svg',
+          iconPath: 'crystal-shine.svg',
           label: 'GitHub Repository',
           onTap: () async {
             final url = Uri.parse('https://github.com/yourusername/dark-fantasy-compendium');
@@ -160,7 +160,7 @@ class InfoPage extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         _InfoButton(
-          iconPath: 'lorc/globe.svg',
+          iconPath: 'globe.svg',
           label: 'Website',
           onTap: () async {
             final url = Uri.parse('https://yourwebsite.com');
@@ -176,7 +176,7 @@ class InfoPage extends StatelessWidget {
   Widget _buildLibrariesSection() {
     return _InfoCard(
       title: 'Technologies',
-      iconPath: 'lorc/book-cover.svg',
+      iconPath: 'book-cover.svg',
       children: [
         _InfoRow(label: 'Flutter', value: 'UI Framework'),
         const SizedBox(height: 4),
@@ -196,7 +196,7 @@ class InfoPage extends StatelessWidget {
   Widget _buildLicenseSection(BuildContext context) {
     return _InfoCard(
       title: 'License',
-      iconPath: 'lorc/scales.svg',
+      iconPath: 'scales.svg',
       children: [
         Text(
           'MIT License',
@@ -223,7 +223,7 @@ class InfoPage extends StatelessWidget {
       builder: (context, themeProvider, _) {
         return _InfoCard(
           title: 'Theme',
-          iconPath: 'delapouite/palette.svg',
+          iconPath: 'palette.svg',
           children: [
             SwitchListTile(
               title: const Text('Dark Mode'),
@@ -239,19 +239,19 @@ class InfoPage extends StatelessWidget {
               children: [
                 _ThemeOption(
                   label: 'Light',
-                  iconPath: 'lorc/sun.svg',
+                  iconPath: 'sun.svg',
                   isSelected: themeProvider.themeMode == ThemeMode.light,
                   onTap: () => themeProvider.setThemeMode(ThemeMode.light),
                 ),
                 _ThemeOption(
                   label: 'Dark',
-                  iconPath: 'lorc/moon.svg',
+                  iconPath: 'moon.svg',
                   isSelected: themeProvider.themeMode == ThemeMode.dark,
                   onTap: () => themeProvider.setThemeMode(ThemeMode.dark),
                 ),
                 _ThemeOption(
                   label: 'System',
-                  iconPath: 'lorc/half-heart.svg',
+                  iconPath: 'half-heart.svg',
                   isSelected: themeProvider.themeMode == ThemeMode.system,
                   onTap: () => themeProvider.setThemeMode(ThemeMode.system),
                 ),
@@ -266,7 +266,7 @@ class InfoPage extends StatelessWidget {
   Widget _buildPrivacySection(BuildContext context) {
     return _InfoCard(
       title: 'Privacy & Data',
-      iconPath: 'sbed/shield.svg',
+      iconPath: 'shield.svg',
       children: [
         Text(
           'Privacy Policy',
@@ -328,7 +328,7 @@ class InfoPage extends StatelessWidget {
   Widget _buildExtraSection(BuildContext context) {
     return _InfoCard(
       title: 'About',
-      iconPath: 'lorc/quill.svg',
+      iconPath: 'quill.svg',
       children: [
         Text(
           'Dark Fantasy Compendium is a comprehensive tool for managing D&D campaigns and dark fantasy content. Track characters, parties, sessions, spells, items, maps, and more. Built for dungeon masters and players who want to organize their tabletop RPG experience.',
@@ -533,4 +533,5 @@ class _ThemeOption extends StatelessWidget {
     );
   }
 }
+
 

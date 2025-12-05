@@ -25,7 +25,7 @@ class DndClassCard extends StatelessWidget {
                 assetPath: IconMapper.getIconPath(
                   customPath: dndClass['icon_path'] as String?,
                   className: dndClass['name'] as String?,
-                ) ?? IconMapper.getClassIconPath(dndClass['name'] as String?) ?? 'assets/icons/icons/class/fighter.svg',
+                ) ?? IconMapper.getClassIconPath(dndClass['name'] as String?) ?? 'assets/icons/barbarian.svg',
                 size: 80,
                 iconColor: AppTheme.getAccentGoldFromContext(context),
                 gradientColors: [
@@ -77,4 +77,5 @@ class DndClassCard extends StatelessWidget {
     );
   }
 }
+
 

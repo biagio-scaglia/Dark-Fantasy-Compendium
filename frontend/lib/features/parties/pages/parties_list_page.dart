@@ -52,12 +52,15 @@ class _PartiesListPageState extends State<PartiesListPage> {
           onPressed: () => context.go('/home'),
         ),
         title: const Text('Party'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => context.push('/parties/new'),
+            tooltip: 'Add Party',
+          ),
+        ],
       ),
       body: _buildBody(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push('/parties/new'),
-        child: const Icon(Icons.add),
-      ),
     );
   }
 
@@ -107,4 +110,5 @@ class _PartiesListPageState extends State<PartiesListPage> {
     );
   }
 }
+
 

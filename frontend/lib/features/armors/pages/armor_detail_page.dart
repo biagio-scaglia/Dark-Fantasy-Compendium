@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../data/services/armor_service.dart';
-import '../../../data/models/armor.dart';
 import '../../../core/theme/app_theme.dart';
 
 class ArmorDetailPage extends StatefulWidget {
@@ -119,7 +118,7 @@ class _ArmorDetailPageState extends State<ArmorDetailPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
         title: Text(armor?['name'] ?? 'Armor'),
         actions: [
@@ -247,7 +246,7 @@ class _ArmorDetailPageState extends State<ArmorDetailPage> {
             const SizedBox(height: 12),
             _StatRow(
               icon: Icons.build,
-              label: 'Durabilità',
+              label: 'Durability',
               value: '${armor!['durability'] ?? 0}%',
               color: AppTheme.getTextSecondaryFromContext(context),
             ),
@@ -346,4 +345,5 @@ class _StatRow extends StatelessWidget {
     );
   }
 }
+
 

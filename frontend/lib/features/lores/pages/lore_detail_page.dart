@@ -67,7 +67,7 @@ class _LoreDetailPageState extends State<LoreDetailPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
         title: Text(lore?['title'] ?? 'Lore'),
       ),
@@ -177,4 +177,5 @@ class _LoreDetailPageState extends State<LoreDetailPage> {
     );
   }
 }
+
 

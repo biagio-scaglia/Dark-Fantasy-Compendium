@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../data/services/character_service.dart';
-import '../../../data/models/character.dart';
 import '../../../services/pdf_export_service.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/accessibility/accessibility_helper.dart';
 import '../../../widgets/svg_icon_widget.dart';
 
 class CharacterDetailPage extends StatefulWidget {
@@ -59,6 +59,52 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
     }
   }
 
+  Future<void> _deleteCharacter() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Character'),
+        content: Text('Are you sure you want to delete ${character?['name'] ?? 'this character'}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      try {
+        await _service.delete(widget.characterId);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Character deleted successfully'),
+              backgroundColor: Colors.green,
+            ),
+          );
+          AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.heavyImpact);
+          context.pop();
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Deletion error: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+
   Future<void> _exportPdf() async {
     try {
       final pdfService = PdfExportService();
@@ -66,27 +112,51 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Generazione PDF in corso...'),
-            duration: Duration(seconds: 2),
+            content: Row(
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(width: 16),
+                Text('Generating PDF...'),
+              ],
+            ),
+            duration: Duration(seconds: 5),
           ),
         );
       }
       
-      await pdfService.exportCharacterPdf(widget.characterId, simple: true);
+      final pdfFile = await pdfService.exportCharacterPdf(widget.characterId, simple: true);
       
       if (mounted) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('PDF generato con successo!'),
+          SnackBar(
+            content: const Text('PDF generated successfully!'),
             backgroundColor: Colors.green,
+            action: SnackBarAction(
+              label: 'Open',
+              textColor: Colors.white,
+              onPressed: () async {
+                try {
+                  await pdfService.sharePdf(pdfFile);
+                } catch (e) {
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error opening PDF: $e')),
+                    );
+                  }
+                }
+              },
+            ),
           ),
         );
+        AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.heavyImpact);
       }
     } catch (e) {
       if (mounted) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error exporting PDF: $e'),
+            content: Text('PDF export error: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -116,16 +186,46 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: Text(character!['name'] ?? 'Personaggio'),
+        title: Text(character!['name'] ?? 'Character'),
         actions: [
-          IconButton(
-            icon: SvgIconWidget(
-              iconPath: 'lorc/scroll-unfurled.svg',
-              size: 24,
-              useThemeColor: true,
+          Semantics(
+            label: 'Edit character',
+            hint: 'Tap to edit character',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
+                context.push('/characters/${widget.characterId}/edit');
+              },
+              tooltip: 'Edit',
             ),
-            onPressed: _exportPdf,
-            tooltip: 'Esporta PDF',
+          ),
+          Semantics(
+            label: 'Delete character',
+            hint: 'Tap to delete character',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () {
+                AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.mediumImpact);
+                _deleteCharacter();
+              },
+              tooltip: 'Delete',
+            ),
+          ),
+          Semantics(
+            label: 'Export character to PDF',
+            hint: 'Tap to generate and export PDF',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.picture_as_pdf),
+              onPressed: () {
+                AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.mediumImpact);
+                _exportPdf();
+              },
+              tooltip: 'Export PDF',
+            ),
           ),
         ],
       ),
@@ -141,7 +241,7 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
             const SizedBox(height: 8),
             if (character!['player_name'] != null)
               Text(
-                'Giocatore: ${character!['player_name']}',
+                'Player: ${character!['player_name']}',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             const SizedBox(height: 24),
@@ -162,20 +262,20 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
           children: [
             if (character!['level'] != null)
               _buildInfoRow(
-                iconPath: 'delapouite/level-end-flag.svg',
+                iconPath: 'level-end-flag.svg',
                 label: 'Level',
                 value: '${character!['level']}',
               ),
             if (character!['current_hit_points'] != null && character!['max_hit_points'] != null)
               _buildInfoRow(
-                iconPath: 'zeromancer/heart-plus.svg',
-                label: 'Punti Ferita',
+                iconPath: 'heart-plus.svg',
+                label: 'Hit Points',
                 value: '${character!['current_hit_points']}/${character!['max_hit_points']}',
               ),
             if (character!['armor_class'] != null)
               _buildInfoRow(
-                iconPath: 'sbed/shield.svg',
-                label: 'Classe Armatura',
+                iconPath: 'shield.svg',
+                label: 'Class Armor',
                 value: '${character!['armor_class']}',
               ),
           ],
@@ -193,7 +293,7 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Punteggi di Caratteristica',
+              'Ability Scores',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 16),
@@ -273,4 +373,5 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
     );
   }
 }
+
 

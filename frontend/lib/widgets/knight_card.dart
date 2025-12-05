@@ -127,19 +127,19 @@ class KnightCard extends StatelessWidget {
                 runSpacing: 8,
                 children: [
                   _StatChip(
-                    iconPath: 'zeromancer/heart-plus.svg',
+                    iconPath: 'heart-plus.svg',
                     label: 'HP',
                     value: '${knight['health'] ?? 0}/${knight['max_health'] ?? 0}',
                     color: AppTheme.accentCrimson,
                   ),
                   _StatChip(
-                    iconPath: 'lorc/hammer-drop.svg',
+                    iconPath: 'hammer-drop.svg',
                     label: 'ATK',
                     value: '${knight['attack'] ?? 0}',
                     color: AppTheme.getAccentGoldFromContext(context),
                   ),
                   _StatChip(
-                    iconPath: 'sbed/shield.svg',
+                    iconPath: 'shield.svg',
                     label: 'DEF',
                     value: '${knight['defense'] ?? 0}',
                     color: AppTheme.getAccentBrownFromContext(context),
@@ -234,4 +234,5 @@ class _StatChip extends StatelessWidget {
     );
   }
 }
+
 

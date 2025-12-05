@@ -140,7 +140,7 @@ class _MapFormPageState extends State<MapFormPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: Text(widget.map != null && widget.map!['id'] != null ? 'Modifica Mappa' : 'Nuova Mappa'),
+        title: Text(widget.map != null && widget.map!['id'] != null ? 'Edit Map' : 'New Map'),
       ),
       body: Form(
         key: _formKey,
@@ -202,7 +202,7 @@ class _MapFormPageState extends State<MapFormPage> {
                       width: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Salva'),
+                  : const Text('Save'),
             ),
           ],
         ),
@@ -210,4 +210,5 @@ class _MapFormPageState extends State<MapFormPage> {
     );
   }
 }
+
 

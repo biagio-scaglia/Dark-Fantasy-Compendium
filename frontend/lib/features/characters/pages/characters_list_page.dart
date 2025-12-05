@@ -56,7 +56,7 @@ class _CharactersListPageState extends State<CharactersListPage> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => context.push('/characters/new'),
-            tooltip: 'New Character',
+            tooltip: 'Add Character',
           ),
         ],
       ),
@@ -66,48 +66,115 @@ class _CharactersListPageState extends State<CharactersListPage> {
 
   Widget _buildBody() {
     if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(
+            Theme.of(context).colorScheme.primary,
+          ),
+        ),
+      );
     }
 
     if (error != null) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Error: $error', style: const TextStyle(color: Colors.red)),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadCharacters,
-              child: const Text('Retry'),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: 64,
+                color: Theme.of(context).colorScheme.error.withOpacity(0.7),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Error loading characters',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                error!,
+                style: Theme.of(context).textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                onPressed: _loadCharacters,
+                icon: const Icon(Icons.refresh),
+                label: const Text('Retry'),
+              ),
+            ],
+          ),
         ),
       );
     }
 
     if (characters.isEmpty) {
-      return const Center(child: Text('No characters found'));
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.person_outline,
+                size: 64,
+                color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'No characters found',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+                    ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Create your first character to get started',
+                style: Theme.of(context).textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                onPressed: () => context.push('/characters/new'),
+                icon: const Icon(Icons.add),
+                label: const Text('Create Character'),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     return RefreshIndicator(
       onRefresh: _loadCharacters,
       child: ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 8),
         itemCount: characters.length,
         itemBuilder: (context, index) {
           final char = characters[index];
+          final stats = char.stats ?? {};
           final charMap = {
             'id': char.id,
             'name': char.name,
+            'player_name': stats['player_name'],
             'class_id': char.classId,
             'race_id': char.raceId,
             'level': char.level,
+            'current_hit_points': stats['current_hit_points'],
+            'max_hit_points': stats['max_hit_points'],
             'image_path': char.imagePath,
             'icon_path': char.iconPath,
           };
-          return CharacterCard(character: charMap);
+          return CharacterCard(
+            character: charMap,
+            index: index,
+          );
         },
       ),
     );
   }
 }
+
 

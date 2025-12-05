@@ -52,6 +52,13 @@ class _AbilitiesListPageState extends State<AbilitiesListPage> {
           tooltip: 'Back',
         ),
         title: const Text('Abilities'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => context.push('/abilities/new'),
+            tooltip: 'Add Ability',
+          ),
+        ],
       ),
       body: _buildBody(),
     );
@@ -102,4 +109,5 @@ class _AbilitiesListPageState extends State<AbilitiesListPage> {
     );
   }
 }
+
 

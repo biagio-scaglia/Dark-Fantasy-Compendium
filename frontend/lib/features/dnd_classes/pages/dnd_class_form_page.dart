@@ -159,7 +159,7 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: Text(widget.dndClass != null && widget.dndClass!['id'] != null ? 'Modifica Classe' : 'Nuova Classe'),
+        title: Text(widget.dndClass != null && widget.dndClass!['id'] != null ? 'Edit Class' : 'New Class'),
       ),
       body: Form(
         key: _formKey,
@@ -202,13 +202,11 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _spellcastingController,
-              decoration: const InputDecoration(labelText: 'Caratteristica Incantesimi (opzionale)'),
+              decoration: const InputDecoration(labelText: 'Spellcasting Ability (optional)'),
             ),
             const SizedBox(height: 16),
             SvgIconPickerWidget(
               selectedIconPath: _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
-              entityType: 'character',
-              suggestedCategories: ['character', 'spell'],
               onIconSelected: (iconPath) {
                 setState(() {
                   _iconUrlController.text = iconPath;
@@ -224,7 +222,7 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
                       width: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Salva'),
+                  : const Text('Save'),
             ),
           ],
         ),
@@ -232,4 +230,5 @@ class _DndClassFormPageState extends State<DndClassFormPage> {
     );
   }
 }
+
 

@@ -125,7 +125,7 @@ class _FactionDetailPageState extends State<FactionDetailPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
         title: Text(faction?['name'] ?? 'Faction'),
         actions: [
@@ -291,4 +291,5 @@ class _FactionDetailPageState extends State<FactionDetailPage> {
     );
   }
 }
+
 

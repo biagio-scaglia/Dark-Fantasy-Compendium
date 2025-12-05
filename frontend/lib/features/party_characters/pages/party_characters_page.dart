@@ -18,7 +18,7 @@ class PartyCharactersPage extends StatelessWidget {
             tabs: [
               Tab(
                 icon: SvgIconWidget(
-                  iconPath: 'delapouite/team-idea.svg',
+                  iconPath: 'team-idea.svg',
                   size: 24,
                   useThemeColor: true,
                 ),
@@ -26,7 +26,7 @@ class PartyCharactersPage extends StatelessWidget {
               ),
               Tab(
                 icon: SvgIconWidget(
-                  iconPath: 'delapouite/character.svg',
+                  iconPath: 'character.svg',
                   size: 24,
                   useThemeColor: true,
                 ),
@@ -65,7 +65,7 @@ class _PartiesTab extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgIconWidget(
-                    iconPath: 'delapouite/team-idea.svg',
+                    iconPath: 'team-idea.svg',
                     size: 64,
                     color: AppTheme.getAccentGoldFromContext(context),
                     useThemeColor: false,
@@ -86,7 +86,7 @@ class _PartiesTab extends StatelessWidget {
                   ElevatedButton.icon(
                     onPressed: () => context.push('/parties'),
                     icon: SvgIconWidget(
-                      iconPath: 'delapouite/team-idea.svg',
+                      iconPath: 'team-idea.svg',
                       size: 20,
                       color: AppTheme.getPrimaryBackgroundFromContext(context),
                       useThemeColor: false,
@@ -125,7 +125,7 @@ class _CharactersTab extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgIconWidget(
-                    iconPath: 'delapouite/character.svg',
+                    iconPath: 'character.svg',
                     size: 64,
                     color: AppTheme.getAccentGoldFromContext(context),
                     useThemeColor: false,
@@ -146,7 +146,7 @@ class _CharactersTab extends StatelessWidget {
                   ElevatedButton.icon(
                     onPressed: () => context.push('/characters'),
                     icon: SvgIconWidget(
-                      iconPath: 'delapouite/character.svg',
+                      iconPath: 'character.svg',
                       size: 20,
                       color: AppTheme.getPrimaryBackgroundFromContext(context),
                       useThemeColor: false,
@@ -170,4 +170,5 @@ class _CharactersTab extends StatelessWidget {
     );
   }
 }
+
 

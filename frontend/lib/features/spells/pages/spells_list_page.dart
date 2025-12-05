@@ -52,6 +52,13 @@ class _SpellsListPageState extends State<SpellsListPage> {
           tooltip: 'Back',
         ),
         title: const Text('Spells'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => context.push('/spells/new'),
+            tooltip: 'Add Spell',
+          ),
+        ],
       ),
       body: _buildBody(),
     );
@@ -93,7 +100,7 @@ class _SpellsListPageState extends State<SpellsListPage> {
           margin: const EdgeInsets.only(bottom: 12),
           child: ListTile(
             title: Text(spell.name),
-            subtitle: Text('Level ${spell.level} - ${spell.school ?? ''}'),
+            subtitle: Text('Level ${spell.level}${spell.school != null && spell.school!.isNotEmpty ? ' - ${spell.school}' : ''}'),
             trailing: Text('${spell.level}'),
             onTap: () {
             },
@@ -103,4 +110,5 @@ class _SpellsListPageState extends State<SpellsListPage> {
     );
   }
 }
+
 

@@ -254,8 +254,6 @@ class _ItemFormPageState extends State<ItemFormPage> {
             const SizedBox(height: 16),
             SvgIconPickerWidget(
               selectedIconPath: _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
-              entityType: 'item',
-              suggestedCategories: ['item'],
               onIconSelected: (iconPath) {
                 setState(() {
                   _iconUrlController.text = iconPath;
@@ -281,4 +279,5 @@ class _ItemFormPageState extends State<ItemFormPage> {
     );
   }
 }
+
 

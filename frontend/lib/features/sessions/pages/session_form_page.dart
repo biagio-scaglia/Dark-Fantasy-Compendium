@@ -219,7 +219,7 @@ class _SessionFormPageState extends State<SessionFormPage> {
               child: _isLoading
                   ? const CircularProgressIndicator()
                   : Text(widget.session != null && widget.session!['id'] != null
-                      ? 'Salva Modifiche'
+                      ? 'Save Changes'
                       : 'Create Session'),
             ),
           ],
@@ -228,4 +228,5 @@ class _SessionFormPageState extends State<SessionFormPage> {
     );
   }
 }
+
 

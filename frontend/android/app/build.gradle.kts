@@ -35,6 +35,36 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+            
+            // Enable code shrinking, obfuscation, and optimization
+            isMinifyEnabled = true
+            // Note: shrinkResources doesn't affect Flutter assets (they're in the Flutter bundle)
+            // But we keep it enabled for native Android resources
+            isShrinkResources = true
+            
+            // ProGuard rules
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        debug {
+            isMinifyEnabled = false
+            isShrinkResources = false
+        }
+    }
+    
+    // Bundle configuration for App Bundles (AAB)
+    // Note: splits are not needed for App Bundles - bundle configuration handles it
+    bundle {
+        language {
+            enableSplit = true
+        }
+        density {
+            enableSplit = true
+        }
+        abi {
+            enableSplit = true
         }
     }
 }

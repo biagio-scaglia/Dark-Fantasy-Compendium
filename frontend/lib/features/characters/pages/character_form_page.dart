@@ -4,7 +4,10 @@ import '../../../data/services/character_service.dart';
 import '../../../data/services/class_service.dart';
 import '../../../data/services/race_service.dart';
 import '../../../data/models/character.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/design_system/app_colors.dart';
+import '../../../core/design_system/app_animations.dart';
+import '../../../core/theme/app_theme_constants.dart';
+import '../../../widgets/animated_button.dart';
 
 class CharacterFormPage extends StatefulWidget {
   final Map<String, dynamic>? character;
@@ -263,9 +266,18 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
     if (_isLoadingData) {
       return Scaffold(
         appBar: AppBar(title: const Text('Character')),
-        body: const Center(child: CircularProgressIndicator()),
+        body: Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+              Theme.of(context).colorScheme.primary,
+            ),
+          ),
+        ),
       );
     }
+
+    final brightness = Theme.of(context).brightness;
+    final isEdit = widget.character != null && widget.character!['id'] != null;
 
     return Scaffold(
       appBar: AppBar(
@@ -273,203 +285,392 @@ class _CharacterFormPageState extends State<CharacterFormPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: Text(widget.character != null && widget.character!['id'] != null 
-            ? 'Modifica Personaggio' 
-            : 'Nuovo Personaggio'),
+        title: Text(isEdit ? 'Edit Character' : 'New Character'),
       ),
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(AppThemeConstants.spacing16),
           children: [
-            TextFormField(
-              controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Name *'),
-              validator: (v) => v?.isEmpty ?? true ? 'Campo obbligatorio' : null,
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _playerNameController,
-              decoration: const InputDecoration(labelText: 'Player Name'),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _levelController,
-                    decoration: const InputDecoration(labelText: 'Level *'),
-                    keyboardType: TextInputType.number,
-                    validator: (v) {
-                      final level = int.tryParse(v ?? '');
-                      if (level == null || level < 1 || level > 20) {
-                        return 'Level between 1 and 20';
-                      }
-                      return null;
-                    },
+            // Basic Information Section
+            AppAnimations.fadeSlideIn(
+              duration: AppAnimations.medium,
+              offset: const Offset(0, 20),
+              child: _buildSectionCard(
+                context,
+                title: 'Basic Information',
+                icon: Icons.person,
+                children: [
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Name *',
+                      prefixIcon: Icon(Icons.badge),
+                    ),
+                    validator: (v) => v?.isEmpty ?? true ? 'Required field' : null,
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: TextFormField(
-                    controller: _xpController,
-                    decoration: const InputDecoration(labelText: 'XP'),
-                    keyboardType: TextInputType.number,
+                  SizedBox(height: AppThemeConstants.spacing16),
+                  TextFormField(
+                    controller: _playerNameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Player Name',
+                      prefixIcon: Icon(Icons.people),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            DropdownButtonFormField<int>(
-              value: _classes.isNotEmpty && _classIdController.text.isNotEmpty
-                  ? int.tryParse(_classIdController.text)
-                  : null,
-              decoration: const InputDecoration(labelText: 'Classe *'),
-              items: _classes.map((cls) {
-                return DropdownMenuItem(
-                  value: cls['id'] as int,
-                  child: Text(cls['name'] ?? ''),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  _classIdController.text = value?.toString() ?? '';
-                });
-              },
-              validator: (v) => v == null ? 'Seleziona una classe' : null,
-            ),
-            const SizedBox(height: 16),
-            DropdownButtonFormField<int>(
-              value: _races.isNotEmpty && _raceIdController.text.isNotEmpty
-                  ? int.tryParse(_raceIdController.text)
-                  : null,
-              decoration: const InputDecoration(labelText: 'Razza *'),
-              items: _races.map((race) {
-                return DropdownMenuItem(
-                  value: race['id'] as int,
-                  child: Text(race['name'] ?? ''),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  _raceIdController.text = value?.toString() ?? '';
-                });
-              },
-              validator: (v) => v == null ? 'Seleziona una razza' : null,
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _backgroundController,
-              decoration: const InputDecoration(labelText: 'Background'),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _alignmentController,
-              decoration: const InputDecoration(labelText: 'Allineamento'),
-            ),
-            const SizedBox(height: 24),
-            const Text('Ability Scores', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(child: TextFormField(
-                  controller: _strengthController,
-                  decoration: const InputDecoration(labelText: 'Forza'),
-                  keyboardType: TextInputType.number,
-                )),
-                const SizedBox(width: 8),
-                Expanded(child: TextFormField(
-                  controller: _dexterityController,
-                  decoration: const InputDecoration(labelText: 'Destrezza'),
-                  keyboardType: TextInputType.number,
-                )),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(child: TextFormField(
-                  controller: _constitutionController,
-                  decoration: const InputDecoration(labelText: 'Costituzione'),
-                  keyboardType: TextInputType.number,
-                )),
-                const SizedBox(width: 8),
-                Expanded(child: TextFormField(
-                  controller: _intelligenceController,
-                  decoration: const InputDecoration(labelText: 'Intelligenza'),
-                  keyboardType: TextInputType.number,
-                )),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(child: TextFormField(
-                  controller: _wisdomController,
-                  decoration: const InputDecoration(labelText: 'Saggezza'),
-                  keyboardType: TextInputType.number,
-                )),
-                const SizedBox(width: 8),
-                Expanded(child: TextFormField(
-                  controller: _charismaController,
-                  decoration: const InputDecoration(labelText: 'Carisma'),
-                  keyboardType: TextInputType.number,
-                )),
-              ],
-            ),
-            const SizedBox(height: 24),
-            const Text('Statistiche', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(child: TextFormField(
-                  controller: _maxHpController,
-                  decoration: const InputDecoration(labelText: 'HP Massimi'),
-                  keyboardType: TextInputType.number,
-                )),
-                const SizedBox(width: 8),
-                Expanded(child: TextFormField(
-                  controller: _currentHpController,
-                  decoration: const InputDecoration(labelText: 'HP Correnti'),
-                  keyboardType: TextInputType.number,
-                )),
-              ],
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _acController,
-              decoration: const InputDecoration(labelText: 'Classe Armatura (AC)'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _backstoryController,
-              decoration: const InputDecoration(labelText: 'Backstory'),
-              maxLines: 4,
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _notesController,
-              decoration: const InputDecoration(labelText: 'Note'),
-              maxLines: 3,
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _saveCharacter,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.getAccentGoldFromContext(context),
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                  SizedBox(height: AppThemeConstants.spacing16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _levelController,
+                          decoration: const InputDecoration(
+                            labelText: 'Level *',
+                            prefixIcon: Icon(Icons.trending_up),
+                          ),
+                          keyboardType: TextInputType.number,
+                          validator: (v) {
+                            final level = int.tryParse(v ?? '');
+                            if (level == null || level < 1 || level > 20) {
+                              return 'Level 1-20';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      SizedBox(width: AppThemeConstants.spacing16),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _xpController,
+                          decoration: const InputDecoration(
+                            labelText: 'Experience Points',
+                            prefixIcon: Icon(Icons.star),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              child: _isLoading
-                  ? const CircularProgressIndicator()
-                  : Text(widget.character != null && widget.character!['id'] != null
-                      ? 'Salva Modifiche'
-                      : 'Crea Personaggio'),
             ),
+            SizedBox(height: AppThemeConstants.spacing16),
+            // Class & Race Section
+            AppAnimations.fadeSlideIn(
+              duration: AppAnimations.medium,
+              offset: const Offset(0, 20),
+              delay: const Duration(milliseconds: 100),
+              child: _buildSectionCard(
+                context,
+                title: 'Class & Race',
+                icon: Icons.category,
+                children: [
+                  DropdownButtonFormField<int>(
+                    value: _classes.isNotEmpty && _classIdController.text.isNotEmpty
+                        ? int.tryParse(_classIdController.text)
+                        : null,
+                    decoration: const InputDecoration(
+                      labelText: 'Class *',
+                      prefixIcon: Icon(Icons.class_),
+                    ),
+                    items: _classes.map((cls) {
+                      return DropdownMenuItem(
+                        value: cls['id'] as int,
+                        child: Text(cls['name'] ?? ''),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _classIdController.text = value?.toString() ?? '';
+                      });
+                    },
+                    validator: (v) => v == null ? 'Select a class' : null,
+                  ),
+                  SizedBox(height: AppThemeConstants.spacing16),
+                  DropdownButtonFormField<int>(
+                    value: _races.isNotEmpty && _raceIdController.text.isNotEmpty
+                        ? int.tryParse(_raceIdController.text)
+                        : null,
+                    decoration: const InputDecoration(
+                      labelText: 'Race *',
+                      prefixIcon: Icon(Icons.face),
+                    ),
+                    items: _races.map((race) {
+                      return DropdownMenuItem(
+                        value: race['id'] as int,
+                        child: Text(race['name'] ?? ''),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _raceIdController.text = value?.toString() ?? '';
+                      });
+                    },
+                    validator: (v) => v == null ? 'Select a race' : null,
+                  ),
+                  SizedBox(height: AppThemeConstants.spacing16),
+                  TextFormField(
+                    controller: _backgroundController,
+                    decoration: const InputDecoration(
+                      labelText: 'Background',
+                      prefixIcon: Icon(Icons.history_edu),
+                    ),
+                  ),
+                  SizedBox(height: AppThemeConstants.spacing16),
+                  TextFormField(
+                    controller: _alignmentController,
+                    decoration: const InputDecoration(
+                      labelText: 'Alignment',
+                      prefixIcon: Icon(Icons.balance),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: AppThemeConstants.spacing16),
+            // Ability Scores Section
+            AppAnimations.fadeSlideIn(
+              duration: AppAnimations.medium,
+              offset: const Offset(0, 20),
+              delay: const Duration(milliseconds: 200),
+              child: _buildSectionCard(
+                context,
+                title: 'Ability Scores',
+                icon: Icons.fitness_center,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _strengthController,
+                          decoration: const InputDecoration(
+                            labelText: 'Strength',
+                            prefixIcon: Icon(Icons.bolt),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      SizedBox(width: AppThemeConstants.spacing8),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _dexterityController,
+                          decoration: const InputDecoration(
+                            labelText: 'Dexterity',
+                            prefixIcon: Icon(Icons.speed),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: AppThemeConstants.spacing8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _constitutionController,
+                          decoration: const InputDecoration(
+                            labelText: 'Constitution',
+                            prefixIcon: Icon(Icons.favorite),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      SizedBox(width: AppThemeConstants.spacing8),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _intelligenceController,
+                          decoration: const InputDecoration(
+                            labelText: 'Intelligence',
+                            prefixIcon: Icon(Icons.lightbulb),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: AppThemeConstants.spacing8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _wisdomController,
+                          decoration: const InputDecoration(
+                            labelText: 'Wisdom',
+                            prefixIcon: Icon(Icons.auto_awesome),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      SizedBox(width: AppThemeConstants.spacing8),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _charismaController,
+                          decoration: const InputDecoration(
+                            labelText: 'Charisma',
+                            prefixIcon: Icon(Icons.chat_bubble),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: AppThemeConstants.spacing16),
+            // Statistics Section
+            AppAnimations.fadeSlideIn(
+              duration: AppAnimations.medium,
+              offset: const Offset(0, 20),
+              delay: const Duration(milliseconds: 300),
+              child: _buildSectionCard(
+                context,
+                title: 'Statistics',
+                icon: Icons.bar_chart,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _maxHpController,
+                          decoration: const InputDecoration(
+                            labelText: 'Max HP',
+                            prefixIcon: Icon(Icons.favorite),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      SizedBox(width: AppThemeConstants.spacing8),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _currentHpController,
+                          decoration: const InputDecoration(
+                            labelText: 'Current HP',
+                            prefixIcon: Icon(Icons.favorite_border),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: AppThemeConstants.spacing16),
+                  TextFormField(
+                    controller: _acController,
+                    decoration: const InputDecoration(
+                      labelText: 'Armor Class (AC)',
+                      prefixIcon: Icon(Icons.shield),
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: AppThemeConstants.spacing16),
+            // Additional Information Section
+            AppAnimations.fadeSlideIn(
+              duration: AppAnimations.medium,
+              offset: const Offset(0, 20),
+              delay: const Duration(milliseconds: 400),
+              child: _buildSectionCard(
+                context,
+                title: 'Additional Information',
+                icon: Icons.note,
+                children: [
+                  TextFormField(
+                    controller: _backstoryController,
+                    decoration: const InputDecoration(
+                      labelText: 'Backstory',
+                      prefixIcon: Icon(Icons.book),
+                    ),
+                    maxLines: 4,
+                  ),
+                  SizedBox(height: AppThemeConstants.spacing16),
+                  TextFormField(
+                    controller: _notesController,
+                    decoration: const InputDecoration(
+                      labelText: 'Notes',
+                      prefixIcon: Icon(Icons.note_add),
+                    ),
+                    maxLines: 3,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: AppThemeConstants.spacing24),
+            // Save Button
+            AppAnimations.fadeSlideIn(
+              duration: AppAnimations.medium,
+              offset: const Offset(0, 20),
+              delay: const Duration(milliseconds: 500),
+              child: AnimatedElevatedButton(
+                label: isEdit ? 'Save Changes' : 'Create Character',
+                icon: isEdit ? Icons.save : Icons.add,
+                onPressed: _isLoading ? null : _saveCharacter,
+                isFullWidth: true,
+              ),
+            ),
+            SizedBox(height: AppThemeConstants.spacing16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionCard(
+    BuildContext context, {
+    required String title,
+    required IconData icon,
+    required List<Widget> children,
+  }) {
+    final brightness = Theme.of(context).brightness;
+    final accentColor = AppColors.getAccentPrimary(brightness);
+
+    return Card(
+      elevation: 2,
+      shadowColor: Colors.black.withOpacity(0.1),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppThemeConstants.radius12),
+        side: BorderSide(
+          color: AppColors.getBorder(brightness),
+          width: 1,
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(AppThemeConstants.spacing16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(AppThemeConstants.spacing8),
+                  decoration: BoxDecoration(
+                    color: accentColor.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(AppThemeConstants.radius8),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: accentColor,
+                    size: 20,
+                  ),
+                ),
+                SizedBox(width: AppThemeConstants.spacing12),
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: AppThemeConstants.fontWeightSemiBold,
+                        color: AppColors.getTextPrimary(brightness),
+                      ),
+                ),
+              ],
+            ),
+            SizedBox(height: AppThemeConstants.spacing16),
+            ...children,
           ],
         ),
       ),
     );
   }
 }
+
 

@@ -57,7 +57,7 @@ class _BossesListPageState extends State<BossesListPage> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => context.push('/bosses/new'),
-            tooltip: 'New Boss',
+            tooltip: 'Add Boss',
           ),
         ],
       ),
@@ -67,32 +67,91 @@ class _BossesListPageState extends State<BossesListPage> {
 
   Widget _buildBody() {
     if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(
+            Theme.of(context).colorScheme.primary,
+          ),
+        ),
+      );
     }
 
     if (error != null) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Error: $error', style: const TextStyle(color: Colors.red)),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadBosses,
-              child: const Text('Retry'),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: 64,
+                color: Theme.of(context).colorScheme.error.withOpacity(0.7),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Error loading bosses',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                error!,
+                style: Theme.of(context).textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                onPressed: _loadBosses,
+                icon: const Icon(Icons.refresh),
+                label: const Text('Retry'),
+              ),
+            ],
+          ),
         ),
       );
     }
 
     if (bosses.isEmpty) {
-      return const Center(child: Text('No bosses found'));
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.dangerous_outlined,
+                size: 64,
+                color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'No bosses found',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+                    ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Create your first boss to get started',
+                style: Theme.of(context).textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                onPressed: () => context.push('/bosses/new'),
+                icon: const Icon(Icons.add),
+                label: const Text('Create Boss'),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     return RefreshIndicator(
       onRefresh: _loadBosses,
       child: ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 8),
         itemCount: bosses.length,
         itemBuilder: (context, index) {
           final boss = bosses[index];
@@ -115,4 +174,5 @@ class _BossesListPageState extends State<BossesListPage> {
     );
   }
 }
+
 

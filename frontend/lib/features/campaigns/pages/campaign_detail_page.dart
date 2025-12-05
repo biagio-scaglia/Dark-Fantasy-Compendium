@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../../data/services/campaign_service.dart';
-import '../../../data/models/campaign.dart';
 import '../../../core/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -66,7 +65,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
         });
       }
     } catch (e) {
-      // Ignora errori per le sessioni
+      // Ignore errors for sessions
     }
   }
 
@@ -322,11 +321,12 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Chiudi'),
+            child: const Text('Close'),
           ),
         ],
       ),
     );
   }
 }
+
 

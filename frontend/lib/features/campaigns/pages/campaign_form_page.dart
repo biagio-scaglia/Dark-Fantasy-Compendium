@@ -170,7 +170,7 @@ class _CampaignFormPageState extends State<CampaignFormPage> {
         ),
         title: Text(widget.campaign != null && widget.campaign!['id'] != null 
             ? 'Modifica Campagna' 
-            : 'Nuova Campagna'),
+            : 'New Campaign'),
       ),
       body: Form(
         key: _formKey,
@@ -239,4 +239,5 @@ class _CampaignFormPageState extends State<CampaignFormPage> {
     );
   }
 }
+
 

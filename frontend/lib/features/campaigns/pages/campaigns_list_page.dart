@@ -56,7 +56,7 @@ class _CampaignsListPageState extends State<CampaignsListPage> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => context.push('/campaigns/new'),
-            tooltip: 'New Campaign',
+            tooltip: 'Add Campaign',
           ),
         ],
       ),
@@ -91,12 +91,40 @@ class _CampaignsListPageState extends State<CampaignsListPage> {
     }
 
     if (campaigns.isEmpty) {
-      return const Center(child: Text('No campaigns found'));
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.inbox_outlined,
+                size: 64,
+                color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'No campaigns found',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+                    ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Create your first campaign to get started',
+                style: Theme.of(context).textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     return RefreshIndicator(
       onRefresh: _loadCampaigns,
       child: ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 8),
         itemCount: campaigns.length,
         itemBuilder: (context, index) {
           final camp = campaigns[index];
@@ -110,11 +138,16 @@ class _CampaignsListPageState extends State<CampaignsListPage> {
             'setting': camp.setting,
             'image_path': camp.imagePath,
             'icon_path': camp.iconPath,
+            'sessions': camp.sessions,
           };
-          return CampaignCard(campaign: campMap);
+          return CampaignCard(
+            campaign: campMap,
+            index: index,
+          );
         },
       ),
     );
   }
 }
+
 

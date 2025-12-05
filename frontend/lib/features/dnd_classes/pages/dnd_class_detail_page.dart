@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../data/services/class_service.dart';
-import '../../../data/models/class_model.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/svg_icon_widget.dart';
-import 'dnd_class_form_page.dart';
 
 class DndClassDetailPage extends StatefulWidget {
   final int classId;
@@ -142,7 +140,7 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: Text(dndClass!['name'] ?? 'Classe'),
+        title: Text(dndClass!['name'] ?? 'Class'),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
@@ -189,20 +187,20 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
           children: [
             if (dndClass!['hit_dice'] != null)
               _buildInfoRow(
-                iconPath: 'delapouite/dice-twenty-faces-twenty.svg',
+                iconPath: 'dice-twenty-faces-twenty.svg',
                 label: 'Hit Dice',
                 value: dndClass!['hit_dice'],
               ),
             if (dndClass!['hit_points_at_1st_level'] != null)
               _buildInfoRow(
-                iconPath: 'zeromancer/heart-plus.svg',
+                iconPath: 'heart-plus.svg',
                 label: 'Hit Points at 1st Level',
                 value: '${dndClass!['hit_points_at_1st_level']}',
               ),
             if (dndClass!['spellcasting_ability'] != null)
               _buildInfoRow(
-                iconPath: 'lorc/wizard-staff.svg',
-                label: 'Caratteristica Incantesimi',
+                iconPath: 'wizard-staff.svg',
+                label: 'Spellcasting Ability',
                 value: dndClass!['spellcasting_ability'],
               ),
           ],
@@ -258,7 +256,7 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
           margin: const EdgeInsets.only(bottom: 4),
           child: ListTile(
             leading: SvgIconWidget(
-              iconPath: 'lorc/checked-shield.svg',
+              iconPath: 'checked-shield.svg',
               size: 16,
               color: AppTheme.getAccentGoldFromContext(context),
               useThemeColor: false,
@@ -271,4 +269,5 @@ class _DndClassDetailPageState extends State<DndClassDetailPage> {
     );
   }
 }
+
 

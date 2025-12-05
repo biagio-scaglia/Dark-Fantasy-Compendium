@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../data/services/party_service.dart';
-import '../../../data/models/party.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/svg_icon_widget.dart';
-import 'party_form_page.dart';
 
 class PartyDetailPage extends StatefulWidget {
   final int partyId;
@@ -174,20 +172,20 @@ class _PartyDetailPageState extends State<PartyDetailPage> {
           children: [
             if (party!['level'] != null)
               _buildInfoRow(
-                iconPath: 'delapouite/level-end-flag.svg',
+                iconPath: 'level-end-flag.svg',
                 label: 'Level',
                 value: '${party!['level']}',
               ),
             if (party!['experience_points'] != null)
               _buildInfoRow(
-                iconPath: 'lorc/star-swirl.svg',
+                iconPath: 'star-swirl.svg',
                 label: 'Punti Esperienza',
                 value: '${party!['experience_points']}',
               ),
             if (party!['characters'] != null)
               _buildInfoRow(
-                iconPath: 'delapouite/team-idea.svg',
-                label: 'Personaggi',
+                iconPath: 'team-idea.svg',
+                label: 'Characters',
                 value: '${(party!['characters'] as List).length}',
               ),
           ],
@@ -244,4 +242,5 @@ class _PartyDetailPageState extends State<PartyDetailPage> {
     );
   }
 }
+
 

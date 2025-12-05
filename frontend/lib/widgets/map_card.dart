@@ -29,7 +29,7 @@ class MapCard extends StatelessWidget {
                 ),
                 child: Center(
                   child: SvgIconWidget(
-                    iconPath: 'lorc/scroll-unfurled.svg',
+                    iconPath: 'scroll-unfurled.svg',
                     size: 40,
                     color: AppTheme.getAccentGoldFromContext(context),
                     useThemeColor: false,
@@ -80,4 +80,5 @@ class MapCard extends StatelessWidget {
     );
   }
 }
+
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../widgets/svg_icon_widget.dart';
 import '../../features/knights/pages/knights_list_page.dart';
 import '../../features/knights/pages/knight_detail_page.dart';
@@ -48,8 +47,13 @@ import '../../features/races/pages/races_list_page.dart';
 import '../../features/races/pages/race_form_page.dart';
 import '../../features/races/pages/race_detail_page.dart';
 import '../../features/spells/pages/spells_list_page.dart';
+import '../../features/spells/pages/spell_form_page.dart';
 import '../../features/abilities/pages/abilities_list_page.dart';
+import '../../features/abilities/pages/ability_form_page.dart';
 import '../../features/examples/pages/svg_icons_example_page.dart';
+import '../../features/search/pages/search_page.dart';
+import '../../features/sync/pages/sync_page.dart';
+import '../../features/image_editor/pages/image_editor_page.dart';
 import '../theme/app_theme.dart';
 
 class AppRouter {
@@ -418,12 +422,75 @@ class AppRouter {
         builder: (context, state) => const SpellsListPage(),
       ),
       GoRoute(
+        path: '/spells/new',
+        builder: (context, state) => const SpellFormPage(),
+      ),
+      GoRoute(
+        path: '/spells/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return SpellFormPage(spell: {'id': id});
+        },
+      ),
+      GoRoute(
+        path: '/spells/:id',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          // TODO: Create SpellDetailPage
+          return const SpellsListPage();
+        },
+      ),
+      GoRoute(
         path: '/abilities',
         builder: (context, state) => const AbilitiesListPage(),
       ),
       GoRoute(
+        path: '/abilities/new',
+        builder: (context, state) => const AbilityFormPage(),
+      ),
+      GoRoute(
+        path: '/abilities/:id/edit',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return AbilityFormPage(ability: {'id': id});
+        },
+      ),
+      GoRoute(
+        path: '/abilities/:id',
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          // TODO: Create AbilityDetailPage
+          return const AbilitiesListPage();
+        },
+      ),
+      GoRoute(
         path: '/examples/svg-icons',
         builder: (context, state) => const SvgIconsExamplePage(),
+      ),
+      GoRoute(
+        path: '/search',
+        builder: (context, state) => const SearchPage(),
+      ),
+      GoRoute(
+        path: '/sync',
+        builder: (context, state) => const SyncPage(),
+      ),
+      GoRoute(
+        path: '/image-editor',
+        builder: (context, state) {
+          final imagePath = state.uri.queryParameters['path'];
+          if (imagePath == null) {
+            return const Scaffold(
+              body: Center(child: Text('No image path provided')),
+            );
+          }
+          return ImageEditorPage(
+            imagePath: imagePath,
+            onSave: (editedPath) {
+              // Image is saved via the return value
+            },
+          );
+        },
       ),
     ],
   );
@@ -455,13 +522,13 @@ class _MainScaffoldWithNavBarState extends State<_MainScaffoldWithNavBar> {
     return [
       BottomNavigationBarItem(
         icon: SvgIconWidget(
-          iconPath: 'delapouite/house.svg',
+          iconPath: 'house.svg',
           size: 24,
           color: secondaryColor,
           useThemeColor: false,
         ),
         activeIcon: SvgIconWidget(
-          iconPath: 'delapouite/house.svg',
+          iconPath: 'house.svg',
           size: 24,
           color: goldColor,
           useThemeColor: false,
@@ -470,13 +537,13 @@ class _MainScaffoldWithNavBarState extends State<_MainScaffoldWithNavBar> {
       ),
       BottomNavigationBarItem(
         icon: SvgIconWidget(
-          iconPath: 'delapouite/flag-objective.svg',
+          iconPath: 'flag-objective.svg',
           size: 24,
           color: secondaryColor,
           useThemeColor: false,
         ),
         activeIcon: SvgIconWidget(
-          iconPath: 'delapouite/flag-objective.svg',
+          iconPath: 'flag-objective.svg',
           size: 24,
           color: goldColor,
           useThemeColor: false,
@@ -485,13 +552,13 @@ class _MainScaffoldWithNavBarState extends State<_MainScaffoldWithNavBar> {
       ),
       BottomNavigationBarItem(
         icon: SvgIconWidget(
-          iconPath: 'lorc/book-cover.svg',
+          iconPath: 'book-cover.svg',
           size: 24,
           color: secondaryColor,
           useThemeColor: false,
         ),
         activeIcon: SvgIconWidget(
-          iconPath: 'lorc/book-cover.svg',
+          iconPath: 'book-cover.svg',
           size: 24,
           color: goldColor,
           useThemeColor: false,
@@ -500,13 +567,13 @@ class _MainScaffoldWithNavBarState extends State<_MainScaffoldWithNavBar> {
       ),
       BottomNavigationBarItem(
         icon: SvgIconWidget(
-          iconPath: 'delapouite/team-idea.svg',
+          iconPath: 'team-idea.svg',
           size: 24,
           color: secondaryColor,
           useThemeColor: false,
         ),
         activeIcon: SvgIconWidget(
-          iconPath: 'delapouite/team-idea.svg',
+          iconPath: 'team-idea.svg',
           size: 24,
           color: goldColor,
           useThemeColor: false,
@@ -515,13 +582,13 @@ class _MainScaffoldWithNavBarState extends State<_MainScaffoldWithNavBar> {
       ),
       BottomNavigationBarItem(
         icon: SvgIconWidget(
-          iconPath: 'delapouite/info.svg',
+          iconPath: 'info.svg',
           size: 24,
           color: secondaryColor,
           useThemeColor: false,
         ),
         activeIcon: SvgIconWidget(
-          iconPath: 'delapouite/info.svg',
+          iconPath: 'info.svg',
           size: 24,
           color: goldColor,
           useThemeColor: false,
@@ -655,3 +722,4 @@ class _RouteListenerState extends State<_RouteListener> {
     return widget.child;
   }
 }
+

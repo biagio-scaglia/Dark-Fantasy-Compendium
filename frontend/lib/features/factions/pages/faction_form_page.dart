@@ -173,7 +173,7 @@ class _FactionFormPageState extends State<FactionFormPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
         title: Text(widget.faction != null ? 'Edit Faction' : 'New Faction'),
       ),
@@ -214,8 +214,6 @@ class _FactionFormPageState extends State<FactionFormPage> {
             const SizedBox(height: 16),
             SvgIconPickerWidget(
               selectedIconPath: _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
-              entityType: 'faction',
-              suggestedCategories: ['faction', 'location'],
               onIconSelected: (iconPath) {
                 setState(() {
                   _iconUrlController.text = iconPath;
@@ -242,4 +240,5 @@ class _FactionFormPageState extends State<FactionFormPage> {
     );
   }
 }
+
 

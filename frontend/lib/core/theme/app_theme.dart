@@ -1,110 +1,111 @@
 import 'package:flutter/material.dart';
 import 'app_theme_constants.dart';
+import '../design_system/app_colors.dart';
 
 class AppTheme {
   AppTheme._();
 
-  static const Color lightBackground = Color(0xFFF5F1E8);
-  static const Color lightSurface = Color(0xFFFFFBF5);
-  static const Color lightSurfaceVariant = Color(0xFFF0EBE0);
-  static const Color lightTextPrimary = Color(0xFF1A1A1A);
-  static const Color lightTextSecondary = Color(0xFF4A4A4A);
-  static const Color lightTextTertiary = Color(0xFF6B6B6B);
-  static const Color lightBorder = Color(0xFFD4D0C8);
-  static const Color lightDivider = Color(0xFFE5E0D8);
-  // Gold colors for light mode
-  static const Color lightGold = Color(0xFFD4AF37);
-  static const Color lightGoldVariant = Color(0xFFC9A961);
-  // Brown colors for light mode
-  static const Color lightBrown = Color(0xFF8B4513);
-  static const Color lightBrownVariant = Color(0xFF6F4E37);
-  // Legacy colors (kept for compatibility)
-  static const Color lightCrimson = Color(0xFF8B1538);
-  static const Color lightCrimsonVariant = Color(0xFFA01D42);
-  static const Color lightViolet = Color(0xFF6B2C91);
-  static const Color lightVioletVariant = Color(0xFF7D3AA3);
-  static const Color lightArcaneBlue = Color(0xFF4A7FB8);
-  static const Color lightIronGray = Color(0xFF5A5A5A);
-  static const Color lightParchment = Color(0xFFF9F6F0);
+  // Legacy color constants for backward compatibility
+  // These now reference the new AppColors system
+  static Color get lightBackground => AppColors.lightBackground;
+  static Color get lightSurface => AppColors.lightSurface;
+  static Color get lightSurfaceVariant => AppColors.lightSurfaceVariant;
+  static Color get lightTextPrimary => AppColors.lightTextPrimary;
+  static Color get lightTextSecondary => AppColors.lightTextSecondary;
+  static Color get lightTextTertiary => AppColors.lightTextTertiary;
+  static Color get lightBorder => AppColors.lightBorder;
+  static Color get lightDivider => AppColors.lightDivider;
+  static Color get lightGold => AppColors.lightGold;
+  static Color get lightGoldVariant => AppColors.lightGoldVariant;
+  static Color get lightBrown => AppColors.lightBrown;
+  static Color get lightBrownVariant => AppColors.lightBrownVariant;
+  static Color get lightCrimson => AppColors.lightCrimson;
+  static Color get lightCrimsonVariant => AppColors.lightCrimsonVariant;
+  static Color get lightViolet => AppColors.lightViolet;
+  static Color get lightVioletVariant => AppColors.lightVioletVariant;
+  static Color get lightArcaneBlue => AppColors.lightArcaneBlue;
+  static Color get lightIronGray => AppColors.lightIronGray;
+  static Color get lightParchment => AppColors.lightParchment;
 
-  static const Color darkBackground = Color(0xFF0F0F0F);
-  static const Color darkSurface = Color(0xFF1A1A1A);
-  static const Color darkSurfaceVariant = Color(0xFF252525);
-  static const Color darkTextPrimary = Color(0xFFF5F5F5);
-  static const Color darkTextSecondary = Color(0xFFCCCCCC);
-  static const Color darkTextTertiary = Color(0xFF999999);
-  static const Color darkBorder = Color(0xFF333333);
-  static const Color darkDivider = Color(0xFF2A2A2A);
-  static const Color darkCrimson = Color(0xFFC41E3A);
-  static const Color darkCrimsonGlow = Color(0xFFE63950);
-  static const Color darkViolet = Color(0xFF8B4FC7);
-  static const Color darkVioletGlow = Color(0xFFA66DD9);
-  static const Color darkArcaneBlue = Color(0xFF4A90E2);
-  static const Color darkIronGray = Color(0xFF3A3A3A);
-  static const Color darkObsidian = Color(0xFF151515);
+  static Color get darkBackground => AppColors.darkBackground;
+  static Color get darkSurface => AppColors.darkSurface;
+  static Color get darkSurfaceVariant => AppColors.darkSurfaceVariant;
+  static Color get darkTextPrimary => AppColors.darkTextPrimary;
+  static Color get darkTextSecondary => AppColors.darkTextSecondary;
+  static Color get darkTextTertiary => AppColors.darkTextTertiary;
+  static Color get darkBorder => AppColors.darkBorder;
+  static Color get darkDivider => AppColors.darkDivider;
+  static Color get darkCrimson => AppColors.darkCrimson;
+  static Color get darkCrimsonGlow => AppColors.darkCrimsonGlow;
+  static Color get darkViolet => AppColors.darkViolet;
+  static Color get darkVioletGlow => AppColors.darkVioletGlow;
+  static Color get darkArcaneBlue => AppColors.darkArcaneBlue;
+  static Color get darkIronGray => AppColors.darkIronGray;
+  static Color get darkObsidian => AppColors.darkObsidian;
 
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      scaffoldBackgroundColor: lightBackground,
+      scaffoldBackgroundColor: AppColors.lightBackground,
       colorScheme: ColorScheme.light(
-        primary: lightGold,
+        primary: AppColors.lightGold,
         onPrimary: Colors.white,
-        primaryContainer: lightGoldVariant,
+        primaryContainer: AppColors.lightGoldVariant,
         onPrimaryContainer: Colors.white,
-        secondary: lightBrown,
+        secondary: AppColors.lightBrown,
         onSecondary: Colors.white,
-        secondaryContainer: lightBrownVariant,
+        secondaryContainer: AppColors.lightBrownVariant,
         onSecondaryContainer: Colors.white,
-        tertiary: lightBrown,
+        tertiary: AppColors.lightBrown,
         onTertiary: Colors.white,
-        error: const Color(0xFFBA1A1A),
+        error: AppColors.errorLight,
         onError: Colors.white,
-        errorContainer: const Color(0xFFFFDAD6),
+        errorContainer: AppColors.errorContainerLight,
         onErrorContainer: const Color(0xFF410002),
-        surface: lightSurface,
-        onSurface: lightTextPrimary,
-        onSurfaceVariant: lightTextSecondary,
-        outline: lightBorder,
-        outlineVariant: lightDivider,
+        surface: AppColors.lightSurface,
+        onSurface: AppColors.lightTextPrimary,
+        onSurfaceVariant: AppColors.lightTextSecondary,
+        outline: AppColors.lightBorder,
+        outlineVariant: AppColors.lightDivider,
         shadow: Colors.black.withOpacity(0.1),
         scrim: Colors.black.withOpacity(0.5),
-        inverseSurface: darkSurface,
-        onInverseSurface: darkTextPrimary,
-        inversePrimary: darkCrimson,
-        surfaceTint: lightGold.withOpacity(0.1),
+        inverseSurface: AppColors.darkSurface,
+        onInverseSurface: AppColors.darkTextPrimary,
+        inversePrimary: AppColors.darkCrimson,
+        surfaceTint: AppColors.lightGold.withOpacity(0.1),
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: lightSurface,
-        foregroundColor: lightTextPrimary,
+        backgroundColor: AppColors.lightSurface,
+        foregroundColor: AppColors.lightTextPrimary,
         elevation: AppThemeConstants.elevation0,
         scrolledUnderElevation: AppThemeConstants.elevation2,
         centerTitle: true,
+        shadowColor: Colors.black.withOpacity(0.08),
         titleTextStyle: TextStyle(
-          color: lightTextPrimary,
+          color: AppColors.lightTextPrimary,
           fontSize: AppThemeConstants.fontSize20,
           fontWeight: AppThemeConstants.fontWeightSemiBold,
           letterSpacing: AppThemeConstants.letterSpacingNormal,
           fontFamily: AppThemeConstants.fontFamilyPrimary,
         ),
         iconTheme: IconThemeData(
-          color: lightGold,
+          color: AppColors.lightGold,
           size: 24,
         ),
         actionsIconTheme: IconThemeData(
-          color: lightGold,
+          color: AppColors.lightGold,
           size: 24,
         ),
       ),
       cardTheme: CardThemeData(
-        color: lightSurface,
+        color: AppColors.lightSurface,
         elevation: AppThemeConstants.elevation2,
         shadowColor: Colors.black.withOpacity(AppThemeConstants.shadowOpacity),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppThemeConstants.radius12),
           side: BorderSide(
-            color: lightBorder,
+            color: AppColors.lightBorder,
             width: 1,
           ),
         ),
@@ -493,64 +494,65 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      scaffoldBackgroundColor: darkBackground,
+      scaffoldBackgroundColor: AppColors.darkBackground,
       colorScheme: ColorScheme.dark(
-        primary: darkCrimson,
+        primary: AppColors.darkCrimson,
         onPrimary: Colors.white,
-        primaryContainer: darkCrimsonGlow,
+        primaryContainer: AppColors.darkCrimsonGlow,
         onPrimaryContainer: Colors.white,
-        secondary: darkViolet,
+        secondary: AppColors.darkViolet,
         onSecondary: Colors.white,
-        secondaryContainer: darkVioletGlow,
+        secondaryContainer: AppColors.darkVioletGlow,
         onSecondaryContainer: Colors.white,
-        tertiary: darkArcaneBlue,
+        tertiary: AppColors.darkArcaneBlue,
         onTertiary: Colors.white,
-        error: const Color(0xFFFF5449),
+        error: AppColors.errorDark,
         onError: Colors.white,
-        errorContainer: const Color(0xFF93000A),
+        errorContainer: AppColors.errorContainerDark,
         onErrorContainer: const Color(0xFFFFDAD6),
-        surface: darkSurface,
-        onSurface: darkTextPrimary,
-        onSurfaceVariant: darkTextSecondary,
-        outline: darkBorder,
-        outlineVariant: darkDivider,
+        surface: AppColors.darkSurface,
+        onSurface: AppColors.darkTextPrimary,
+        onSurfaceVariant: AppColors.darkTextSecondary,
+        outline: AppColors.darkBorder,
+        outlineVariant: AppColors.darkDivider,
         shadow: Colors.black.withOpacity(0.3),
         scrim: Colors.black.withOpacity(0.7),
-        inverseSurface: lightSurface,
-        onInverseSurface: lightTextPrimary,
-        inversePrimary: lightCrimson,
-        surfaceTint: darkCrimson.withOpacity(0.1),
+        inverseSurface: AppColors.lightSurface,
+        onInverseSurface: AppColors.lightTextPrimary,
+        inversePrimary: AppColors.lightCrimson,
+        surfaceTint: AppColors.darkCrimson.withOpacity(0.1),
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: darkSurface,
-        foregroundColor: darkTextPrimary,
+        backgroundColor: AppColors.darkSurface,
+        foregroundColor: AppColors.darkTextPrimary,
         elevation: AppThemeConstants.elevation0,
         scrolledUnderElevation: AppThemeConstants.elevation2,
         centerTitle: true,
+        shadowColor: Colors.black.withOpacity(0.3),
         titleTextStyle: TextStyle(
-          color: darkTextPrimary,
+          color: AppColors.darkTextPrimary,
           fontSize: AppThemeConstants.fontSize20,
           fontWeight: AppThemeConstants.fontWeightSemiBold,
           letterSpacing: AppThemeConstants.letterSpacingNormal,
           fontFamily: AppThemeConstants.fontFamilyPrimary,
         ),
         iconTheme: IconThemeData(
-          color: darkCrimsonGlow,
+          color: AppColors.darkCrimsonGlow,
           size: 24,
         ),
         actionsIconTheme: IconThemeData(
-          color: darkCrimsonGlow,
+          color: AppColors.darkCrimsonGlow,
           size: 24,
         ),
       ),
       cardTheme: CardThemeData(
-        color: darkSurface,
+        color: AppColors.darkSurface,
         elevation: AppThemeConstants.elevation4,
         shadowColor: Colors.black.withOpacity(AppThemeConstants.shadowOpacity * 2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppThemeConstants.radius12),
           side: BorderSide(
-            color: darkBorder,
+            color: AppColors.darkBorder,
             width: 1,
           ),
         ),
@@ -972,51 +974,58 @@ class AppTheme {
     ];
   }
 
-  static const Color primaryDark = darkBackground;
-  static const Color secondaryDark = darkSurface;
-  // Light mode colors
-  static const Color accentGoldLight = lightGold;
-  static const Color accentDarkGoldLight = lightGoldVariant;
-  static const Color accentBrownLight = lightBrown;
-  // Dark mode colors (unchanged)
-  static const Color accentGoldDark = darkCrimsonGlow;
-  static const Color accentDarkGoldDark = darkCrimson;
-  static const Color accentBrownDark = darkIronGray;
   // Legacy constants (for backward compatibility, default to dark)
-  static const Color accentGold = darkCrimsonGlow;
-  static const Color accentDarkGold = darkCrimson;
-  static const Color accentCrimson = darkCrimson;
-  static const Color accentBrown = darkIronGray;
-  static const Color textPrimary = darkTextPrimary;
-  static const Color textSecondary = darkTextSecondary;
-  static const Color gold = darkCrimsonGlow;
-  static const Color silver = darkTextSecondary;
-  static const Color bronze = darkIronGray;
+  // Note: These are not const because they reference getters
+  static Color get primaryDark => darkBackground;
+  static Color get secondaryDark => darkSurface;
+  // Light mode colors
+  static Color get accentGoldLight => lightGold;
+  static Color get accentDarkGoldLight => lightGoldVariant;
+  static Color get accentBrownLight => lightBrown;
+  // Dark mode colors (unchanged)
+  static Color get accentGoldDark => darkCrimsonGlow;
+  static Color get accentDarkGoldDark => darkCrimson;
+  static Color get accentBrownDark => darkIronGray;
+  // Legacy constants (for backward compatibility, default to dark)
+  static Color get accentGold => darkCrimsonGlow;
+  static Color get accentDarkGold => darkCrimson;
+  static Color get accentCrimson => darkCrimson;
+  static Color get accentBrown => darkIronGray;
+  static Color get textPrimary => darkTextPrimary;
+  static Color get textSecondary => darkTextSecondary;
+  static Color get gold => darkCrimsonGlow;
+  static Color get silver => darkTextSecondary;
+  static Color get bronze => darkIronGray;
   
   // Helper functions to get theme-aware colors
   static Color getAccentGold(Brightness brightness) {
-    return brightness == Brightness.light ? accentGoldLight : accentGoldDark;
+    return AppColors.getAccentPrimary(brightness);
   }
   
   static Color getAccentDarkGold(Brightness brightness) {
-    return brightness == Brightness.light ? accentDarkGoldLight : accentDarkGoldDark;
+    return brightness == Brightness.light 
+        ? AppColors.lightGoldDark 
+        : AppColors.darkCrimsonDark;
   }
   
   static Color getAccentBrown(Brightness brightness) {
-    return brightness == Brightness.light ? accentBrownLight : accentBrownDark;
+    return AppColors.getAccentSecondary(brightness);
   }
   
   // Helper functions that use BuildContext for easier widget usage
   static Color getAccentGoldFromContext(BuildContext context) {
-    return getAccentGold(Theme.of(context).brightness);
+    return AppColors.getAccentPrimaryFromContext(context);
   }
   
   static Color getAccentDarkGoldFromContext(BuildContext context) {
-    return getAccentDarkGold(Theme.of(context).brightness);
+    final brightness = Theme.of(context).brightness;
+    return brightness == Brightness.light 
+        ? AppColors.lightGoldDark 
+        : AppColors.darkCrimsonDark;
   }
   
   static Color getAccentBrownFromContext(BuildContext context) {
-    return getAccentBrown(Theme.of(context).brightness);
+    return AppColors.getAccentSecondaryFromContext(context);
   }
   
   static LinearGradient getGoldGradientFromContext(BuildContext context) {
@@ -1033,19 +1042,19 @@ class AppTheme {
   
   // Helper functions for background and surface colors
   static Color getPrimaryBackground(Brightness brightness) {
-    return brightness == Brightness.light ? lightBackground : darkBackground;
+    return AppColors.getBackground(brightness);
   }
   
   static Color getSecondaryBackground(Brightness brightness) {
-    return brightness == Brightness.light ? lightSurface : darkSurface;
+    return AppColors.getSurface(brightness);
   }
   
   static Color getTextPrimary(Brightness brightness) {
-    return brightness == Brightness.light ? lightTextPrimary : darkTextPrimary;
+    return AppColors.getTextPrimary(brightness);
   }
   
   static Color getTextSecondary(Brightness brightness) {
-    return brightness == Brightness.light ? lightTextSecondary : darkTextSecondary;
+    return AppColors.getTextSecondary(brightness);
   }
   
   static LinearGradient getBackgroundGradient(Brightness brightness) {
@@ -1053,31 +1062,31 @@ class AppTheme {
       return const LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [lightBackground, lightSurface],
+        colors: [AppColors.lightBackground, AppColors.lightSurface],
       );
     }
     return const LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: [darkBackground, darkSurface],
+      colors: [AppColors.darkBackground, AppColors.darkSurface],
     );
   }
   
   // Helper functions that use BuildContext
   static Color getPrimaryBackgroundFromContext(BuildContext context) {
-    return getPrimaryBackground(Theme.of(context).brightness);
+    return AppColors.getBackgroundFromContext(context);
   }
   
   static Color getSecondaryBackgroundFromContext(BuildContext context) {
-    return getSecondaryBackground(Theme.of(context).brightness);
+    return AppColors.getSurfaceFromContext(context);
   }
   
   static Color getTextPrimaryFromContext(BuildContext context) {
-    return getTextPrimary(Theme.of(context).brightness);
+    return AppColors.getTextPrimaryFromContext(context);
   }
   
   static Color getTextSecondaryFromContext(BuildContext context) {
-    return getTextSecondary(Theme.of(context).brightness);
+    return AppColors.getTextSecondaryFromContext(context);
   }
   
   static LinearGradient getBackgroundGradientFromContext(BuildContext context) {
@@ -1087,7 +1096,7 @@ class AppTheme {
   static const LinearGradient darkGradient = LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [darkBackground, darkSurface],
+        colors: [AppColors.darkBackground, AppColors.darkSurface],
       );
 
   static LinearGradient getGoldGradient(Brightness brightness) {
@@ -1095,13 +1104,13 @@ class AppTheme {
       return const LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [lightGold, lightGoldVariant],
+        colors: [AppColors.lightGold, AppColors.lightGoldVariant],
       );
     }
     return const LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: [darkCrimsonGlow, darkCrimson],
+      colors: [AppColors.darkCrimsonGlow, AppColors.darkCrimson],
     );
   }
 
@@ -1110,13 +1119,13 @@ class AppTheme {
       return const LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [lightBrown, lightBrownVariant],
+        colors: [AppColors.lightBrown, AppColors.lightBrownVariant],
       );
     }
     return const LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: [darkIronGray, darkBackground],
+      colors: [AppColors.darkIronGray, AppColors.darkBackground],
     );
   }
 
@@ -1125,13 +1134,13 @@ class AppTheme {
       return const LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [lightGold, lightGoldVariant, lightBrown],
+        colors: [AppColors.lightGold, AppColors.lightGoldVariant, AppColors.lightBrown],
       );
     }
     return const LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
-      colors: [darkCrimsonGlow, darkCrimson, darkIronGray],
+      colors: [AppColors.darkCrimsonGlow, AppColors.darkCrimson, AppColors.darkIronGray],
     );
   }
   
@@ -1139,19 +1148,19 @@ class AppTheme {
   static const LinearGradient goldGradient = LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [darkCrimsonGlow, darkCrimson],
+        colors: [AppColors.darkCrimsonGlow, AppColors.darkCrimson],
       );
 
   static const LinearGradient brownGradient = LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [darkIronGray, darkBackground],
+        colors: [AppColors.darkIronGray, AppColors.darkBackground],
       );
 
   static const LinearGradient medievalGradient = LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [darkCrimsonGlow, darkCrimson, darkIronGray],
+        colors: [AppColors.darkCrimsonGlow, AppColors.darkCrimson, AppColors.darkIronGray],
       );
 
   static Color getRarityColor(String rarity) {
@@ -1159,13 +1168,14 @@ class AppTheme {
       case 'common':
         return Colors.grey;
       case 'rare':
-        return darkIronGray;
+        return AppColors.darkIronGray;
       case 'epic':
-        return darkCrimson;
+        return AppColors.darkCrimson;
       case 'legendary':
-        return darkCrimsonGlow;
+        return AppColors.darkCrimsonGlow;
       default:
         return Colors.grey;
     }
   }
 }
+

@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/animations/app_animations.dart';
+import '../../../core/accessibility/accessibility_helper.dart';
 import '../../../data/services/campaign_service.dart';
 import '../../../data/models/campaign.dart';
 import '../../../widgets/campaign_card.dart';
@@ -107,8 +108,8 @@ class _HomePageState extends State<HomePage> {
                     _buildRecentCampaignsSection(),
                     _buildQuickActionsSection(),
                     _buildQuickEncyclopediaSection(),
+                    _buildToolsSection(),
                     _buildInfoPrivacySection(),
-                    _buildNotificationsSection(),
                     const SliverToBoxAdapter(
                       child: SizedBox(height: 80),
                     ),
@@ -166,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   child: SvgIconWidget(
-                    iconPath: 'lorc/crown.svg',
+                    iconPath: 'crown.svg',
                     size: 64,
                     color: isLight ? brownColor : goldColor,
                     useThemeColor: false,
@@ -234,7 +235,7 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     children: [
                       SvgIconWidget(
-                        iconPath: 'delapouite/calendar.svg',
+                        iconPath: 'calendar.svg',
                         size: 20,
                         color: AppTheme.getAccentGoldFromContext(context),
                         useThemeColor: false,
@@ -251,7 +252,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () => context.push('/sessions/calendar'),
+                  onPressed: () {
+                    AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
+                    context.push('/sessions/calendar');
+                  },
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -310,6 +314,7 @@ class _HomePageState extends State<HomePage> {
         color: AppTheme.getSecondaryBackgroundFromContext(context),
         child: InkWell(
           onTap: () {
+            AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
             if (session['campaign_id'] != null) {
               context.push('/campaigns/${session['campaign_id']}');
             }
@@ -403,7 +408,7 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     children: [
                       SvgIconWidget(
-                        iconPath: 'delapouite/flag-objective.svg',
+                        iconPath: 'flag-objective.svg',
                         size: 20,
                         color: AppTheme.getAccentGoldFromContext(context),
                         useThemeColor: false,
@@ -420,7 +425,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () => context.push('/campaigns'),
+                  onPressed: () {
+                    AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
+                    context.push('/campaigns');
+                  },
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -474,7 +482,7 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               children: [
                 SvgIconWidget(
-                  iconPath: 'lorc/arcing-bolt.svg',
+                  iconPath: 'arcing-bolt.svg',
                   size: 20,
                   color: AppTheme.getAccentGoldFromContext(context),
                   useThemeColor: false,
@@ -497,34 +505,44 @@ class _HomePageState extends State<HomePage> {
               runSpacing: 12,
               children: [
                 _QuickActionButton(
-                  iconPath: 'delapouite/character.svg',
+                  iconPath: 'character.svg',
                   label: 'Create\nCharacter',
-                  onTap: () => context.push('/characters/new'),
+                  onTap: () {
+                    AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
+                    context.push('/characters/new');
+                  },
                 ),
                 _QuickActionButton(
-                  iconPath: 'delapouite/flag-objective.svg',
+                  iconPath: 'flag-objective.svg',
                   label: 'New\nCampaign',
-                  onTap: () => context.push('/campaigns/new'),
+                  onTap: () {
+                    AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
+                    context.push('/campaigns/new');
+                  },
                 ),
                 _QuickActionButton(
-                  iconPath: 'delapouite/calendar.svg',
+                  iconPath: 'calendar.svg',
                   label: 'View\nCalendar',
-                  onTap: () => context.push('/sessions/calendar'),
+                  onTap: () {
+                    AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
+                    context.push('/sessions/calendar');
+                  },
                 ),
                 _QuickActionButton(
-                  iconPath: 'lorc/scroll-unfurled.svg',
+                  iconPath: 'scroll-unfurled.svg',
                   label: 'Add\nMap',
-                  onTap: () => context.push('/maps/new'),
+                  onTap: () {
+                    AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
+                    context.push('/maps/new');
+                  },
                 ),
                 _QuickActionButton(
-                  iconPath: 'lorc/quill.svg',
+                  iconPath: 'quill.svg',
                   label: 'New\nLore',
-                  onTap: () => context.push('/lores/new'),
-                ),
-                _QuickActionButton(
-                  iconPath: 'lorc/crystal-shine.svg',
-                  label: 'SVG\nIcons',
-                  onTap: () => context.push('/examples/svg-icons'),
+                  onTap: () {
+                    AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
+                    context.push('/lores/new');
+                  },
                 ),
               ],
             ),
@@ -548,7 +566,7 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     children: [
                       SvgIconWidget(
-                        iconPath: 'lorc/book-cover.svg',
+                        iconPath: 'book-cover.svg',
                         size: 20,
                         color: AppTheme.getAccentGoldFromContext(context),
                         useThemeColor: false,
@@ -565,7 +583,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () => context.push('/encyclopedia'),
+                  onPressed: () {
+                    AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
+                    context.push('/encyclopedia');
+                  },
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -585,24 +606,102 @@ class _HomePageState extends State<HomePage> {
               runSpacing: 12,
               children: [
                 _EncyclopediaQuickLink(
-                  iconPath: 'delapouite/wizard-face.svg',
+                  iconPath: 'wizard-face.svg',
                   label: 'Classes',
                   route: '/dnd-classes',
                 ),
                 _EncyclopediaQuickLink(
-                  iconPath: 'lorc/wizard-staff.svg',
+                  iconPath: 'wizard-staff.svg',
                   label: 'Spells',
                   route: '/spells',
                 ),
                 _EncyclopediaQuickLink(
-                  iconPath: 'sbed/shield.svg',
+                  iconPath: 'shield.svg',
                   label: 'Knights',
                   route: '/knights',
                 ),
                 _EncyclopediaQuickLink(
-                  iconPath: 'lorc/hammer-drop.svg',
+                  iconPath: 'hammer-drop.svg',
                   label: 'Weapons',
                   route: '/weapons',
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildToolsSection() {
+    return SliverToBoxAdapter(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
+            child: Row(
+              children: [
+                SvgIconWidget(
+                  iconPath: 'tools.svg',
+                  size: 20,
+                  color: AppTheme.getAccentGoldFromContext(context),
+                  useThemeColor: false,
+                ),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    'Tools & Features',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children: [
+                _ToolButton(
+                  icon: Icons.qr_code,
+                  label: 'Sync',
+                  description: 'QR code sync',
+                  onTap: () {
+                    AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
+                    context.push('/sync');
+                  },
+                ),
+                _ToolButton(
+                  icon: Icons.picture_as_pdf,
+                  label: 'PDF Export',
+                  description: 'Export characters',
+                  onTap: () {
+                    AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
+                    context.push('/characters');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Open a character to export to PDF'),
+                        duration: Duration(seconds: 3),
+                      ),
+                    );
+                  },
+                ),
+                _ToolButton(
+                  icon: Icons.edit,
+                  label: 'Image Edit',
+                  description: 'Edit images',
+                  onTap: () {
+                    AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Image editing is available when you select an image'),
+                        duration: Duration(seconds: 3),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -625,7 +724,7 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               children: [
                 SvgIconWidget(
-                  iconPath: 'delapouite/info.svg',
+                  iconPath: 'info.svg',
                   size: 20,
                   color: AppTheme.getAccentGoldFromContext(context),
                   useThemeColor: false,
@@ -646,7 +745,10 @@ class _HomePageState extends State<HomePage> {
             child: Card(
               color: AppTheme.getSecondaryBackgroundFromContext(context),
               child: InkWell(
-                onTap: () => context.push('/info'),
+                onTap: () {
+                  AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
+                  context.push('/info');
+                },
                 borderRadius: BorderRadius.circular(12),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
@@ -665,7 +767,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         child: SvgIconWidget(
-                          iconPath: 'sbed/shield.svg',
+                          iconPath: 'shield.svg',
                           size: 40,
                           color: isLight 
                             ? AppTheme.getAccentBrownFromContext(context)
@@ -684,7 +786,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Scopri di più sull\'app, privacy e dati',
+                              'Learn more about the app, privacy and data',
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: AppTheme.getTextSecondaryFromContext(context),
                                   ),
@@ -708,51 +810,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildNotificationsSection() {
-    return SliverToBoxAdapter(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
-            child: Row(
-              children: [
-                SvgIconWidget(
-                  iconPath: 'lorc/bell-shield.svg',
-                  size: 20,
-                  color: AppTheme.getAccentGoldFromContext(context),
-                  useThemeColor: false,
-                ),
-                const SizedBox(width: 8),
-                Flexible(
-                  child: Text(
-                    'Notifications',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Card(
-              color: AppTheme.getSecondaryBackgroundFromContext(context),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                  child: Center(
-                    child: Text(
-                      'No notifications',
-                      style: TextStyle(color: AppTheme.getTextSecondaryFromContext(context)),
-                    ),
-                  ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class _QuickActionButton extends StatelessWidget {
@@ -768,31 +825,36 @@ class _QuickActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 100,
-      child: Card(
-        color: AppTheme.getSecondaryBackgroundFromContext(context),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(12),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SvgIconWidget(
-                  iconPath: iconPath,
-                  size: 32,
-                  color: AppTheme.getAccentGoldFromContext(context),
-                  useThemeColor: false,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  label,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ],
+    return Semantics(
+      label: label,
+      hint: 'Tap to $label',
+      button: true,
+      child: SizedBox(
+        width: 100,
+        child: Card(
+          color: AppTheme.getSecondaryBackgroundFromContext(context),
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(12),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SvgIconWidget(
+                    iconPath: iconPath,
+                    size: 32,
+                    color: AppTheme.getAccentGoldFromContext(context),
+                    useThemeColor: false,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -814,34 +876,108 @@ class _EncyclopediaQuickLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: AppTheme.getSecondaryBackgroundFromContext(context),
-      child: InkWell(
-        onTap: () => context.push(route),
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgIconWidget(
-                iconPath: iconPath,
-                size: 20,
-                color: AppTheme.getAccentGoldFromContext(context),
-                useThemeColor: false,
-              ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  label,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  overflow: TextOverflow.ellipsis,
+    return Semantics(
+      label: label,
+      hint: 'Tap to view $label',
+      button: true,
+      child: Card(
+        color: AppTheme.getSecondaryBackgroundFromContext(context),
+        child: InkWell(
+          onTap: () {
+            AccessibilityHelper.hapticFeedback(type: HapticFeedbackType.lightImpact);
+            context.push(route);
+          },
+          borderRadius: BorderRadius.circular(12),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SvgIconWidget(
+                  iconPath: iconPath,
+                  size: 20,
+                  color: AppTheme.getAccentGoldFromContext(context),
+                  useThemeColor: false,
                 ),
-              ),
-            ],
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    label,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
+
+class _ToolButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String description;
+  final VoidCallback onTap;
+
+  const _ToolButton({
+    required this.icon,
+    required this.label,
+    required this.description,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: '$label - $description',
+      hint: 'Tap to open $label',
+      button: true,
+      child: SizedBox(
+        width: 100,
+        child: Card(
+          color: AppTheme.getSecondaryBackgroundFromContext(context),
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(12),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    icon,
+                    size: 32,
+                    color: AppTheme.getAccentGoldFromContext(context),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    description,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontSize: 10,
+                          color: AppTheme.getTextSecondaryFromContext(context),
+                        ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+

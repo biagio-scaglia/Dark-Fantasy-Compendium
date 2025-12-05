@@ -48,7 +48,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
       final campaigns = await _service.getAll();
       final calendarDataMap = <String, List<dynamic>>{};
       
-      // Raccogli tutte le sessioni da tutte le campagne
+      // Collect all sessions from all campaigns
       for (final campaign in campaigns) {
         if (campaign.sessions != null) {
           for (final session in campaign.sessions!) {
@@ -99,7 +99,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
     final lastDay = DateTime(_selectedDate.year, _selectedDate.month + 1, 0);
     final days = <DateTime>[];
     
-    // Aggiungi giorni del mese precedente per completare la prima settimana
+    // Add days from previous month to complete the first week
     final firstWeekday = firstDay.weekday;
     for (int i = firstWeekday - 1; i > 0; i--) {
       days.add(firstDay.subtract(Duration(days: i)));
@@ -110,7 +110,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
       days.add(DateTime(_selectedDate.year, _selectedDate.month, i));
     }
     
-    // Aggiungi giorni del mese successivo per completare l'ultima settimana
+    // Add days from next month to complete the last week
     final lastWeekday = lastDay.weekday;
     for (int i = 1; i <= 7 - lastWeekday; i++) {
       days.add(DateTime(_selectedDate.year, _selectedDate.month + 1, i));
@@ -145,7 +145,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Calendario Sessioni'),
+        title: const Text('Sessions Calendar'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -181,7 +181,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
 
     return Column(
       children: [
-        // Header con navigazione mese
+        // Header with month navigation
         Container(
           padding: const EdgeInsets.all(16),
           child: Row(
@@ -202,7 +202,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
             ],
           ),
         ),
-        // Calendario
+        // Calendar
         Expanded(
           child: _buildCalendar(),
         ),
@@ -316,7 +316,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
                 margin: const EdgeInsets.only(bottom: 8),
                 child: ListTile(
                   leading: SvgIconWidget(
-                    iconPath: 'delapouite/dice-twenty-faces-twenty.svg',
+                    iconPath: 'dice-twenty-faces-twenty.svg',
                     size: 24,
                     color: AppTheme.getAccentGoldFromContext(context),
                     useThemeColor: false,
@@ -343,7 +343,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Chiudi'),
+            child: const Text('Close'),
           ),
         ],
       ),
@@ -351,7 +351,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
   }
 
   void _showCreateSessionDialog({DateTime? date}) async {
-    // Prima mostra un dialog per selezionare la campagna
+    // First show a dialog to select the campaign
     final campaigns = await _loadCampaigns();
     if (campaigns.isEmpty) {
       if (mounted) {
@@ -369,7 +369,7 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Seleziona Campagna'),
+        title: const Text('Select Campaign'),
         content: SizedBox(
           width: double.maxFinite,
           child: ListView.builder(
@@ -408,4 +408,5 @@ class _SessionsCalendarPageState extends State<SessionsCalendarPage> {
     }
   }
 }
+
 

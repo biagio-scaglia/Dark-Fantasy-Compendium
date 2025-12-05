@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../data/services/boss_service.dart';
-import '../../../data/models/boss.dart';
 import '../../../core/theme/app_theme.dart';
 
 class BossDetailPage extends StatefulWidget {
@@ -73,7 +72,7 @@ class _BossDetailPageState extends State<BossDetailPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
         title: Text(boss?['name'] ?? 'Boss'),
       ),
@@ -337,7 +336,7 @@ class _HealthBar extends StatelessWidget {
           child: LinearProgressIndicator(
             value: percentage,
             backgroundColor: AppTheme.getSecondaryBackgroundFromContext(context),
-            valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.accentCrimson),
+            valueColor: AlwaysStoppedAnimation<Color>(AppTheme.accentCrimson),
             minHeight: 12,
           ),
         ),
@@ -382,4 +381,5 @@ class _StatRow extends StatelessWidget {
     );
   }
 }
+
 

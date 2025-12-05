@@ -119,7 +119,7 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
         title: Text(weapon?['name'] ?? 'Weapon'),
         actions: [
@@ -240,7 +240,7 @@ class _WeaponDetailPageState extends State<WeaponDetailPage> {
         const SizedBox(height: 8),
         _StatRow(
           icon: Icons.build,
-          label: 'Durabilità',
+          label: 'Durability',
           value: '${weapon!['durability'] ?? 0}%',
           color: AppTheme.getTextSecondaryFromContext(context),
         ),
@@ -327,4 +327,5 @@ class _StatRow extends StatelessWidget {
     );
   }
 }
+
 

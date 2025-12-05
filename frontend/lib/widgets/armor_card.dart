@@ -57,7 +57,7 @@ class ArmorCard extends StatelessWidget {
                   customPath: armor['icon_path'] as String?,
                   type: armor['type'] as String?,
                   entityType: 'armor',
-                ) ?? IconMapper.getArmorIconPath(armor['type'] as String?) ?? 'assets/icons/icons/entity/armor.svg',
+                ) ?? IconMapper.getArmorIconPath(armor['type'] as String?) ?? 'assets/icons/shield.svg',
                 size: 55,
                 iconColor: AppTheme.getTextPrimaryFromContext(context),
                 gradientColors: [
@@ -251,4 +251,5 @@ class _StatBadge extends StatelessWidget {
     );
   }
 }
+
 

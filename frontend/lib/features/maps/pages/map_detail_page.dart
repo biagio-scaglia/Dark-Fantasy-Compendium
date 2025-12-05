@@ -76,7 +76,7 @@ class _MapDetailPageState extends State<MapDetailPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: Text(map!['name'] ?? 'Mappa'),
+        title: Text(map!['name'] ?? 'Map'),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
@@ -158,4 +158,5 @@ class _MapDetailPageState extends State<MapDetailPage> {
     );
   }
 }
+
 

@@ -10,46 +10,46 @@ class SvgIconsExamplePage extends StatelessWidget {
   /// List of example icon paths from icons/ - only icons that actually exist
   static const List<String> exampleIcons = [
     // Weapons - verified to exist
-    'lorc/broadsword.svg',
-    'lorc/daggers.svg',
-    'lorc/battle-axe.svg',
-    'lorc/barbed-spear.svg',
-    'lorc/bowman.svg',
-    'lorc/crossed-swords.svg',
-    'lorc/diving-dagger.svg',
-    'lorc/bowie-knife.svg',
-    'lorc/curvy-knife.svg',
-    'lorc/energy-sword.svg',
-    'lorc/bloody-sword.svg',
-    'lorc/bouncing-sword.svg',
+    'broadsword.svg',
+    'daggers.svg',
+    'battle-axe.svg',
+    'barbed-spear.svg',
+    'bowman.svg',
+    'crossed-swords.svg',
+    'diving-dagger.svg',
+    'bowie-knife.svg',
+    'curvy-knife.svg',
+    'energy-sword.svg',
+    'bloody-sword.svg',
+    'bouncing-sword.svg',
     // Armor - verified to exist
-    'lorc/breastplate.svg',
-    'lorc/armor-vest.svg',
-    'lorc/barbute.svg',
-    'lorc/crested-helmet.svg',
-    'lorc/boots.svg',
-    'lorc/dorsal-scales.svg',
+    'breastplate.svg',
+    'armor-vest.svg',
+    'barbute.svg',
+    'crested-helmet.svg',
+    'boots.svg',
+    'dorsal-scales.svg',
     // Crystals and gems - verified to exist
-    'lorc/crystal-shine.svg',
-    'lorc/diamond-hard.svg',
-    'lorc/crystal-cluster.svg',
-    'lorc/crystal-bars.svg',
-    'lorc/crystal-eye.svg',
-    'lorc/emerald.svg',
-    'lorc/checkered-diamond.svg',
+    'crystal-shine.svg',
+    'diamond-hard.svg',
+    'crystal-cluster.svg',
+    'crystal-bars.svg',
+    'crystal-eye.svg',
+    'emerald.svg',
+    'checkered-diamond.svg',
     // Elements - verified to exist
-    'lorc/fireball.svg',
-    'lorc/fire-breath.svg',
-    'lorc/fire-shield.svg',
-    'lorc/arcing-bolt.svg',
-    'lorc/bolt-eye.svg',
-    'lorc/drop.svg',
-    'lorc/droplet-splash.svg',
+    'fireball.svg',
+    'fire-breath.svg',
+    'fire-shield.svg',
+    'arcing-bolt.svg',
+    'bolt-eye.svg',
+    'drop.svg',
+    'droplet-splash.svg',
     // Shields - verified to exist
-    'lorc/broken-shield.svg',
-    'lorc/checked-shield.svg',
-    'lorc/eye-shield.svg',
-    'lorc/bordered-shield.svg',
+    'broken-shield.svg',
+    'checked-shield.svg',
+    'eye-shield.svg',
+    'bordered-shield.svg',
   ];
 
   @override
@@ -241,7 +241,7 @@ class SvgIconsExamplePage extends StatelessWidget {
           ),
           child: Center(
             child: SvgIconWidget(
-              iconPath: 'lorc/broadsword.svg',
+              iconPath: 'broadsword.svg',
               size: size,
             ),
           ),
@@ -315,4 +315,5 @@ class SvgIconsExamplePage extends StatelessWidget {
         .join(' '    );
   }
 }
+
 

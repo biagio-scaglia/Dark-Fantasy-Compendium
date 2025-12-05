@@ -16,12 +16,20 @@ flutter run
 
 ## Struttura
 
-- `lib/core/` - Tema, router, configurazione
+- `lib/core/` - Core functionality
+  - `design_system/` - Enhanced design system (colors, typography, shadows, animations)
+  - `theme/` - Theme configuration and constants
+  - `router/` - Navigation and routing
+  - `animations/` - Animation utilities (legacy compatibility)
 - `lib/features/` - Feature-based architecture
   - Ogni feature ha le sue pagine (list, detail, form)
-- `lib/data/services/` - Servizi per la gestione dei dati locali (JSON)
-- `lib/data/models/` - Modelli dei dati
+- `lib/data/` - Data layer
+  - `services/` - Servizi per la gestione dei dati locali (JSON)
+  - `models/` - Modelli dei dati
 - `lib/widgets/` - Widget riutilizzabili
+  - `animated_card.dart` - Enhanced animated card component
+  - `animated_button.dart` - Enhanced animated button components
+  - Other reusable widgets
 
 ## Features Implementate
 
@@ -47,13 +55,58 @@ flutter run
 - ✅ Party (list, detail, form)
 - ✅ Calendario Sessioni (calendario mensile interattivo)
 
-## Tema Dark Fantasy
+## Design System & Theming
 
-Il tema è definito in `lib/core/theme/app_theme.dart` con:
-- Colori: rosso scuro, viola, cremisi, oro
+### Enhanced Design System
+
+The app now features a comprehensive design system located in `lib/core/design_system/`:
+
+- **`app_colors.dart`** - Enhanced color palette with improved contrast and harmony
+  - Light mode: Gold/Brown accents on warm backgrounds
+  - Dark mode: Crimson/Violet accents on dark backgrounds
+  - Context-aware color helpers for easy theme switching
+  - Improved accessibility with better contrast ratios
+
+- **`app_typography.dart`** - Typography system with clear hierarchy
+  - Display, Headline, Title, Body, and Label styles
+  - Responsive text scaling
+  - Accent text styles for highlighted content
+
+- **`app_shadows.dart`** - Shadow system for depth and elevation
+  - Standard shadows (shadow1 through shadow16)
+  - Glow shadows for accent elements
+  - Context-aware shadows (soft, card, elevated, button)
+
+- **`app_animations.dart`** - Enhanced animation system
+  - Standard durations and curves
+  - Page transitions (fade, slide, scale, slideUp)
+  - Widget animations (fadeIn, slideIn, scaleIn, fadeSlideIn)
+  - Staggered animations for lists
+
+### Theme Configuration
+
+The theme is defined in `lib/core/theme/app_theme.dart` with:
+- Refined color palette with improved contrast
 - Gradient personalizzati
 - Stili per rarità (common, rare, epic, legendary)
-- Animazioni fluide
+- Smooth animations throughout the app
+- Adaptive theming for light and dark modes
+
+### UI Components
+
+**Animated Components:**
+- `AnimatedCard` - Cards with hover, press, and focus states
+- `AnimatedButton` - Buttons with interactive animations
+- `AnimatedElevatedButton` - Enhanced elevated button with animations
+
+**Features:**
+- Smooth page transitions
+- Staggered list animations
+- Interactive hover effects (desktop)
+- Press feedback on all interactive elements
+- Lazy loading for all lists (ListView.builder, GridView.builder)
+- Responsive layout with adaptive spacing
+- Safe area management for all device sizes
 
 ## Architettura Dati
 

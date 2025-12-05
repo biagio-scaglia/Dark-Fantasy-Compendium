@@ -1,82 +1,181 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../core/theme/app_theme.dart';
+import '../core/design_system/app_colors.dart';
+import '../core/design_system/app_animations.dart';
+import '../core/theme/app_theme_constants.dart';
 import 'svg_icon_widget.dart';
+import 'animated_card.dart';
 
 class CharacterCard extends StatelessWidget {
   final Map<String, dynamic> character;
+  final int? index; // For staggered animation
 
-  const CharacterCard({super.key, required this.character});
+  const CharacterCard({
+    super.key,
+    required this.character,
+    this.index,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    final brightness = Theme.of(context).brightness;
+    final accentColor = AppColors.getAccentPrimary(brightness);
+    final currentHp = character['current_hit_points'] as int?;
+    final maxHp = character['max_hit_points'] as int?;
+    final hpPercentage = (currentHp != null && maxHp != null && maxHp > 0)
+        ? currentHp / maxHp
+        : 1.0;
+    final hpColor = hpPercentage > 0.5
+        ? Colors.green
+        : hpPercentage > 0.25
+            ? Colors.orange
+            : Colors.red;
+
+    Widget cardContent = AnimatedCard(
+      onTap: () => context.push('/characters/${character['id']}'),
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      elevation: 4,
-      child: InkWell(
-        onTap: () => context.push('/characters/${character['id']}'),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppTheme.getAccentGoldFromContext(context), width: 2),
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          AppAnimations.scaleIn(
+            duration: AppAnimations.medium,
+            begin: 0.8,
+            child: Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: accentColor.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(AppThemeConstants.radius12),
+                border: Border.all(
+                  color: accentColor.withOpacity(0.5),
+                  width: 2,
                 ),
-                child: Center(
-                  child: SvgIconWidget(
-                    iconPath: 'delapouite/character.svg',
-                    size: 40,
-                    color: AppTheme.getAccentGoldFromContext(context),
-                    useThemeColor: false,
+                boxShadow: [
+                  BoxShadow(
+                    color: accentColor.withOpacity(0.2),
+                    blurRadius: 8,
+                    spreadRadius: 0,
                   ),
+                ],
+              ),
+              child: Center(
+                child: SvgIconWidget(
+                  iconPath: character['icon_path'] ?? 'character.svg',
+                  size: 40,
+                  color: accentColor,
+                  useThemeColor: false,
                 ),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      character['name'] ?? 'Unnamed character',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 4),
-                    if (character['player_name'] != null)
-                      Text(
-                        'Giocatore: ${character['player_name']}',
-                        style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+          SizedBox(width: AppThemeConstants.spacing16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  character['name'] ?? 'Unnamed character',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: AppThemeConstants.fontWeightSemiBold,
                       ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        if (character['level'] != null)
-                          Chip(
-                            label: Text('Level ${character['level']}'),
-                            backgroundColor: AppTheme.getAccentGoldFromContext(context).withOpacity(0.2),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: AppThemeConstants.spacing4),
+                if (character['player_name'] != null)
+                  Text(
+                    'Player: ${character['player_name']}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.getTextSecondary(brightness),
+                        ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                SizedBox(height: AppThemeConstants.spacing8),
+                Wrap(
+                  spacing: AppThemeConstants.spacing8,
+                  runSpacing: AppThemeConstants.spacing4,
+                  children: [
+                    if (character['level'] != null)
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppThemeConstants.spacing12,
+                          vertical: AppThemeConstants.spacing4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: accentColor.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(AppThemeConstants.radius8),
+                          border: Border.all(
+                            color: accentColor.withOpacity(0.3),
+                            width: 1,
                           ),
-                        if (character['current_hit_points'] != null && character['max_hit_points'] != null)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Text(
-                              'HP: ${character['current_hit_points']}/${character['max_hit_points']}',
-                              style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        child: Text(
+                          'Level ${character['level']}',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: accentColor,
+                                fontWeight: AppThemeConstants.fontWeightMedium,
+                              ),
+                        ),
+                      ),
+                    if (currentHp != null && maxHp != null)
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppThemeConstants.spacing12,
+                          vertical: AppThemeConstants.spacing4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: hpColor.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(AppThemeConstants.radius8),
+                          border: Border.all(
+                            color: hpColor.withOpacity(0.3),
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: hpColor,
+                                shape: BoxShape.circle,
+                              ),
                             ),
-                          ),
-                      ],
-                    ),
+                            SizedBox(width: AppThemeConstants.spacing4),
+                            Text(
+                              'HP: $currentHp/$maxHp',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: hpColor,
+                                    fontWeight: AppThemeConstants.fontWeightMedium,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
                   ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
+
+    // Apply staggered animation if index is provided
+    if (index != null) {
+      return AppAnimations.fadeSlideIn(
+        duration: AppAnimations.medium,
+        offset: const Offset(0, 20),
+        delay: Duration(milliseconds: 100 * (index! % 5)),
+        child: cardContent,
+      );
+    }
+
+    return cardContent;
   }
 }
+
 

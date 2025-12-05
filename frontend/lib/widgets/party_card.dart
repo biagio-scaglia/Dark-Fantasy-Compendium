@@ -29,7 +29,7 @@ class PartyCard extends StatelessWidget {
                 ),
                 child: Center(
                   child: SvgIconWidget(
-                    iconPath: 'delapouite/team-idea.svg',
+                    iconPath: 'team-idea.svg',
                     size: 40,
                     color: AppTheme.getAccentGoldFromContext(context),
                     useThemeColor: false,
@@ -65,7 +65,7 @@ class PartyCard extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 8),
                             child: Text(
-                              '${(party['characters'] as List).length} personaggi',
+                              '${(party['characters'] as List).length} characters',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ),
@@ -81,4 +81,5 @@ class PartyCard extends StatelessWidget {
     );
   }
 }
+
 

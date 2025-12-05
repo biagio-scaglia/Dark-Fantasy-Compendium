@@ -1,15 +1,20 @@
-import 'package:flutter/material.dart';
+// Re-export from new design system for backward compatibility
+export '../design_system/app_animations.dart' show AppAnimations;
 
+import 'package:flutter/material.dart';
+import '../design_system/app_animations.dart' as new_animations;
+
+// Legacy compatibility - redirect to new system
 class AppAnimations {
   // Durata standard delle animazioni
-  static const Duration shortDuration = Duration(milliseconds: 200);
-  static const Duration mediumDuration = Duration(milliseconds: 400);
-  static const Duration longDuration = Duration(milliseconds: 600);
+  static const Duration shortDuration = new_animations.AppAnimations.fast;
+  static const Duration mediumDuration = new_animations.AppAnimations.medium;
+  static const Duration longDuration = new_animations.AppAnimations.slow;
 
   // Curve standard
-  static const Curve standardCurve = Curves.easeOutCubic;
-  static const Curve bounceCurve = Curves.elasticOut;
-  static const Curve smoothCurve = Curves.easeInOutCubic;
+  static const Curve standardCurve = new_animations.AppAnimations.standard;
+  static const Curve bounceCurve = new_animations.AppAnimations.bounce;
+  static const Curve smoothCurve = new_animations.AppAnimations.smooth;
 
   // Fade In Animation
   static Widget fadeIn({
@@ -192,14 +197,16 @@ class AppAnimations {
             curve: curve,
           ),
           builder: (context, value, child) {
+            // child is guaranteed to be non-null since we pass it explicitly
+            final nonNullChild = child ?? const SizedBox.shrink();
             if (builder != null) {
-              return builder!(child!, index);
+              return builder(nonNullChild, index);
             }
             return Opacity(
               opacity: value,
               child: Transform.translate(
                 offset: Offset(0, 30 * (1 - value)),
-                child: child,
+                child: nonNullChild,
               ),
             );
           },
@@ -341,4 +348,5 @@ class CustomPageTransitions {
     );
   }
 }
+
 

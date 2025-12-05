@@ -54,10 +54,13 @@ class _MapsListPageState extends State<MapsListPage> {
           tooltip: 'Back',
         ),
         title: const Text('Maps'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push('/maps/new'),
-        child: const Icon(Icons.add),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => context.push('/maps/new'),
+            tooltip: 'Add Map',
+          ),
+        ],
       ),
       body: _buildBody(),
     );
@@ -107,4 +110,5 @@ class _MapsListPageState extends State<MapsListPage> {
     );
   }
 }
+
 

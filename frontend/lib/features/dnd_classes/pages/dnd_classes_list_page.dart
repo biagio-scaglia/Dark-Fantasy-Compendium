@@ -52,10 +52,13 @@ class _DndClassesListPageState extends State<DndClassesListPage> {
           onPressed: () => context.go('/home'),
         ),
         title: const Text('D&D Classes'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push('/dnd-classes/new'),
-        child: const Icon(Icons.add),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => context.push('/dnd-classes/new'),
+            tooltip: 'Add Class',
+          ),
+        ],
       ),
       body: _buildBody(),
     );
@@ -106,4 +109,5 @@ class _DndClassesListPageState extends State<DndClassesListPage> {
     );
   }
 }
+
 

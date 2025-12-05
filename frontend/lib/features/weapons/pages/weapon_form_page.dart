@@ -191,7 +191,7 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
         title: Text(widget.weapon != null ? 'Edit Weapon' : 'New Weapon'),
       ),
@@ -261,11 +261,18 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
             const SizedBox(height: 16),
             SvgIconPickerWidget(
               selectedIconPath: _iconUrlController.text.isEmpty ? null : _iconUrlController.text,
-              entityType: 'weapon',
-              suggestedCategories: ['weapon'],
               onIconSelected: (iconPath) {
                 setState(() {
-                  _iconUrlController.text = iconPath;
+                  // Salva solo il nome del file, il path completo verrà gestito da IconMapper
+                  if (iconPath.isNotEmpty && !iconPath.startsWith('assets/')) {
+                    _iconUrlController.text = iconPath;
+                  } else if (iconPath.isNotEmpty) {
+                    // Se ha già il path completo, estrai solo il nome del file
+                    final parts = iconPath.split('/');
+                    _iconUrlController.text = parts.last;
+                  } else {
+                    _iconUrlController.text = '';
+                  }
                 });
               },
             ),
@@ -289,4 +296,5 @@ class _WeaponFormPageState extends State<WeaponFormPage> {
     );
   }
 }
+
 

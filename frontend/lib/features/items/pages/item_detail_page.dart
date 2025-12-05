@@ -71,7 +71,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
         title: Text(item?['name'] ?? 'Oggetto'),
       ),
@@ -290,4 +290,5 @@ class _InfoRow extends StatelessWidget {
     );
   }
 }
+
 

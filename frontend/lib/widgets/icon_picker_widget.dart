@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../core/theme/app_theme.dart';
 import 'svg_icon_widget.dart';
 
@@ -26,7 +25,7 @@ class _IconPickerWidgetState extends State<IconPickerWidget> {
   final TextEditingController _searchController = TextEditingController();
   List<String> _filteredIcons = [];
 
-  // Mappatura categorie -> lista icone
+  // Category mapping -> icon list
   static const Map<String, List<String>> _iconCategories = {
     'entity': [
       'armor', 'weapon', 'magic-item', 'potion', 'scroll', 'ring', 'wand',
@@ -154,7 +153,7 @@ class _IconPickerWidgetState extends State<IconPickerWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Icona selezionata',
+                        'Selected icon',
                         style: Theme.of(context).textTheme.labelMedium,
                       ),
                       Text(
@@ -208,7 +207,7 @@ class _IconPickerWidgetState extends State<IconPickerWidget> {
         TextField(
           controller: _searchController,
           decoration: const InputDecoration(
-            labelText: 'Cerca icona',
+            labelText: 'Search icon',
             prefixIcon: Icon(Icons.search),
             hintText: 'Digita per filtrare...',
           ),
@@ -235,7 +234,7 @@ class _IconPickerWidgetState extends State<IconPickerWidget> {
           child: _filteredIcons.isEmpty
               ? Center(
                   child: Text(
-                    'Nessuna icona trovata',
+                    'No icons found',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppTheme.getTextSecondaryFromContext(context),
                         ),
@@ -320,5 +319,6 @@ class _IconPickerWidgetState extends State<IconPickerWidget> {
     );
   }
 }
+
 
 

@@ -32,7 +32,7 @@ class EncyclopediaPage extends StatelessWidget {
                   delegate: SliverChildListDelegate([
                     _EncyclopediaCard(
                       title: 'D&D Classes',
-                      iconPath: 'delapouite/wizard-face.svg',
+                      iconPath: 'wizard-face.svg',
                       route: '/dnd-classes',
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -45,7 +45,7 @@ class EncyclopediaPage extends StatelessWidget {
                     ),
                     _EncyclopediaCard(
                       title: 'Races',
-                      iconPath: 'delapouite/team-idea.svg',
+                      iconPath: 'team-idea.svg',
                       route: '/races',
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -58,7 +58,7 @@ class EncyclopediaPage extends StatelessWidget {
                     ),
                     _EncyclopediaCard(
                       title: 'Spells',
-                      iconPath: 'lorc/wizard-staff.svg',
+                      iconPath: 'wizard-staff.svg',
                       route: '/spells',
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -71,7 +71,7 @@ class EncyclopediaPage extends StatelessWidget {
                     ),
                     _EncyclopediaCard(
                       title: 'Abilities',
-                      iconPath: 'lorc/star-swirl.svg',
+                      iconPath: 'star-swirl.svg',
                       route: '/abilities',
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -84,7 +84,7 @@ class EncyclopediaPage extends StatelessWidget {
                     ),
                     _EncyclopediaCard(
                       title: 'Items',
-                      iconPath: 'lorc/crystal-shine.svg',
+                      iconPath: 'crystal-shine.svg',
                       route: '/items',
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -97,7 +97,7 @@ class EncyclopediaPage extends StatelessWidget {
                     ),
                     _EncyclopediaCard(
                       title: 'Maps',
-                      iconPath: 'lorc/scroll-unfurled.svg',
+                      iconPath: 'scroll-unfurled.svg',
                       route: '/maps',
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -110,7 +110,7 @@ class EncyclopediaPage extends StatelessWidget {
                     ),
                     _EncyclopediaCard(
                       title: 'Knights',
-                      iconPath: 'sbed/shield.svg',
+                      iconPath: 'shield.svg',
                       route: '/knights',
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -123,7 +123,7 @@ class EncyclopediaPage extends StatelessWidget {
                     ),
                     _EncyclopediaCard(
                       title: 'Weapons',
-                      iconPath: 'lorc/hammer-drop.svg',
+                      iconPath: 'hammer-drop.svg',
                       route: '/weapons',
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -136,7 +136,7 @@ class EncyclopediaPage extends StatelessWidget {
                     ),
                     _EncyclopediaCard(
                       title: 'Armor',
-                      iconPath: 'lorc/breastplate.svg',
+                      iconPath: 'breastplate.svg',
                       route: '/armors',
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -149,7 +149,7 @@ class EncyclopediaPage extends StatelessWidget {
                     ),
                     _EncyclopediaCard(
                       title: 'Bosses',
-                      iconPath: 'lorc/dragon-head.svg',
+                      iconPath: 'dragon-head.svg',
                       route: '/bosses',
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -162,7 +162,7 @@ class EncyclopediaPage extends StatelessWidget {
                     ),
                     _EncyclopediaCard(
                       title: 'Factions',
-                      iconPath: 'delapouite/tower-flag.svg',
+                      iconPath: 'tower-flag.svg',
                       route: '/factions',
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -175,7 +175,7 @@ class EncyclopediaPage extends StatelessWidget {
                     ),
                     _EncyclopediaCard(
                       title: 'Characters',
-                      iconPath: 'delapouite/character.svg',
+                      iconPath: 'character.svg',
                       route: '/characters',
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -188,7 +188,7 @@ class EncyclopediaPage extends StatelessWidget {
                     ),
                     _EncyclopediaCard(
                       title: 'Lore',
-                      iconPath: 'lorc/quill.svg',
+                      iconPath: 'quill.svg',
                       route: '/lores',
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -289,4 +289,5 @@ class _EncyclopediaCard extends StatelessWidget {
     );
   }
 }
+
 

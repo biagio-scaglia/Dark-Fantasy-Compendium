@@ -318,7 +318,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
-          tooltip: 'Indietro',
+          tooltip: 'Back',
         ),
         title: Text(widget.knight != null ? 'Edit Knight' : 'New Knight'),
       ),
@@ -433,7 +433,7 @@ class _KnightFormPageState extends State<KnightFormPage> {
             ),
             const SizedBox(height: 16),
             _buildImagePicker(
-              label: 'Icona',
+              label: 'Icon',
               file: _selectedIcon,
               currentUrl: _currentIconUrl,
               onTap: () => _pickImage(true),
@@ -533,4 +533,5 @@ class _KnightFormPageState extends State<KnightFormPage> {
     );
   }
 }
+
 

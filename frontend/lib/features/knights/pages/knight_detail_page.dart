@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../data/services/knight_service.dart';
-import '../../../data/models/knight.dart';
 import '../../../core/theme/app_theme.dart';
-import 'knight_form_page.dart';
 
 class KnightDetailPage extends StatefulWidget {
   final int knightId;
@@ -357,4 +355,5 @@ class _StatRow extends StatelessWidget {
     );
   }
 }
+
 
